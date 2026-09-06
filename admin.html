@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Inscrições · Verisure</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1729; --ink-soft:#334155; --muted:#647089; --paper:#F4F6FA;
+    --card:#FFFFFF; --line:#E4E9F1; --navy:#132542; --navy-2:#0B1526;
+    --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B;
+    --shadow:0 18px 48px -24px rgba(15,23,41,.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --ink:#E9EEF6; --ink-soft:#B9C5D8; --muted:#8598B2; --paper:#0A111E;
+      --card:#131E33; --line:#233248; --navy:#0E1B30; --navy-2:#070E1B; }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  a{color:var(--amber-deep)}
+
+  /* Login */
+  .login{min-height:100vh;display:grid;place-items:center;padding:24px}
+  .login .box{width:100%;max-width:380px;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+  .login .top{background:linear-gradient(160deg,var(--navy),var(--navy-2));color:#fff;padding:26px 26px 22px}
+  .login .top .mono{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
+  .login h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:22px;margin:8px 0 0}
+  .login .body{padding:22px 26px 26px;display:grid;gap:12px}
+  label{font-size:13px;font-weight:600;color:var(--ink-soft)}
+  input[type=password],input[type=search],input[type=text]{font:inherit;font-size:15px;color:var(--ink);
+    background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:11px 13px;width:100%}
+  input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 4px rgba(232,163,61,.16)}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:15px;
+    background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A;padding:12px 18px;border-radius:11px}
+  .btn:disabled{opacity:.6;cursor:progress}
+  .btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink-soft)}
+  .btn.small{font-size:13px;padding:8px 13px;border-radius:9px}
+  .err{color:var(--red);font-size:13px;min-height:1em}
+
+  /* App */
+  .app{max-width:1120px;margin:0 auto;padding:22px}
+  header.bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .title{display:flex;align-items:center;gap:12px}
+  .title .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:#241706;
+    background:linear-gradient(160deg,var(--amber),var(--amber-deep));font-family:"Bricolage Grotesque",sans-serif;font-weight:800}
+  .title h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:20px;margin:0}
+  .title p{margin:0;color:var(--muted);font-size:12.5px}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+  @media(max-width:640px){.stats{grid-template-columns:1fr}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .stat .n{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:28px;line-height:1}
+  .stat .l{color:var(--muted);font-size:12.5px;margin-top:6px}
+  .stat .bar{height:7px;border-radius:99px;background:var(--line);margin-top:10px;overflow:hidden}
+  .stat .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--amber))}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+  .toolbar .grow{flex:1;min-width:180px}
+
+  .tablewrap{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:auto;box-shadow:var(--shadow)}
+  table{border-collapse:collapse;width:100%;min-width:820px;font-size:13.5px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{position:sticky;top:0;background:var(--navy);color:#fff;font-size:11px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+  tr:hover td{background:rgba(232,163,61,.05)}
+  td .nm{font-weight:600}
+  td.time{white-space:nowrap;color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:12px}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px}
+  .badge.ok{background:rgba(44,140,137,.14);color:var(--teal)}
+  .badge.no{background:rgba(192,57,43,.12);color:var(--red)}
+  .del{appearance:none;border:1px solid var(--line);background:transparent;color:var(--red);cursor:pointer;
+    border-radius:8px;padding:5px 9px;font-size:12px;font-weight:600}
+  .del:hover{background:rgba(192,57,43,.08)}
+  .empty,.loading{padding:40px;text-align:center;color:var(--muted)}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<section class="login" id="login">
+  <div class="box">
+    <div class="top">
+      <div class="mono">Verisure · Área restrita</div>
+      <h1>Painel de inscrições</h1>
+    </div>
+    <div class="body">
+      <div>
+        <label for="tok">Token de acesso</label>
+        <input type="password" id="tok" placeholder="cole o token" autocomplete="current-password">
+      </div>
+      <button class="btn" id="enter">Entrar</button>
+      <div class="err" id="loginErr"></div>
+    </div>
+  </div>
+</section>
+
+<!-- APP -->
+<main class="app" id="app" hidden>
+  <header class="bar">
+    <div class="title">
+      <span class="mk">V</span>
+      <div>
+        <h1>Inscrições — Workshop Verisure</h1>
+        <p>Atualizado em <span id="updated">—</span></p>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn ghost small" id="refresh">↻ Atualizar</button>
+      <button class="btn small" id="csv">⭳ Exportar CSV</button>
+      <button class="btn ghost small" id="logout">Sair</button>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="stTotal">0</div><div class="l">inscritos</div>
+      <div class="bar"><i id="stBar" style="width:0%"></i></div></div>
+    <div class="stat"><div class="n" id="stRest">20</div><div class="l">vagas restantes (de 20)</div></div>
+    <div class="stat"><div class="n" id="stConsent">0</div><div class="l">com consentimento LGPD</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="grow"><input type="search" id="search" placeholder="Buscar por nome, e-mail, equipe…"></div>
+    <span class="mono" style="color:var(--muted);font-size:12px" id="showing"></span>
+  </div>
+
+  <div class="tablewrap">
+    <div class="loading" id="loading">Carregando…</div>
+    <table id="table" hidden>
+      <thead>
+        <tr>
+          <th>#</th><th>Nome</th><th>E-mail</th><th>Cargo</th><th>Equipe</th>
+          <th>Telefone</th><th>Expectativa</th><th>LGPD</th><th>Data</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty" id="empty" hidden>Nenhuma inscrição ainda.</div>
+  </div>
+</main>
+
+<script>
+  const API = "https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/admin-inscricoes";
+  const SEATS = 20;
+  const KEY = "verisure_admin_token";
+  let ROWS = [];
+
+  const $ = (id) => document.getElementById(id);
+  const getToken = () => { try { return sessionStorage.getItem(KEY) || ""; } catch(e){ return ""; } };
+  const setToken = (t) => { try { sessionStorage.setItem(KEY, t); } catch(e){} };
+  const clearToken = () => { try { sessionStorage.removeItem(KEY); } catch(e){} };
+
+  async function api(action, extra){
+    const r = await fetch(API, {
+      method:"POST",
+      headers:{ "content-type":"application/json", "x-admin-token": getToken() },
+      body: JSON.stringify(Object.assign({ action }, extra||{})),
+    });
+    if(r.status === 401){ const e = new Error("unauthorized"); e.code = 401; throw e; }
+    const out = await r.json().catch(()=>({ok:false}));
+    if(!out.ok) throw new Error(out.error || "erro");
+    return out;
+  }
+
+  function esc(s){ return String(s==null?"":s).replace(/[&<>]/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;" }[c])); }
+  function fmtDate(iso){ if(!iso) return "—"; const d=new Date(iso);
+    return d.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"}); }
+
+  function render(){
+    const q = ($("search").value||"").trim().toLowerCase();
+    const filtered = !q ? ROWS : ROWS.filter(r =>
+      [r.nome,r.email,r.cargo,r.equipe,r.telefone].some(v => String(v||"").toLowerCase().includes(q)));
+
+    const tbody = $("tbody");
+    tbody.innerHTML = filtered.map((r,i)=>`
+      <tr>
+        <td class="mono" style="color:var(--muted)">${i+1}</td>
+        <td class="nm">${esc(r.nome)}</td>
+        <td><a href="mailto:${esc(r.email)}">${esc(r.email)}</a></td>
+        <td>${esc(r.cargo)||"—"}</td>
+        <td>${esc(r.equipe)||"—"}</td>
+        <td>${esc(r.telefone)||"—"}</td>
+        <td>${esc(r.expectativa)||"—"}</td>
+        <td>${r.consentimento_lgpd?'<span class="badge ok">sim</span>':'<span class="badge no">não</span>'}</td>
+        <td class="time">${fmtDate(r.created_at)}</td>
+        <td><button class="del" data-id="${esc(r.id)}" data-nome="${esc(r.nome)}">excluir</button></td>
+      </tr>`).join("");
+
+    $("table").hidden = filtered.length === 0;
+    $("empty").hidden = filtered.length !== 0;
+    $("empty").textContent = ROWS.length === 0 ? "Nenhuma inscrição ainda." : "Nenhum resultado para a busca.";
+    $("showing").textContent = q ? (filtered.length + " de " + ROWS.length) : (ROWS.length + " inscrito(s)");
+
+    tbody.querySelectorAll(".del").forEach(b => b.addEventListener("click", ()=>del(b.dataset.id, b.dataset.nome)));
+  }
+
+  function updateStats(){
+    const total = ROWS.length;
+    const consent = ROWS.filter(r=>r.consentimento_lgpd).length;
+    $("stTotal").textContent = total;
+    $("stRest").textContent = Math.max(0, SEATS-total);
+    $("stConsent").textContent = consent;
+    $("stBar").style.width = Math.min(100, Math.round(total/SEATS*100)) + "%";
+    $("updated").textContent = new Date().toLocaleString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+  }
+
+  async function load(){
+    $("loading").hidden = false; $("table").hidden = true; $("empty").hidden = true;
+    try{
+      const out = await api("list");
+      ROWS = out.rows || [];
+      updateStats(); render();
+    }catch(e){
+      if(e.code === 401){ logout("Token inválido — entre novamente."); return; }
+      $("empty").hidden = false; $("empty").textContent = "Erro ao carregar. Tente Atualizar.";
+    }finally{
+      $("loading").hidden = true;
+    }
+  }
+
+  async function del(id, nome){
+    if(!confirm("Excluir a inscrição de "+nome+"?\n(esta ação atende ao direito de exclusão da LGPD e não pode ser desfeita)")) return;
+    try{ await api("delete", { id }); await load(); }
+    catch(e){ if(e.code===401){ logout("Sessão expirada."); } else alert("Não foi possível excluir. Tente novamente."); }
+  }
+
+  function toCSV(rows){
+    const cols = ["nome","email","cargo","equipe","telefone","expectativa","consentimento_lgpd","created_at"];
+    const head = cols.join(";");
+    const esc = v => { const s = String(v==null?"":v).replace(/"/g,'""'); return /[;"\n]/.test(s) ? '"'+s+'"' : s; };
+    const body = rows.map(r => cols.map(c => esc(r[c])).join(";")).join("\r\n");
+    return "﻿" + head + "\r\n" + body; // BOM p/ Excel
+  }
+  function exportCSV(){
+    const blob = new Blob([toCSV(ROWS)], { type:"text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "inscricoes_verisure_" + new Date().toISOString().slice(0,10) + ".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+  }
+
+  function showApp(){ $("login").hidden = true; $("app").hidden = false; load(); }
+  function logout(msg){
+    clearToken(); ROWS = [];
+    $("app").hidden = true; $("login").hidden = false;
+    $("tok").value = ""; $("loginErr").textContent = msg || "";
+  }
+
+  async function tryLogin(){
+    const t = $("tok").value.trim();
+    if(!t){ $("loginErr").textContent = "Cole o token."; return; }
+    setToken(t);
+    $("enter").disabled = true; $("loginErr").textContent = "";
+    try{ await api("list"); showApp(); }
+    catch(e){ clearToken(); $("loginErr").textContent = "Token inválido."; }
+    finally{ $("enter").disabled = false; }
+  }
+
+  $("enter").addEventListener("click", tryLogin);
+  $("tok").addEventListener("keydown", e=>{ if(e.key==="Enter") tryLogin(); });
+  $("refresh").addEventListener("click", load);
+  $("csv").addEventListener("click", exportCSV);
+  $("logout").addEventListener("click", ()=>logout(""));
+  $("search").addEventListener("input", render);
+
+  // auto-login se já houver token na sessão
+  if(getToken()) showApp();
+</script>
+</body>
+</html>
