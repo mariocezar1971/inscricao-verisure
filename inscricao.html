@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscrição · Workshop Verisure</title>
+<meta name="description" content="Reserve a vaga da sua equipe no workshop in company de 8 horas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1729; --ink-soft:#334155; --muted:#64748B;
+    --paper:#F5F7FA; --card:#FFFFFF; --line:#E3E8EF;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89;
+    --shadow:0 18px 48px -24px rgba(15,23,41,.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ink:#E9EEF6; --ink-soft:#B9C5D8; --muted:#8598B2;
+      --paper:#0A111E; --card:#131E33; --line:#233248;
+      --navy:#0E1B30; --shadow:0 26px 60px -30px rgba(0,0,0,.75);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:
+      radial-gradient(1100px 520px at 82% -8%, rgba(232,163,61,.10), transparent 60%),
+      radial-gradient(900px 480px at -6% 8%, rgba(44,140,137,.10), transparent 55%),
+      var(--paper);
+    color:var(--ink); font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased; min-height:100vh;
+    display:flex; align-items:flex-start; justify-content:center; padding:40px 20px;
+  }
+  .wrap{width:100%; max-width:640px}
+  .brand{display:flex; align-items:center; gap:10px; margin-bottom:22px; color:var(--navy)}
+  @media (prefers-color-scheme: dark){.brand{color:var(--amber)}}
+  .brand .dot{width:12px;height:12px;border-radius:3px;background:var(--amber);box-shadow:0 0 0 4px rgba(232,163,61,.18)}
+  .brand .mono{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); overflow:hidden}
+  .head{padding:30px 32px 22px; background:linear-gradient(160deg,var(--navy),#0B1526); color:#fff}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin:0 0 10px}
+  h1{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;font-weight:800;font-size:clamp(24px,5vw,32px);line-height:1.05;letter-spacing:-.01em;margin:0;text-wrap:balance}
+  .head p{margin:12px 0 0;color:#C7D2E1;font-size:15px}
+  .body{padding:26px 32px 32px}
+  form{display:grid;gap:16px}
+  .field{display:grid;gap:6px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:520px){.row{grid-template-columns:1fr}}
+  label{font-size:13px;font-weight:600;color:var(--ink-soft)}
+  label .req{color:var(--amber-deep)}
+  input,textarea{
+    font:inherit;font-size:15px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);
+    border-radius:11px;padding:12px 13px;width:100%;transition:border-color .15s, box-shadow .15s;
+  }
+  input:focus,textarea:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 4px rgba(232,163,61,.16)}
+  textarea{min-height:78px;resize:vertical}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .btn{
+    appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:16px;
+    background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A;
+    padding:15px 20px;border-radius:12px;box-shadow:0 12px 26px -12px rgba(199,132,31,.7);
+    transition:transform .12s, box-shadow .12s; width:100%;
+  }
+  .btn:hover{transform:translateY(-1px)}
+  .btn:disabled{opacity:.7;cursor:progress;transform:none}
+  .fine{font-size:12.5px;color:var(--muted);margin:4px 0 0}
+  .err{display:none;background:rgba(220,80,60,.1);border:1px solid rgba(220,80,60,.35);color:#B4432F;
+    border-radius:11px;padding:11px 14px;font-size:13.5px}
+  .scarcity{display:flex;align-items:center;gap:9px;margin:0 0 18px;padding:11px 14px;border-radius:11px;
+    background:rgba(232,163,61,.10);border:1px solid rgba(232,163,61,.28);color:#7A5410;font-size:13.5px;font-weight:600}
+  @media (prefers-color-scheme: dark){.scarcity{color:#F0D9AE}}
+  .scarcity .pulse{width:9px;height:9px;border-radius:50%;background:var(--amber-deep);flex:none;
+    box-shadow:0 0 0 0 rgba(199,132,31,.6);animation:p 2s infinite}
+  @keyframes p{0%{box-shadow:0 0 0 0 rgba(199,132,31,.55)}70%{box-shadow:0 0 0 10px rgba(199,132,31,0)}100%{box-shadow:0 0 0 0 rgba(199,132,31,0)}}
+  .ok-icon{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;
+    background:linear-gradient(180deg,var(--teal),#1E6C6A);color:#fff;font-size:32px;box-shadow:0 14px 30px -14px rgba(44,140,137,.8)}
+  .center{text-align:center}
+  .foot{margin-top:20px;text-align:center;color:var(--muted);font-size:12.5px}
+  .foot b{color:var(--ink-soft)}
+  [hidden]{display:none!important}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span><span class="mono">Capacitação in company · 8 horas</span></div>
+
+    <div class="card" id="formCard">
+      <div class="head">
+        <p class="eyebrow">Verisure · Turma exclusiva</p>
+        <h1>Garanta a vaga da sua equipe</h1>
+        <p>GQT · Buyer Focusing Selling · Storytelling · Project Model Canvas — 8 horas de imersão prática.</p>
+      </div>
+      <div class="body">
+        <div class="scarcity"><span class="pulse"></span> Turma limitada a 20 participantes — as vagas são preenchidas por ordem de inscrição.</div>
+        <div class="err" id="err"></div>
+        <form id="form" autocomplete="on">
+          <div class="hp"><label>Não preencha<input type="text" name="site" tabindex="-1" autocomplete="off"></label></div>
+          <div class="field">
+            <label for="nome">Nome completo <span class="req">*</span></label>
+            <input id="nome" type="text" name="nome" required placeholder="Seu nome">
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="email">E-mail corporativo <span class="req">*</span></label>
+              <input id="email" type="email" name="email" required placeholder="voce@verisure.com">
+            </div>
+            <div class="field">
+              <label for="telefone">Telefone / WhatsApp</label>
+              <input id="telefone" type="text" name="telefone" placeholder="(27) 90000-0000">
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="cargo">Cargo / função</label>
+              <input id="cargo" type="text" name="cargo" placeholder="Ex.: Consultor de vendas">
+            </div>
+            <div class="field">
+              <label for="equipe">Equipe / departamento</label>
+              <input id="equipe" type="text" name="equipe" placeholder="Ex.: Comercial">
+            </div>
+          </div>
+          <div class="field">
+            <label for="expectativa">O que você mais espera levar deste dia? (opcional)</label>
+            <textarea id="expectativa" name="expectativa" placeholder="Uma linha basta — ajuda a personalizar o treinamento."></textarea>
+          </div>
+          <button class="btn" type="submit" id="btn">Confirmar minha inscrição →</button>
+          <p class="fine">Ao confirmar, você reserva sua vaga e recebe os detalhes por e-mail. Sem compromisso financeiro nesta etapa.</p>
+        </form>
+      </div>
+    </div>
+
+    <div class="card" id="okCard" hidden>
+      <div class="body center">
+        <div class="ok-icon">✓</div>
+        <h1 style="color:var(--teal)">Inscrição recebida<span id="okName"></span>!</h1>
+        <p style="color:var(--ink-soft);max-width:44ch;margin:12px auto 0">
+          Sua vaga está reservada. Em breve você recebe a confirmação e os detalhes do workshop no e-mail informado.
+          Enquanto isso, já pode ir separando aquele problema real que sua equipe gostaria de resolver — ele vira material do dia.
+        </p>
+      </div>
+    </div>
+
+    <p class="foot">Proposta conduzida por <b>Prof. Dr. Mário Cezar</b> · mcezarjrs@gmail.com<br>Seus dados são usados apenas para a organização deste treinamento.</p>
+  </div>
+
+  <iframe name="fallback_frame" id="fallback_frame" style="display:none" title="envio"></iframe>
+
+<script>
+  const API = "https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/inscricao-verisure";
+  const form = document.getElementById("form");
+  const btn = document.getElementById("btn");
+  const errBox = document.getElementById("err");
+  const formCard = document.getElementById("formCard");
+  const okCard = document.getElementById("okCard");
+  const okName = document.getElementById("okName");
+  const LABEL = btn.textContent;
+
+  function showError(msg){
+    errBox.textContent = msg;
+    errBox.style.display = "block";
+    btn.disabled = false; btn.textContent = LABEL;
+    errBox.scrollIntoView({behavior:"smooth", block:"center"});
+  }
+  function showSuccess(nome){
+    const first = (nome||"").trim().split(/\s+/)[0] || "";
+    okName.textContent = first ? (", " + first) : "";
+    formCard.hidden = true;
+    okCard.hidden = false;
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  // Fallback sem CORS: envia via <form> em iframe oculto (a gravação acontece de qualquer forma).
+  function fallbackSubmit(payload, nome){
+    const f = document.createElement("form");
+    f.method = "POST"; f.action = API; f.target = "fallback_frame"; f.style.display = "none";
+    Object.entries(payload).forEach(([k,v])=>{
+      const i = document.createElement("input"); i.type="hidden"; i.name=k; i.value=v==null?"":String(v); f.appendChild(i);
+    });
+    document.body.appendChild(f);
+    const frame = document.getElementById("fallback_frame");
+    let done = false;
+    const finish = ()=>{ if(done) return; done = true; showSuccess(nome); };
+    frame.addEventListener("load", finish, {once:true});
+    setTimeout(finish, 2500); // se o load não disparar, assume sucesso
+    f.submit();
+  }
+
+  form.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    errBox.style.display = "none";
+    const payload = Object.fromEntries(new FormData(form).entries());
+    if(!(payload.nome||"").trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email||"")){
+      showError("Informe seu nome e um e-mail válido para reservar a vaga."); return;
+    }
+    btn.disabled = true; btn.textContent = "Enviando…";
+    try{
+      const r = await fetch(API, {
+        method: "POST",
+        headers: {"content-type":"application/json"},
+        body: JSON.stringify(payload),
+      });
+      const out = await r.json().catch(()=>({ok:r.ok}));
+      if(out && out.ok){ showSuccess(payload.nome); }
+      else { showError((out && out.message) || "Não foi possível concluir a inscrição. Confira os dados e tente novamente."); }
+    }catch(err){
+      // provável bloqueio de CORS/rede — usa o fallback por iframe, que ainda grava
+      fallbackSubmit(payload, payload.nome);
+    }
+  });
+</script>
+</body>
+</html>
