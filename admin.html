@@ -79,6 +79,25 @@
     border-radius:8px;padding:5px 9px;font-size:12px;font-weight:600}
   .del:hover{background:rgba(192,57,43,.08)}
   .empty,.loading{padding:40px;text-align:center;color:var(--muted)}
+  .edit{appearance:none;border:1px solid var(--line);background:transparent;color:var(--amber-deep);cursor:pointer;
+    border-radius:8px;padding:5px 9px;font-size:12px;font-weight:600;margin-right:6px}
+  .edit:hover{background:rgba(232,163,61,.08)}
+
+  /* Modal de edição */
+  .overlay{position:fixed;inset:0;background:rgba(10,17,30,.55);display:grid;place-items:center;padding:20px;z-index:50}
+  .modal{width:100%;max-width:470px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+  .modal .mhead{background:linear-gradient(160deg,var(--navy),var(--navy-2));color:#fff;padding:18px 22px}
+  .modal .mhead h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:18px;margin:0}
+  .modal .mbody{padding:20px 22px;display:grid;gap:12px;max-height:66vh;overflow:auto}
+  .modal .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:480px){.modal .frow{grid-template-columns:1fr}}
+  .modal .fld{display:grid;gap:5px}
+  .modal textarea{font:inherit;font-size:14px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:10px;width:100%;min-height:64px;resize:vertical}
+  .modal textarea:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 4px rgba(232,163,61,.16)}
+  .modal .chk{display:flex;gap:9px;align-items:center;font-size:13px;color:var(--ink-soft)}
+  .modal .chk input{width:auto;transform:scale(1.15);accent-color:var(--amber-deep)}
+  .modal .merr{color:var(--red);font-size:13px;min-height:1em;padding:2px 22px 0}
+  .modal .mfoot{display:flex;justify-content:flex-end;gap:10px;padding:14px 22px;border-top:1px solid var(--line)}
   [hidden]{display:none!important}
 </style>
 </head>
@@ -146,6 +165,31 @@
   </div>
 </main>
 
+<!-- Modal de edição -->
+<div class="overlay" id="editOverlay" hidden>
+  <div class="modal">
+    <div class="mhead"><h2>Editar inscrição</h2></div>
+    <div class="mbody">
+      <div class="fld"><label for="e_nome">Nome *</label><input type="text" id="e_nome"></div>
+      <div class="frow">
+        <div class="fld"><label for="e_email">E-mail *</label><input type="text" id="e_email"></div>
+        <div class="fld"><label for="e_telefone">Telefone</label><input type="text" id="e_telefone"></div>
+      </div>
+      <div class="frow">
+        <div class="fld"><label for="e_cargo">Cargo</label><input type="text" id="e_cargo"></div>
+        <div class="fld"><label for="e_equipe">Equipe</label><input type="text" id="e_equipe"></div>
+      </div>
+      <div class="fld"><label for="e_expectativa">Expectativa</label><textarea id="e_expectativa"></textarea></div>
+      <label class="chk"><input type="checkbox" id="e_consent"> Consentimento LGPD registrado</label>
+    </div>
+    <div class="merr" id="editErr"></div>
+    <div class="mfoot">
+      <button class="btn ghost small" id="editCancel">Cancelar</button>
+      <button class="btn small" id="editSave">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <script>
   const API = "https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/admin-inscricoes";
   const SEATS = 20;
@@ -190,7 +234,7 @@
         <td>${esc(r.expectativa)||"—"}</td>
         <td>${r.consentimento_lgpd?'<span class="badge ok">sim</span>':'<span class="badge no">não</span>'}</td>
         <td class="time">${fmtDate(r.created_at)}</td>
-        <td><button class="del" data-id="${esc(r.id)}" data-nome="${esc(r.nome)}">excluir</button></td>
+        <td><button class="edit" data-id="${esc(r.id)}">editar</button><button class="del" data-id="${esc(r.id)}" data-nome="${esc(r.nome)}">excluir</button></td>
       </tr>`).join("");
 
     $("table").hidden = filtered.length === 0;
@@ -199,6 +243,47 @@
     $("showing").textContent = q ? (filtered.length + " de " + ROWS.length) : (ROWS.length + " inscrito(s)");
 
     tbody.querySelectorAll(".del").forEach(b => b.addEventListener("click", ()=>del(b.dataset.id, b.dataset.nome)));
+    tbody.querySelectorAll(".edit").forEach(b => b.addEventListener("click", ()=>openEdit(b.dataset.id)));
+  }
+
+  let editingId = null;
+  function openEdit(id){
+    const r = ROWS.find(x => String(x.id) === String(id));
+    if(!r) return;
+    editingId = id;
+    $("e_nome").value = r.nome || "";
+    $("e_email").value = r.email || "";
+    $("e_telefone").value = r.telefone || "";
+    $("e_cargo").value = r.cargo || "";
+    $("e_equipe").value = r.equipe || "";
+    $("e_expectativa").value = r.expectativa || "";
+    $("e_consent").checked = !!r.consentimento_lgpd;
+    $("editErr").textContent = "";
+    $("editOverlay").hidden = false;
+  }
+  function closeEdit(){ $("editOverlay").hidden = true; editingId = null; }
+  async function saveEdit(){
+    if(!editingId) return;
+    const payload = {
+      id: editingId,
+      nome: $("e_nome").value.trim(),
+      email: $("e_email").value.trim(),
+      telefone: $("e_telefone").value.trim(),
+      cargo: $("e_cargo").value.trim(),
+      equipe: $("e_equipe").value.trim(),
+      expectativa: $("e_expectativa").value.trim(),
+      consentimento_lgpd: $("e_consent").checked,
+    };
+    if(!payload.nome){ $("editErr").textContent = "O nome não pode ficar vazio."; return; }
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email)){ $("editErr").textContent = "Informe um e-mail válido."; return; }
+    $("editSave").disabled = true; $("editErr").textContent = "";
+    try{
+      await api("update", payload);
+      closeEdit(); await load();
+    }catch(e){
+      if(e.code === 401){ logout("Sessão expirada."); }
+      else { $("editErr").textContent = "Não foi possível salvar. Tente novamente."; }
+    }finally{ $("editSave").disabled = false; }
   }
 
   function updateStats(){
@@ -270,6 +355,10 @@
   $("csv").addEventListener("click", exportCSV);
   $("logout").addEventListener("click", ()=>logout(""));
   $("search").addEventListener("input", render);
+  $("editCancel").addEventListener("click", closeEdit);
+  $("editSave").addEventListener("click", saveEdit);
+  $("editOverlay").addEventListener("click", (e)=>{ if(e.target === $("editOverlay")) closeEdit(); });
+  document.addEventListener("keydown", (e)=>{ if(e.key === "Escape" && !$("editOverlay").hidden) closeEdit(); });
 
   // auto-login se já houver token na sessão
   if(getToken()) showApp();
