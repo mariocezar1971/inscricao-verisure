@@ -98,6 +98,8 @@
   .modal .chk input{width:auto;transform:scale(1.15);accent-color:var(--amber-deep)}
   .modal .merr{color:var(--red);font-size:13px;min-height:1em;padding:2px 22px 0}
   .modal .mfoot{display:flex;justify-content:flex-end;gap:10px;padding:14px 22px;border-top:1px solid var(--line)}
+  .modal select{font:inherit;font-size:14px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:10px;width:100%}
+  .modal select:focus{outline:none;border-color:var(--amber)}
 
   /* Barra de certificados */
   .certbar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-bottom:14px;padding:12px 14px;
@@ -178,7 +180,7 @@
       <thead>
         <tr>
           <th>#</th><th>Nome</th><th>E-mail</th><th>Cargo</th><th>Equipe</th>
-          <th>Telefone</th><th>Expectativa</th><th>LGPD</th><th>Data</th><th></th>
+          <th>Unidade</th><th>Nível</th><th>LGPD</th><th>Data</th><th></th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -193,16 +195,29 @@
     <div class="mhead"><h2>Editar inscrição</h2></div>
     <div class="mbody">
       <div class="fld"><label for="e_nome">Nome *</label><input type="text" id="e_nome"></div>
+      <div class="fld"><label for="e_nome_certificado">Nome no certificado</label><input type="text" id="e_nome_certificado"></div>
       <div class="frow">
         <div class="fld"><label for="e_email">E-mail *</label><input type="text" id="e_email"></div>
+        <div class="fld"><label for="e_cpf">CPF</label><input type="text" id="e_cpf"></div>
+      </div>
+      <div class="frow">
         <div class="fld"><label for="e_telefone">Telefone</label><input type="text" id="e_telefone"></div>
+        <div class="fld"><label for="e_unidade">Unidade</label><input type="text" id="e_unidade"></div>
       </div>
       <div class="frow">
         <div class="fld"><label for="e_cargo">Cargo</label><input type="text" id="e_cargo"></div>
         <div class="fld"><label for="e_equipe">Equipe</label><input type="text" id="e_equipe"></div>
       </div>
-      <div class="fld"><label for="e_expectativa">Expectativa</label><textarea id="e_expectativa"></textarea></div>
-      <label class="chk"><input type="checkbox" id="e_consent"> Consentimento LGPD registrado</label>
+      <div class="fld"><label for="e_nivel">Nível</label>
+        <select id="e_nivel"><option value="">—</option><option>Iniciante</option><option>Intermediário</option><option>Avançado</option></select>
+      </div>
+      <div class="fld"><label for="e_expectativa">Desafio / expectativa</label><textarea id="e_expectativa"></textarea></div>
+      <div class="frow">
+        <div class="fld"><label for="e_acessibilidade">Acessibilidade</label><input type="text" id="e_acessibilidade"></div>
+        <div class="fld"><label for="e_restricao">Restrição alimentar</label><input type="text" id="e_restricao"></div>
+      </div>
+      <label class="chk"><input type="checkbox" id="e_consent"> Consentimento LGPD</label>
+      <label class="chk"><input type="checkbox" id="e_consent_img"> Autoriza uso de imagem</label>
     </div>
     <div class="merr" id="editErr"></div>
     <div class="mfoot">
@@ -242,7 +257,7 @@
   function render(){
     const q = ($("search").value||"").trim().toLowerCase();
     const filtered = !q ? ROWS : ROWS.filter(r =>
-      [r.nome,r.email,r.cargo,r.equipe,r.telefone].some(v => String(v||"").toLowerCase().includes(q)));
+      [r.nome,r.nome_certificado,r.email,r.cpf,r.cargo,r.equipe,r.unidade,r.telefone].some(v => String(v||"").toLowerCase().includes(q)));
 
     const tbody = $("tbody");
     tbody.innerHTML = filtered.map((r,i)=>`
@@ -252,8 +267,8 @@
         <td><a href="mailto:${esc(r.email)}">${esc(r.email)}</a></td>
         <td>${esc(r.cargo)||"—"}</td>
         <td>${esc(r.equipe)||"—"}</td>
-        <td>${esc(r.telefone)||"—"}</td>
-        <td>${esc(r.expectativa)||"—"}</td>
+        <td>${esc(r.unidade)||"—"}</td>
+        <td>${esc(r.nivel)||"—"}</td>
         <td>${r.consentimento_lgpd?'<span class="badge ok">sim</span>':'<span class="badge no">não</span>'}</td>
         <td class="time">${fmtDate(r.created_at)}</td>
         <td><button class="cert" data-id="${esc(r.id)}">certificado</button><button class="edit" data-id="${esc(r.id)}">editar</button><button class="del" data-id="${esc(r.id)}" data-nome="${esc(r.nome)}">excluir</button></td>
@@ -297,7 +312,8 @@
       .cert-top .mono{ font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase }
       .cert-frame h1{ font-family:"Bricolage Grotesque",sans-serif; font-weight:800; color:#132542; font-size:32px; letter-spacing:.02em; margin:12mm 0 6mm }
       .lead{ color:#647089; font-size:15px; margin:0 }
-      .name{ font-family:"Bricolage Grotesque",sans-serif; font-weight:800; color:#0E1729; font-size:38px; margin:4mm 0 6mm; border-bottom:2px solid #E8A33D; padding:0 10mm 4mm }
+      .name{ font-family:"Bricolage Grotesque",sans-serif; font-weight:800; color:#0E1729; font-size:38px; margin:4mm 0 4mm; border-bottom:2px solid #E8A33D; padding:0 10mm 4mm }
+      .cpf{ color:#647089; font-size:13px; font-family:"IBM Plex Mono",monospace; margin:0 0 4mm }
       .txt{ color:#33415A; font-size:17px; line-height:1.65; max-width:215mm; margin:0 }
       .cert-foot{ margin-top:auto; width:100%; display:flex; justify-content:center; padding-top:10mm }
       .sign{ text-align:center }
@@ -315,7 +331,8 @@
         <div class="cert-top"><span class="seal">★</span><span class="mono">Workshop de Capacitação · ${carga}</span></div>
         <h1>CERTIFICADO DE PARTICIPAÇÃO</h1>
         <p class="lead">Certificamos que</p>
-        <p class="name">${esc(r.nome)}</p>
+        <p class="name">${esc(r.nome_certificado || r.nome)}</p>
+        ${r.cpf ? `<p class="cpf">CPF: ${esc(r.cpf)}</p>` : ""}
         <p class="txt">participou do <b>Workshop de Capacitação</b>, abrangendo os temas <b>Gestão da Qualidade Total</b>, <b>Buyer Focusing Selling</b>, <b>Storytelling</b> e <b>Project Model Canvas</b>, com carga horária de <b>${carga}</b>, realizado em <b>${data}</b>${local}.</p>
         <div class="cert-foot"><div class="sign"><div class="sign-line"></div><div class="sign-name">Prof. Dr. Mário Cezar</div><div class="sign-sub">Instrutor · ORCID 0009-0001-0411-8191</div></div></div>
       </div></section>`;
@@ -344,8 +361,15 @@
     $("e_telefone").value = r.telefone || "";
     $("e_cargo").value = r.cargo || "";
     $("e_equipe").value = r.equipe || "";
+    $("e_nome_certificado").value = r.nome_certificado || "";
+    $("e_cpf").value = r.cpf || "";
+    $("e_unidade").value = r.unidade || "";
+    $("e_nivel").value = r.nivel || "";
+    $("e_acessibilidade").value = r.acessibilidade || "";
+    $("e_restricao").value = r.restricao_alimentar || "";
     $("e_expectativa").value = r.expectativa || "";
     $("e_consent").checked = !!r.consentimento_lgpd;
+    $("e_consent_img").checked = !!r.consentimento_imagem;
     $("editErr").textContent = "";
     $("editOverlay").hidden = false;
   }
@@ -359,8 +383,15 @@
       telefone: $("e_telefone").value.trim(),
       cargo: $("e_cargo").value.trim(),
       equipe: $("e_equipe").value.trim(),
+      nome_certificado: $("e_nome_certificado").value.trim(),
+      cpf: $("e_cpf").value.trim(),
+      unidade: $("e_unidade").value.trim(),
+      nivel: $("e_nivel").value,
+      acessibilidade: $("e_acessibilidade").value.trim(),
+      restricao_alimentar: $("e_restricao").value.trim(),
       expectativa: $("e_expectativa").value.trim(),
       consentimento_lgpd: $("e_consent").checked,
+      consentimento_imagem: $("e_consent_img").checked,
     };
     if(!payload.nome){ $("editErr").textContent = "O nome não pode ficar vazio."; return; }
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email)){ $("editErr").textContent = "Informe um e-mail válido."; return; }
@@ -405,7 +436,7 @@
   }
 
   function toCSV(rows){
-    const cols = ["nome","email","cargo","equipe","telefone","expectativa","consentimento_lgpd","created_at"];
+    const cols = ["nome","nome_certificado","cpf","email","telefone","cargo","equipe","unidade","nivel","expectativa","acessibilidade","restricao_alimentar","consentimento_lgpd","consentimento_imagem","created_at"];
     const head = cols.join(";");
     const esc = v => { const s = String(v==null?"":v).replace(/"/g,'""'); return /[;"\n]/.test(s) ? '"'+s+'"' : s; };
     const body = rows.map(r => cols.map(c => esc(r[c])).join(";")).join("\r\n");

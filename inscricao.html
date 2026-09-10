@@ -50,11 +50,12 @@
   @media(max-width:520px){.row{grid-template-columns:1fr}}
   label{font-size:13px;font-weight:600;color:var(--ink-soft)}
   label .req{color:var(--amber-deep)}
-  input,textarea{
+  input,select,textarea{
     font:inherit;font-size:15px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);
     border-radius:11px;padding:12px 13px;width:100%;transition:border-color .15s, box-shadow .15s;
   }
-  input:focus,textarea:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 4px rgba(232,163,61,.16)}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 4px rgba(232,163,61,.16)}
+  label .opt{color:var(--muted);font-weight:400}
   textarea{min-height:78px;resize:vertical}
   .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
   .btn{
@@ -105,14 +106,28 @@
             <label for="nome">Nome completo <span class="req">*</span></label>
             <input id="nome" type="text" name="nome" required placeholder="Seu nome">
           </div>
+          <div class="field">
+            <label for="nome_certificado">Nome como deve constar no certificado <span class="opt">(se diferente do acima)</span></label>
+            <input id="nome_certificado" type="text" name="nome_certificado" placeholder="Deixe em branco para usar o nome completo">
+          </div>
           <div class="row">
             <div class="field">
               <label for="email">E-mail corporativo <span class="req">*</span></label>
               <input id="email" type="email" name="email" required placeholder="voce@verisure.com">
             </div>
             <div class="field">
+              <label for="cpf">CPF</label>
+              <input id="cpf" type="text" name="cpf" inputmode="numeric" placeholder="000.000.000-00">
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
               <label for="telefone">Telefone / WhatsApp</label>
               <input id="telefone" type="text" name="telefone" placeholder="(27) 90000-0000">
+            </div>
+            <div class="field">
+              <label for="unidade">Unidade / filial</label>
+              <input id="unidade" type="text" name="unidade" placeholder="Ex.: Vitória">
             </div>
           </div>
           <div class="row">
@@ -126,12 +141,34 @@
             </div>
           </div>
           <div class="field">
-            <label for="expectativa">O que você mais espera levar deste dia? (opcional)</label>
+            <label for="nivel">Nível de familiaridade com os temas</label>
+            <select id="nivel" name="nivel">
+              <option value="">— selecione —</option>
+              <option value="Iniciante">Iniciante</option>
+              <option value="Intermediário">Intermediário</option>
+              <option value="Avançado">Avançado</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="expectativa">Seu principal desafio ou o que espera levar deste dia? <span class="opt">(opcional)</span></label>
             <textarea id="expectativa" name="expectativa" placeholder="Uma linha basta — ajuda a personalizar o treinamento."></textarea>
+          </div>
+          <div class="field">
+            <label for="acessibilidade">Precisa de algum recurso de acessibilidade? <span class="opt">(opcional)</span></label>
+            <input id="acessibilidade" type="text" name="acessibilidade" placeholder="Ex.: sem restrições">
+          </div>
+          <div class="field">
+            <label for="restricao_alimentar">Restrição ou preferência alimentar <span class="opt">(opcional)</span></label>
+            <input id="restricao_alimentar" type="text" name="restricao_alimentar" placeholder="Ex.: vegetariano, sem lactose">
+            <p class="fine">Usado apenas para organizar os coffee-breaks.</p>
           </div>
           <label class="consent">
             <input type="checkbox" name="consentimento" value="true" required>
-            <span>Autorizo o uso dos meus dados (nome, e-mail e telefone) <b>exclusivamente</b> para a organização e a comunicação deste treinamento, conforme a LGPD (Lei nº 13.709/2018). Posso solicitar a correção ou a exclusão a qualquer momento pelo e-mail mcezarjrs@gmail.com.</span>
+            <span>Autorizo o uso dos meus dados (nome, e-mail, telefone e CPF) <b>exclusivamente</b> para a organização e a comunicação deste treinamento, conforme a LGPD (Lei nº 13.709/2018). Posso solicitar a correção ou a exclusão a qualquer momento pelo e-mail mcezarjrs@gmail.com.</span>
+          </label>
+          <label class="consent">
+            <input type="checkbox" name="consentimento_imagem" value="true">
+            <span>Autorizo o uso da minha imagem e voz, captadas no evento, para divulgação institucional do treinamento <b>(opcional)</b>.</span>
           </label>
           <button class="btn" type="submit" id="btn">Confirmar minha inscrição →</button>
           <p class="fine">Ao confirmar, você reserva sua vaga e recebe os detalhes por e-mail. Sem compromisso financeiro nesta etapa.</p>
