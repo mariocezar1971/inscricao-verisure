@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brainstorming · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box} html,body{margin:0} [hidden]{display:none!important}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1120px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(232,163,61,.15);color:var(--amber-deep)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:150px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:80px}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:9px 11px}
+  .board{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
+  .fld{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+  .fld label{font-size:11px;font-weight:700;color:var(--muted)}
+  .fld input{font:inherit;font-size:16px;font-weight:600;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink)}
+  .fld input:focus{outline:none;border-color:var(--amber)}
+  .addbar{display:flex;gap:8px;margin-bottom:8px}
+  .addbar input{flex:1;font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;background:var(--card);color:var(--ink)}
+  .addbar input:focus{outline:none;border-color:var(--amber)}
+  .addbar button{border:none;background:var(--teal);color:#fff;border-radius:10px;padding:0 16px;cursor:pointer;font-weight:700;font-size:15px}
+  .meta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:12px;font-size:12.5px;color:var(--muted)}
+  .meta .sp{flex:1}
+  .meta label{display:flex;align-items:center;gap:6px;cursor:pointer}
+  .ideas{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+  .idea{position:relative;border:1px solid var(--line);border-radius:12px;padding:11px 12px 34px;background:linear-gradient(180deg,rgba(232,163,61,.07),transparent);min-height:76px;font-size:13.5px;word-break:break-word}
+  .idea .txt{white-space:pre-wrap}
+  .idea .x{position:absolute;top:6px;right:8px;border:none;background:transparent;color:var(--red);cursor:pointer;font-size:15px;opacity:.5}
+  .idea .x:hover{opacity:1}
+  .idea .vote{position:absolute;left:10px;bottom:8px;display:flex;align-items:center;gap:6px}
+  .idea .vote button{border:1.5px solid var(--line);background:var(--card);color:var(--amber-deep);border-radius:8px;width:26px;height:24px;cursor:pointer;font-weight:800;font-size:14px;line-height:1}
+  .idea .vote .n{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:14px;min-width:16px;text-align:center}
+  .idea.top{border-color:var(--amber);box-shadow:0 0 0 2px rgba(232,163,61,.25)}
+  .empty{color:var(--muted);text-align:center;padding:30px 10px;font-size:14px;grid-column:1/-1}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+  .actions .sp{flex:1}
+  .foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+  @media print{ .noprint{display:none!important} body{background:#fff} .wrap{max-width:100%;padding:0} .board{box-shadow:none;border:none}
+    .idea{padding-bottom:12px} .idea .x{display:none} .idea .vote button{display:none} @page{size:A4;margin:12mm} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top noprint">
+    <div class="brand"><span class="mk">💡</span><div><h1>Brainstorming</h1><p>Gere muitas ideias — julgue depois · Bloco GQT</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="board" id="board">
+    <div class="fld"><label for="tema">Tema / pergunta do brainstorming</label>
+      <input id="tema" placeholder="Ex.: Como reduzir os atrasos na entrega?"></div>
+    <div class="addbar noprint">
+      <input id="nova" placeholder="Digite uma ideia e tecle Enter…" autocomplete="off">
+      <button id="add">Adicionar</button>
+    </div>
+    <div class="meta noprint">
+      <span><b id="cnt">0</b> ideias</span>
+      <span class="sp"></span>
+      <label><input type="checkbox" id="ordena"> ordenar por votos</label>
+      <span>clique <b>▲</b> para votar</span>
+    </div>
+    <div class="ideas" id="ideas"></div>
+  </div>
+
+  <div class="actions noprint">
+    <span class="sp"></span>
+    <button class="btn primary" id="salvar">Salvar</button>
+    <button class="btn ghost sm" id="carregar">Carregar</button>
+    <button class="btn ghost sm" id="png">Baixar PNG</button>
+    <button class="btn ghost sm" id="imprimir">Imprimir / PDF</button>
+    <button class="btn ghost sm" id="limpar">Limpar</button>
+  </div>
+  <p class="foot noprint">Ferramentas do Workshop · Verisure — regras: quantidade gera qualidade, sem crítica, ideias malucas são bem-vindas, pegue carona nas dos colegas.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="brainstorming";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  let D={ tema:"", ideias:[] };
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+  function esc(s){ return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+  $("tema").addEventListener("input",()=>{ D.tema=$("tema").value; });
+
+  function add(){ const v=$("nova").value.trim(); if(!v)return; D.ideias.push({txt:v,votos:0}); $("nova").value=""; render(); }
+  $("add").addEventListener("click",add);
+  $("nova").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); add(); } });
+  $("ordena").addEventListener("change",render);
+
+  function view(){ let arr=D.ideias.map((it,i)=>({it,i})); if($("ordena").checked)arr.sort((a,b)=>(b.it.votos||0)-(a.it.votos||0)); return arr; }
+  function render(){
+    $("cnt").textContent=D.ideias.length;
+    const arr=view(); const maxV=Math.max(0,...D.ideias.map(x=>x.votos||0));
+    if(!D.ideias.length){ $("ideas").innerHTML='<div class="empty">Sem ideias ainda. Solte a criatividade — a primeira já vale!</div>'; return; }
+    $("ideas").innerHTML=arr.map(({it,i})=>`
+      <div class="idea ${maxV>0&&it.votos===maxV?'top':''}">
+        <button class="x" data-x="${i}" title="Remover">×</button>
+        <div class="txt">${esc(it.txt)}</div>
+        <div class="vote noprint"><button data-up="${i}">▲</button><span class="n">${it.votos||0}</span></div>
+      </div>`).join("");
+    $("ideas").querySelectorAll("button[data-up]").forEach(b=>b.addEventListener("click",()=>{ D.ideias[+b.dataset.up].votos=(D.ideias[+b.dataset.up].votos||0)+1; render(); }));
+    $("ideas").querySelectorAll("button[data-x]").forEach(b=>b.addEventListener("click",()=>{ D.ideias.splice(+b.dataset.x,1); render(); }));
+  }
+
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); const d=o.dados;
+    if(o.ok&&d&&Array.isArray(d.ideias)){ D={tema:d.tema||"",ideias:d.ideias.map(x=>({txt:x.txt||"",votos:+x.votos||0}))}; $("tema").value=D.tema; render(); status("carregado ✓"); }
+    else status("nada salvo p/ este grupo"); }
+  async function png(){ status("gerando imagem…"); const bg=getComputedStyle(document.body).getPropertyValue('--card')||'#fff';
+    try{ const cv=await html2canvas($("board"),{scale:2,backgroundColor:bg.trim()||"#fff"}); const a=document.createElement("a"); a.href=cv.toDataURL("image/png"); a.download=("brainstorming_"+($("grupo").value.trim()||"grupo")+".png").replace(/\s+/g,"_"); a.click(); status(""); }catch(e){ status("use Imprimir/PDF",false); } }
+
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+  $("png").addEventListener("click",png);
+  $("imprimir").addEventListener("click",()=>window.print());
+  $("limpar").addEventListener("click",()=>{ if(confirm("Limpar as ideias?")){ D={tema:D.tema,ideias:[]}; render(); } });
+
+  // exemplo inicial
+  D={ tema:"Como reduzir os atrasos na entrega ao cliente?", ideias:[
+    {txt:"Roteirizar as entregas por região",votos:4},
+    {txt:"Checklist de conferência antes da coleta",votos:3},
+    {txt:"Avisar o cliente automaticamente do status",votos:5},
+    {txt:"Turno extra nos dias de pico",votos:1},
+    {txt:"Padronizar a embalagem",votos:2}
+  ]};
+  $("tema").value=D.tema; render();
+</script>
+</body>
+</html>

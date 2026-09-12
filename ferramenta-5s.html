@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programa 5S · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --green:#4E9A51; --blue:#3B6FB0;
+    --s1:#C7841F; --s2:#2C8C89; --s3:#3B6FB0; --s4:#4E9A51; --s5:#8E5AA8; --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box} html,body{margin:0} [hidden]{display:none!important}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1200px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:18px;font-weight:800;font-family:"Bricolage Grotesque",sans-serif;background:rgba(44,140,137,.15);color:var(--teal)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:150px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:80px}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:9px 11px}
+  .fld{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+  .fld label{font-size:11px;font-weight:700;color:var(--muted)}
+  .fld input{font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink)}
+  .fld input:focus{outline:none;border-color:var(--amber)}
+  .cols{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+  @media(max-width:1000px){.cols{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.cols{grid-template-columns:1fr}}
+  .s{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;border-top:5px solid var(--sc)}
+  .s .sh{padding:11px 12px 8px}
+  .s .jp{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--sc);font-weight:600;letter-spacing:.04em}
+  .s .sh h3{margin:2px 0 3px;font-size:15px;font-family:"Bricolage Grotesque",sans-serif}
+  .s .sh .en{font-size:11px;color:var(--muted)}
+  .s .sh .desc{font-size:11.5px;color:var(--ink-2);margin-top:6px;line-height:1.35}
+  .s .bd{padding:0 12px 12px;display:flex;flex-direction:column;flex:1}
+  .s .lbl{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin:10px 0 4px}
+  .s textarea{width:100%;font:inherit;font-size:12.5px;border:1.5px solid var(--line);border-radius:9px;padding:7px 9px;background:var(--card);color:var(--ink);resize:vertical;min-height:56px;line-height:1.4}
+  .s textarea:focus{outline:none;border-color:var(--amber)}
+  .acs{margin-top:4px;display:flex;flex-direction:column;gap:5px}
+  .ac{display:flex;align-items:flex-start;gap:7px;font-size:12.5px}
+  .ac input[type=checkbox]{margin-top:3px;flex:none;width:15px;height:15px;accent-color:var(--sc)}
+  .ac .t{flex:1;word-break:break-word} .ac.done .t{text-decoration:line-through;color:var(--muted)}
+  .ac .rm{border:none;background:transparent;color:var(--red);cursor:pointer;opacity:.5;font-size:14px}
+  .ac .rm:hover{opacity:1}
+  .addac{display:flex;gap:6px;margin-top:7px}
+  .addac input{flex:1;font:inherit;font-size:12px;border:1.5px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--card);color:var(--ink)}
+  .addac input:focus{outline:none;border-color:var(--amber)}
+  .addac button{border:none;background:var(--sc);color:#fff;border-radius:8px;padding:0 10px;cursor:pointer;font-weight:700}
+  .prog{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);margin-top:7px}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-items:center}
+  .actions .sp{flex:1}
+  .foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+  @media print{ .noprint{display:none!important} body{background:#fff} .wrap{max-width:100%;padding:0}
+    .cols{grid-template-columns:repeat(5,1fr)} .s{box-shadow:none} .s textarea{min-height:0} @page{size:A4 landscape;margin:9mm} }
+</style>
+</head>
+<body>
+<div class="wrap" id="board">
+  <header class="top noprint">
+    <div class="brand"><span class="mk">5S</span><div><h1>Programa 5S</h1><p>Diagnóstico e plano dos 5 sensos · Bloco GQT</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="fld noprint"><label for="area">Área / setor avaliado</label>
+    <input id="area" placeholder="Ex.: Almoxarifado da unidade Vitória"></div>
+
+  <div class="cols" id="cols"></div>
+
+  <div class="actions noprint">
+    <span class="sp"></span>
+    <button class="btn primary" id="salvar">Salvar</button>
+    <button class="btn ghost sm" id="carregar">Carregar</button>
+    <button class="btn ghost sm" id="png">Baixar PNG</button>
+    <button class="btn ghost sm" id="imprimir">Imprimir / PDF</button>
+    <button class="btn ghost sm" id="limpar">Limpar</button>
+  </div>
+  <p class="foot noprint">Ferramentas do Workshop · Verisure — 5S é hábito: o senso mais difícil (e mais importante) é o 5º, a disciplina de manter.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="5s";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const SENSOS=[
+    {k:"seiri",  jp:"SEIRI",   n:"Utilização",  en:"Sort · Descartar",       c:"var(--s1)", desc:"Separe o necessário do desnecessário. Descarte, doe ou devolva o que não serve."},
+    {k:"seiton", jp:"SEITON",  n:"Organização", en:"Set in Order · Ordenar", c:"var(--s2)", desc:"Um lugar para cada coisa e cada coisa em seu lugar. Facilite achar e guardar."},
+    {k:"seiso",  jp:"SEISŌ",   n:"Limpeza",     en:"Shine · Limpar",         c:"var(--s3)", desc:"Limpe e inspecione. Ataque a fonte da sujeira, não só o efeito."},
+    {k:"seiketsu",jp:"SEIKETSU",n:"Padronização",en:"Standardize · Padronizar",c:"var(--s4)",desc:"Crie padrões visuais e rotinas para manter os 3 primeiros sensos."},
+    {k:"shitsuke",jp:"SHITSUKE",n:"Disciplina", en:"Sustain · Manter",       c:"var(--s5)", desc:"Faça virar hábito. Auditorias, exemplo da liderança e melhoria contínua."}
+  ];
+  let D={ area:"", sensos:{} }; SENSOS.forEach(s=>D.sensos[s.k]={obs:"",acoes:[]});
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+  function esc(s){ return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+  $("area").addEventListener("input",()=>{ D.area=$("area").value; });
+
+  function render(){
+    $("cols").innerHTML=SENSOS.map((s,idx)=>{ const st=D.sensos[s.k]; const done=st.acoes.filter(a=>a.ok).length;
+      return `<div class="s" style="--sc:${s.c}">
+        <div class="sh"><div class="jp">${idx+1}º · ${s.jp}</div><h3>${s.n}</h3><div class="en">${s.en}</div><div class="desc noprint">${s.desc}</div></div>
+        <div class="bd">
+          <div class="lbl">O que observamos</div>
+          <textarea data-obs="${s.k}" placeholder="situação atual…">${esc(st.obs)}</textarea>
+          <div class="lbl">Ações</div>
+          <div class="acs" id="acs-${s.k}"></div>
+          <div class="addac noprint"><input data-new="${s.k}" placeholder="nova ação e Enter"><button data-add="${s.k}">+</button></div>
+          <div class="prog">${st.acoes.length?`${done}/${st.acoes.length} feitas`:"sem ações"}</div>
+        </div>
+      </div>`; }).join("");
+    SENSOS.forEach(s=>{ const st=D.sensos[s.k];
+      $("cols").querySelector(`[data-obs="${s.k}"]`).addEventListener("input",e=>{ st.obs=e.target.value; });
+      renderAcs(s.k);
+      const inp=$("cols").querySelector(`[data-new="${s.k}"]`); const add=()=>{ const v=inp.value.trim(); if(v){ st.acoes.push({txt:v,ok:false}); inp.value=""; render(); } };
+      inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); add(); } });
+      $("cols").querySelector(`[data-add="${s.k}"]`).addEventListener("click",add);
+    });
+  }
+  function renderAcs(k){ const st=D.sensos[k];
+    $("acs-"+k).innerHTML=st.acoes.map((a,i)=>`<div class="ac ${a.ok?'done':''}"><input type="checkbox" data-ck="${k}" data-i="${i}" ${a.ok?'checked':''}><span class="t">${esc(a.txt)}</span><button class="rm noprint" data-rm="${k}" data-i="${i}">×</button></div>`).join("");
+    $("acs-"+k).querySelectorAll("input[type=checkbox]").forEach(c=>c.addEventListener("change",()=>{ st.acoes[+c.dataset.i].ok=c.checked; render(); }));
+    $("acs-"+k).querySelectorAll("button[data-rm]").forEach(b=>b.addEventListener("click",()=>{ st.acoes.splice(+b.dataset.i,1); render(); }));
+  }
+
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); const d=o.dados;
+    if(o.ok&&d&&d.sensos){ D={area:d.area||"",sensos:{}}; SENSOS.forEach(s=>{ const x=d.sensos[s.k]||{}; D.sensos[s.k]={obs:x.obs||"",acoes:Array.isArray(x.acoes)?x.acoes.map(a=>({txt:a.txt||"",ok:!!a.ok})):[]}; }); $("area").value=D.area; render(); status("carregado ✓"); }
+    else status("nada salvo p/ este grupo"); }
+  async function png(){ status("gerando imagem…"); const bg=getComputedStyle(document.body).getPropertyValue('--paper')||'#fff';
+    try{ const cv=await html2canvas($("board"),{scale:2,backgroundColor:bg.trim()||"#fff"}); const a=document.createElement("a"); a.href=cv.toDataURL("image/png"); a.download=("5s_"+($("grupo").value.trim()||"grupo")+".png").replace(/\s+/g,"_"); a.click(); status(""); }catch(e){ status("use Imprimir/PDF",false); } }
+
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+  $("png").addEventListener("click",png);
+  $("imprimir").addEventListener("click",()=>window.print());
+  $("limpar").addEventListener("click",()=>{ if(confirm("Limpar o 5S?")){ D={area:"",sensos:{}}; SENSOS.forEach(s=>D.sensos[s.k]={obs:"",acoes:[]}); $("area").value=""; render(); } });
+
+  // exemplo inicial
+  D={ area:"Almoxarifado da unidade Vitória", sensos:{
+    seiri:{obs:"Prateleiras com itens vencidos e equipamentos quebrados misturados aos bons.",acoes:[{txt:"Fazer mutirão de descarte (etiqueta vermelha)",ok:true},{txt:"Separar sucata para retirada",ok:false}]},
+    seiton:{obs:"Ferramentas sem lugar fixo; demora para achar.",acoes:[{txt:"Definir endereçamento das prateleiras",ok:false},{txt:"Quadro-sombra para ferramentas",ok:false}]},
+    seiso:{obs:"Poeira acumulada e piso escorregadio perto da doca.",acoes:[{txt:"Rotina diária de limpeza (15 min)",ok:true}]},
+    seiketsu:{obs:"Cada turno organiza de um jeito.",acoes:[{txt:"Criar checklist visual padrão",ok:false}]},
+    shitsuke:{obs:"Sem acompanhamento após arrumar.",acoes:[{txt:"Auditoria 5S semanal com nota",ok:false},{txt:"Líder dá o exemplo",ok:false}]}
+  }};
+  $("area").value=D.area; render();
+</script>
+</body>
+</html>
