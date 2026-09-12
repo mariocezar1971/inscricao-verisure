@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ferramentas · Workshop Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --navy-2:#0B1526; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; --navy-2:#070E1B; } }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .hero{background:radial-gradient(700px 300px at 85% -20%,rgba(232,163,61,.20),transparent 60%),linear-gradient(160deg,var(--navy),var(--navy-2));color:#EAF0F8}
+  .wrap{max-width:1000px;margin:0 auto;padding:26px 22px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(24px,4vw,34px);margin:0}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin:0 0 8px}
+  .hero p{color:#C5D2E4;margin:10px 0 0;font-size:15px}
+  .grpbox{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px 14px}
+  .grpbox label{font-size:13px;color:#C5D2E4;font-weight:600}
+  .grpbox input{font:inherit;font-size:15px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;border-radius:9px;padding:9px 12px;min-width:200px}
+  .grpbox input::placeholder{color:#9FB1C8}
+  .grpbox input:focus{outline:none;border-color:var(--amber)}
+  .grpbox .hint{font-size:12px;color:#9FB1C8}
+
+  h2.block{font-family:"Bricolage Grotesque",sans-serif;font-size:16px;margin:26px 0 12px;color:var(--ink-2)}
+  h2.block span{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);letter-spacing:.1em}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+  .tool{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow);text-decoration:none;color:inherit;transition:transform .12s}
+  .tool:hover{transform:translateY(-2px)}
+  .tool.soon{opacity:.62;cursor:default}
+  .tool .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:rgba(232,163,61,.14);color:var(--amber-deep);font-size:20px;margin-bottom:10px}
+  .tool h3{font-size:16px;margin:0 0 4px;font-weight:700}
+  .tool p{margin:0;font-size:13px;color:var(--muted);flex:1}
+  .tool .go{margin-top:12px;font-size:13px;font-weight:700;color:var(--amber-deep)}
+  .badge{align-self:flex-start;margin-top:12px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:var(--line);padding:3px 8px;border-radius:6px}
+  .foot{color:var(--muted);font-size:12.5px;text-align:center;margin:30px 0 10px}
+</style>
+</head>
+<body>
+  <div class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Workshop Verisure · Atividades em grupo</p>
+      <h1>Ferramentas do treinamento</h1>
+      <p>Abra a ferramenta do bloco, trabalhe em grupo e salve/exporte o resultado.</p>
+      <div class="grpbox">
+        <label for="grupo">Nome do seu grupo</label>
+        <input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off">
+        <span class="hint">usado para salvar e recuperar o trabalho — combine com os colegas</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h2 class="block">Bloco 1 — Gestão da Qualidade Total <span>GQT</span></h2>
+    <div class="cards">
+      <a class="tool" href="ferramenta-pareto.html">
+        <div class="ic">▦</div><h3>Gráfico de Pareto</h3>
+        <p>Priorize os poucos vitais (80/20). Gera o gráfico automaticamente.</p>
+        <div class="go">Abrir →</div>
+      </a>
+      <a class="tool soon"><div class="ic">🐟</div><h3>Diagrama de Ishikawa</h3>
+        <p>Causa-e-efeito (6M) para chegar à raiz do problema.</p><span class="badge">Em breve</span></a>
+      <a class="tool soon"><div class="ic">✔</div><h3>5W1H / PDCA</h3>
+        <p>Plano de ação e roteiro de melhoria.</p><span class="badge">Em breve</span></a>
+    </div>
+
+    <h2 class="block">Bloco 2 — Project Model Canvas <span>PM CANVAS</span></h2>
+    <div class="cards">
+      <a class="tool soon"><div class="ic">▧</div><h3>Project Model Canvas</h3>
+        <p>Os 13 blocos do projeto em uma página, com post-its.</p><span class="badge">Em breve</span></a>
+    </div>
+
+    <h2 class="block">Bloco 3 — Buyer Focusing Selling <span>VENDAS</span></h2>
+    <div class="cards">
+      <a class="tool soon"><div class="ic">◎</div><h3>Persona + Jornada</h3>
+        <p>Mapeie o cliente, suas dores e a jornada de compra.</p><span class="badge">Em breve</span></a>
+      <a class="tool soon"><div class="ic">?</div><h3>Perguntas SPIN</h3>
+        <p>Situação, Problema, Implicação e Necessidade.</p><span class="badge">Em breve</span></a>
+    </div>
+
+    <h2 class="block">Bloco 4 — Storytelling <span>NARRATIVA</span></h2>
+    <div class="cards">
+      <a class="tool soon"><div class="ic">✎</div><h3>Estrutura da História</h3>
+        <p>Monte a narrativa e ensaie com cronômetro.</p><span class="badge">Em breve</span></a>
+    </div>
+
+    <p class="foot">O nome do grupo fica salvo neste navegador e é reaproveitado em todas as ferramentas.</p>
+  </div>
+
+<script>
+  var G="verisure_grupo", el=document.getElementById("grupo");
+  try{ el.value=localStorage.getItem(G)||""; }catch(e){}
+  el.addEventListener("input",function(){ try{ localStorage.setItem(G, el.value.trim()); }catch(e){} });
+</script>
+</body>
+</html>

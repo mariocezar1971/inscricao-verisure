@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pareto · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B;
+    --shadow:0 16px 40px -22px rgba(15,23,41,.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; }
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px}
+  h1,h2{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;margin:0}
+  a{color:var(--amber-deep)}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:#241706;font-weight:800;font-family:"Bricolage Grotesque",sans-serif;background:linear-gradient(160deg,var(--amber),var(--amber-deep))}
+  .brand h1{font-size:20px}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:150px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:90px}
+
+  .grid{display:grid;grid-template-columns:360px 1fr;gap:18px;align-items:start}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+  .card .hd{padding:14px 16px;border-bottom:1px solid var(--line);font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+  .card .bd{padding:14px 16px}
+
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding:0 6px 6px}
+  td{padding:3px 6px}
+  td input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:8px;padding:8px 9px;background:var(--card);color:var(--ink);width:100%}
+  td input:focus{outline:none;border-color:var(--amber)}
+  td.num input{text-align:right}
+  .rm{border:none;background:transparent;color:var(--red);cursor:pointer;font-size:16px;line-height:1;padding:4px 6px;border-radius:6px}
+  .rm:hover{background:rgba(192,57,43,.1)}
+  .addrow{margin-top:8px}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:8px 11px}
+  .btn:disabled{opacity:.6;cursor:progress}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+
+  .chartwrap{padding:8px 8px 4px}
+  canvas{width:100%;height:auto;display:block}
+  .insight{margin:6px 16px 16px;font-size:13.5px;color:var(--ink-2);background:rgba(44,140,137,.08);border:1px solid rgba(44,140,137,.25);border-radius:10px;padding:10px 12px}
+  .insight b{color:var(--teal)}
+  .foot{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
+  @media print{ .noprint{display:none!important} body{background:#fff} .card{box-shadow:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="mk">▦</span>
+      <div><h1>Gráfico de Pareto</h1><p>Priorize os poucos vitais (regra 80/20) · Bloco GQT</p></div>
+    </div>
+    <div class="grpbar noprint">
+      <label for="grupo">Grupo</label>
+      <input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off">
+      <span id="status"></span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- Entrada de dados -->
+    <section class="card noprint">
+      <div class="hd">Dados <button class="btn ghost sm" id="exemplo">Exemplo</button></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th>Item / Causa</th><th style="width:92px">Frequência</th><th style="width:28px"></th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <button class="btn ghost sm addrow" id="add">+ Adicionar item</button>
+        <div class="actions">
+          <button class="btn primary" id="salvar">Salvar</button>
+          <button class="btn ghost sm" id="carregar">Carregar</button>
+          <button class="btn ghost sm" id="png">Baixar PNG</button>
+          <button class="btn ghost sm" id="imprimir">Imprimir / PDF</button>
+          <button class="btn ghost sm" id="limpar">Limpar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gráfico -->
+    <section class="card">
+      <div class="hd">Diagrama de Pareto <span id="tituloGrupo" style="color:var(--muted);font-weight:500;font-size:12.5px"></span></div>
+      <div class="chartwrap"><canvas id="chart" width="760" height="430"></canvas></div>
+      <div class="insight" id="insight"></div>
+    </section>
+  </div>
+  <p class="foot">Ferramentas do Workshop · Verisure — o trabalho é salvo pelo nome do grupo.</p>
+</div>
+
+<script>
+  const API = "https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA = "pareto";
+  const $ = (id)=>document.getElementById(id);
+  const GKEY = "verisure_grupo";
+
+  let DATA = [];
+  const EXEMPLO = [
+    ["Atraso na resposta", 45], ["Erro de cadastro", 28], ["Falta de peça", 16],
+    ["Retrabalho", 9], ["Outros", 5]
+  ];
+
+  // ---------- grupo ----------
+  try{ $("grupo").value = localStorage.getItem(GKEY) || ""; }catch(e){}
+  $("grupo").addEventListener("input", ()=>{ try{ localStorage.setItem(GKEY, $("grupo").value.trim()); }catch(e){}; $("tituloGrupo").textContent = $("grupo").value.trim() ? "— " + $("grupo").value.trim() : ""; });
+  $("tituloGrupo").textContent = $("grupo").value.trim() ? "— " + $("grupo").value.trim() : "";
+
+  function status(msg, ok){ $("status").textContent = msg; $("status").style.color = ok===false ? "var(--red)" : "var(--muted)"; }
+
+  // ---------- linhas ----------
+  function addRow(item="", freq=""){ DATA.push({item, freq}); renderRows(); draw(); }
+  function renderRows(){
+    $("rows").innerHTML = DATA.map((r,i)=>`
+      <tr>
+        <td><input data-i="${i}" data-k="item" value="${(r.item||'').replace(/"/g,'&quot;')}" placeholder="descrição"></td>
+        <td class="num"><input data-i="${i}" data-k="freq" value="${r.freq}" inputmode="numeric" placeholder="0"></td>
+        <td><button class="rm" data-rm="${i}" title="remover">×</button></td>
+      </tr>`).join("");
+    $("rows").querySelectorAll("input").forEach(inp=>inp.addEventListener("input", e=>{
+      const i=+e.target.dataset.i, k=e.target.dataset.k;
+      DATA[i][k] = k==="freq" ? e.target.value.replace(/[^0-9.]/g,"") : e.target.value;
+      draw();
+    }));
+    $("rows").querySelectorAll(".rm").forEach(b=>b.addEventListener("click", ()=>{ DATA.splice(+b.dataset.rm,1); renderRows(); draw(); }));
+  }
+
+  // ---------- desenho do Pareto ----------
+  function draw(){
+    const c = $("chart"), ctx = c.getContext("2d");
+    const cssW = c.clientWidth || 760; const W = 760, H = 430;
+    // hi-dpi
+    const dpr = window.devicePixelRatio || 1;
+    c.width = W*dpr; c.height = H*dpr; c.style.height = (H*(cssW/W))+"px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,W,H);
+    const st = getComputedStyle(document.body);
+    const col = { ink:st.getPropertyValue('--ink'), muted:st.getPropertyValue('--muted'), line:st.getPropertyValue('--line'),
+                  amber:st.getPropertyValue('--amber-deep')||'#C7841F', teal:st.getPropertyValue('--teal')||'#2C8C89', navy:st.getPropertyValue('--navy')||'#132542' };
+
+    let items = DATA.map(r=>({item:(r.item||'').trim(), freq:parseFloat(r.freq)||0})).filter(r=>r.freq>0);
+    items.sort((a,b)=>b.freq-a.freq);
+    const total = items.reduce((s,r)=>s+r.freq,0);
+
+    const padL=46, padR=46, padT=22, padB=64;
+    const plotW=W-padL-padR, plotH=H-padT-padB;
+    // eixos
+    ctx.strokeStyle=col.line; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,padT+plotH); ctx.lineTo(padL+plotW,padT+plotH); ctx.stroke();
+
+    if(items.length===0 || total===0){
+      ctx.fillStyle=col.muted; ctx.font='14px "IBM Plex Sans"'; ctx.textAlign='center';
+      ctx.fillText("Preencha itens e frequências para gerar o gráfico.", W/2, H/2);
+      $("insight").innerHTML = "Adicione os itens e suas frequências (quantas vezes cada problema ocorreu).";
+      return;
+    }
+    const maxFreq = Math.max(...items.map(r=>r.freq));
+    // grade % (0..100) eixo direito
+    ctx.textAlign='right'; ctx.fillStyle=col.muted; ctx.font='11px "IBM Plex Mono"';
+    for(let p=0;p<=100;p+=25){ const y=padT+plotH-(p/100)*plotH; ctx.fillText(p+"%", padL+plotW+40, y+3);
+      ctx.strokeStyle=col.line; ctx.globalAlpha=.5; ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(padL+plotW,y); ctx.stroke(); ctx.globalAlpha=1; }
+    // eixo esquerdo (freq) marcas
+    ctx.textAlign='right';
+    for(let k=0;k<=4;k++){ const val=Math.round(maxFreq*k/4); const y=padT+plotH-(val/maxFreq)*plotH; ctx.fillText(String(val), padL-6, y+3); }
+
+    const n=items.length, gap=10, bw=Math.max(8,(plotW - gap*(n))/n);
+    let cum=0; const linePts=[];
+    // linha dos 80%
+    const y80=padT+plotH-0.8*plotH;
+    ctx.strokeStyle=col.muted; ctx.setLineDash([5,4]); ctx.globalAlpha=.8;
+    ctx.beginPath(); ctx.moveTo(padL,y80); ctx.lineTo(padL+plotW,y80); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
+    ctx.fillStyle=col.muted; ctx.textAlign='left'; ctx.font='10px "IBM Plex Mono"'; ctx.fillText("80%", padL+2, y80-4);
+
+    let vitais=0, cumPct=0, passou80=false;
+    items.forEach((r,i)=>{
+      const x=padL+gap/2+i*(bw+gap);
+      const h=(r.freq/maxFreq)*plotH; const y=padT+plotH-h;
+      cum+=r.freq; const pct=cum/total*100;
+      if(!passou80){ vitais++; if(pct>=80){ passou80=true; } }
+      // barra
+      ctx.fillStyle = (!passou80||pct<=80.0001) && vitais>=i+1 ? col.teal : col.amber;
+      ctx.fillStyle = (i < vitais) ? col.teal : col.amber;
+      roundRect(ctx,x,y,bw,h,4); ctx.fill();
+      // valor
+      ctx.fillStyle=col.ink; ctx.font='11px "IBM Plex Sans"'; ctx.textAlign='center';
+      ctx.fillText(String(r.freq), x+bw/2, y-5);
+      // rótulo
+      ctx.save(); ctx.translate(x+bw/2, padT+plotH+8); ctx.rotate(-Math.PI/9); ctx.textAlign='right'; ctx.fillStyle=col.muted; ctx.font='10.5px "IBM Plex Sans"';
+      ctx.fillText(r.item.length>16?r.item.slice(0,15)+"…":r.item, 0, 0); ctx.restore();
+      linePts.push({x:x+bw/2, y:padT+plotH-(pct/100)*plotH});
+    });
+    // linha acumulada
+    ctx.strokeStyle=col.navy; ctx.lineWidth=2; ctx.beginPath();
+    ctx.moveTo(padL, padT+plotH); linePts.forEach(p=>ctx.lineTo(p.x,p.y)); ctx.stroke();
+    ctx.fillStyle=col.navy; linePts.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x,p.y,3.2,0,7); ctx.fill(); });
+
+    const vitalItens = items.slice(0,vitais).map(r=>r.item).filter(Boolean);
+    const pctVitais = Math.round(items.slice(0,vitais).reduce((s,r)=>s+r.freq,0)/total*100);
+    $("insight").innerHTML = `<b>Poucos vitais:</b> ${vitais} de ${n} itens (${vitalItens.join(", ")}) respondem por <b>${pctVitais}%</b> das ocorrências. Ataque estes primeiro.`;
+  }
+  function roundRect(ctx,x,y,w,h,r){ r=Math.min(r,w/2,h/2); ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+
+  // ---------- backend ----------
+  async function api(payload){
+    const r = await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)});
+    return r.json().catch(()=>({ok:false}));
+  }
+  async function salvar(){
+    const grupo=$("grupo").value.trim();
+    if(!grupo){ status("informe o grupo", false); $("grupo").focus(); return; }
+    $("salvar").disabled=true; status("salvando…");
+    const out=await api({action:"save",grupo,ferramenta:FERRAMENTA,dados:{itens:DATA}});
+    status(out.ok?"salvo ✓":"erro ao salvar", out.ok); $("salvar").disabled=false;
+  }
+  async function carregar(){
+    const grupo=$("grupo").value.trim();
+    if(!grupo){ status("informe o grupo", false); return; }
+    status("carregando…");
+    const out=await api({action:"get",grupo,ferramenta:FERRAMENTA});
+    if(out.ok && out.dados && Array.isArray(out.dados.itens)){ DATA=out.dados.itens.map(x=>({item:x.item||"",freq:x.freq||""})); renderRows(); draw(); status("carregado ✓"); }
+    else status("nada salvo p/ este grupo");
+  }
+  function baixarPNG(){
+    const a=document.createElement("a"); a.href=$("chart").toDataURL("image/png");
+    a.download=("pareto_"+($("grupo").value.trim()||"grupo")+".png").replace(/\s+/g,"_"); a.click();
+  }
+
+  $("add").addEventListener("click",()=>addRow());
+  $("exemplo").addEventListener("click",()=>{ DATA=EXEMPLO.map(([item,freq])=>({item,freq})); renderRows(); draw(); });
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+  $("png").addEventListener("click",baixarPNG);
+  $("imprimir").addEventListener("click",()=>window.print());
+  $("limpar").addEventListener("click",()=>{ if(confirm("Limpar todos os itens?")){ DATA=[]; renderRows(); draw(); } });
+  window.addEventListener("resize",draw);
+
+  // estado inicial (mostra exemplo para nao abrir vazio)
+  DATA = EXEMPLO.map(([item,freq])=>({item,freq})); renderRows(); draw();
+</script>
+</body>
+</html>
