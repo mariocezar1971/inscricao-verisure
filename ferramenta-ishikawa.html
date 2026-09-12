@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ishikawa · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  a{color:var(--amber-deep)}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(44,140,137,.15);color:var(--teal)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:150px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:80px}
+  .grid{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+  .card .bd{padding:14px 16px}
+  .fld{margin-bottom:12px}
+  .fld label{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:5px}
+  .fld input.big{width:100%;font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink)}
+  .cat{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin-bottom:9px}
+  .cat h4{margin:0 0 7px;font-size:13.5px;display:flex;align-items:center;gap:7px}
+  .cat h4 .dot{width:9px;height:9px;border-radius:3px;background:var(--teal)}
+  .cat .inp{display:flex;gap:6px}
+  .cat .inp input{flex:1;font:inherit;font-size:13.5px;border:1.5px solid var(--line);border-radius:8px;padding:7px 9px;background:var(--card);color:var(--ink)}
+  .cat .inp input:focus{outline:none;border-color:var(--amber)}
+  .cat .inp button{border:none;background:var(--teal);color:#fff;border-radius:8px;padding:0 11px;cursor:pointer;font-weight:700}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:rgba(44,140,137,.1);color:var(--ink);border:1px solid rgba(44,140,137,.25);border-radius:20px;padding:3px 6px 3px 10px;font-size:12.5px}
+  .chip button{border:none;background:transparent;color:var(--red);cursor:pointer;font-size:14px;line-height:1}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:8px 11px}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .chartcard .bd{padding:8px}
+  canvas{width:100%;height:auto;display:block}
+  .foot{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
+  @media print{ .noprint{display:none!important} body{background:#fff} .card{box-shadow:none;border:none} .grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="mk">🐟</span><div><h1>Diagrama de Ishikawa</h1><p>Causa-e-efeito (6M) · Bloco GQT</p></div></div>
+    <div class="grpbar noprint"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="grid">
+    <section class="card noprint">
+      <div class="bd">
+        <div class="fld">
+          <label for="efeito">Efeito / Problema (a "cabeça do peixe")</label>
+          <input id="efeito" class="big" placeholder="Ex.: Atraso na entrega ao cliente">
+        </div>
+        <div id="cats"></div>
+        <div class="actions">
+          <button class="btn primary" id="salvar">Salvar</button>
+          <button class="btn ghost sm" id="carregar">Carregar</button>
+          <button class="btn ghost sm" id="png">Baixar PNG</button>
+          <button class="btn ghost sm" id="imprimir">Imprimir / PDF</button>
+          <button class="btn ghost sm" id="limpar">Limpar</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card chartcard">
+      <div class="bd"><canvas id="chart" width="920" height="540"></canvas></div>
+    </section>
+  </div>
+  <p class="foot">Ferramentas do Workshop · Verisure — dica: pergunte "por quê?" para cada causa até chegar à raiz.</p>
+</div>
+
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="ishikawa";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const CATS=[
+    {k:"metodo",n:"Método"},{k:"maodeobra",n:"Mão de obra"},{k:"medicao",n:"Medição"},
+    {k:"maquina",n:"Máquina"},{k:"material",n:"Material"},{k:"meioambiente",n:"Meio ambiente"}
+  ];
+  let D={ efeito:"", cats:{} }; CATS.forEach(c=>D.cats[c.k]=[]);
+
+  // grupo
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+
+  $("efeito").addEventListener("input",()=>{ D.efeito=$("efeito").value; draw(); });
+
+  function renderCats(){
+    $("cats").innerHTML = CATS.map(c=>`
+      <div class="cat">
+        <h4><span class="dot"></span> ${c.n}</h4>
+        <div class="inp"><input data-k="${c.k}" placeholder="causa e Enter"><button data-add="${c.k}">+</button></div>
+        <div class="chips" id="chips-${c.k}"></div>
+      </div>`).join("");
+    CATS.forEach(c=>{
+      const inp=$("cats").querySelector('input[data-k="'+c.k+'"]');
+      const add=()=>{ const v=inp.value.trim(); if(v){ D.cats[c.k].push(v); inp.value=""; renderChips(); draw(); } };
+      inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); add(); } });
+      $("cats").querySelector('button[data-add="'+c.k+'"]').addEventListener("click",add);
+    });
+    renderChips();
+  }
+  function renderChips(){
+    CATS.forEach(c=>{
+      $("chips-"+c.k).innerHTML = D.cats[c.k].map((v,i)=>`<span class="chip">${esc(v)}<button data-c="${c.k}" data-i="${i}">×</button></span>`).join("");
+      $("chips-"+c.k).querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ D.cats[b.dataset.c].splice(+b.dataset.i,1); renderChips(); draw(); }));
+    });
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+  function trunc(s,n){ s=String(s); return s.length>n? s.slice(0,n-1)+"…":s; }
+
+  function draw(){
+    const c=$("chart"),ctx=c.getContext("2d"),W=920,H=540,dpr=window.devicePixelRatio||1;
+    const cssW=c.clientWidth||W; c.width=W*dpr;c.height=H*dpr;c.style.height=(H*(cssW/W))+"px"; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    const st=getComputedStyle(document.body);
+    const col={ink:st.getPropertyValue('--ink'),muted:st.getPropertyValue('--muted'),line:st.getPropertyValue('--line'),teal:st.getPropertyValue('--teal')||'#2C8C89',navy:st.getPropertyValue('--navy')||'#132542',amber:st.getPropertyValue('--amber-deep')||'#C7841F',card:st.getPropertyValue('--card')||'#fff'};
+    const spineY=H/2, x0=40, headX=W-190;
+    // espinha
+    ctx.strokeStyle=col.navy; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(x0,spineY); ctx.lineTo(headX,spineY); ctx.stroke();
+    // seta
+    ctx.beginPath(); ctx.moveTo(headX,spineY); ctx.lineTo(headX-14,spineY-8); ctx.lineTo(headX-14,spineY+8); ctx.closePath(); ctx.fillStyle=col.navy; ctx.fill();
+    // cabeça (efeito)
+    const bw=176,bh=70,bx=headX+6,by=spineY-bh/2;
+    ctx.fillStyle=col.navy; roundRect(ctx,bx,by,bw,bh,10); ctx.fill();
+    ctx.fillStyle="#EAF0F8"; ctx.textAlign="center"; ctx.font='bold 13px "IBM Plex Sans"';
+    wrapText(ctx, D.efeito||"(efeito / problema)", bx+bw/2, by+bh/2, bw-18, 16, 3);
+    // espinhas (3 em cima, 3 embaixo)
+    const top=CATS.slice(0,3), bot=CATS.slice(3);
+    const usable=headX-90-x0, step=usable/3;
+    function bone(cat, idx, dir){
+      const anchorX = x0+40 + step*(idx+0.75);
+      const tipX = anchorX-95, tipY = spineY + dir*160;
+      ctx.strokeStyle=col.teal; ctx.lineWidth=2.4; ctx.beginPath(); ctx.moveTo(anchorX,spineY); ctx.lineTo(tipX,tipY); ctx.stroke();
+      // rótulo categoria
+      ctx.fillStyle=col.teal; ctx.font='bold 12.5px "IBM Plex Sans"'; ctx.textAlign="center";
+      ctx.fillText(cat.n, tipX-6, tipY + (dir<0?-8:16));
+      // causas
+      const causes=D.cats[cat.k]||[]; const shown=causes.slice(0,5);
+      ctx.font='10.5px "IBM Plex Sans"'; ctx.textAlign=dir<0?"left":"left"; ctx.fillStyle=col.ink;
+      shown.forEach((cz,j)=>{
+        const t=0.30+j*0.15; const px=tipX+(anchorX-tipX)*t, py=tipY+(spineY-tipY)*t;
+        ctx.strokeStyle=col.line; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(px+16,py); ctx.stroke();
+        ctx.fillText(trunc(cz,22), px+20, py+3);
+      });
+      if(causes.length>5){ ctx.fillStyle=col.muted; ctx.fillText("+"+(causes.length-5)+" causas", tipX+8, tipY+(dir<0?26:-18)); }
+    }
+    top.forEach((cat,i)=>bone(cat,i,-1));
+    bot.forEach((cat,i)=>bone(cat,i,+1));
+  }
+  function roundRect(ctx,x,y,w,h,r){ r=Math.min(r,w/2,h/2); ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+  function wrapText(ctx,text,cx,cy,maxW,lh,maxLines){ const words=String(text).split(/\s+/); let lines=[],cur="";
+    for(const w of words){ const t=cur?cur+" "+w:w; if(ctx.measureText(t).width>maxW&&cur){ lines.push(cur); cur=w; if(lines.length===maxLines-1)break; } else cur=t; }
+    if(cur&&lines.length<maxLines)lines.push(cur); const startY=cy-(lines.length-1)*lh/2;
+    lines.forEach((ln,i)=>ctx.fillText(ln,cx,startY+i*lh)); }
+
+  // backend
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); if(o.ok&&o.dados&&o.dados.cats){ D={efeito:o.dados.efeito||"",cats:{}}; CATS.forEach(c=>D.cats[c.k]=Array.isArray(o.dados.cats[c.k])?o.dados.cats[c.k]:[]); $("efeito").value=D.efeito; renderChips(); draw(); status("carregado ✓"); } else status("nada salvo p/ este grupo"); }
+  function png(){ const a=document.createElement("a"); a.href=$("chart").toDataURL("image/png"); a.download=("ishikawa_"+($("grupo").value.trim()||"grupo")+".png").replace(/\s+/g,"_"); a.click(); }
+
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+  $("png").addEventListener("click",png);
+  $("imprimir").addEventListener("click",()=>window.print());
+  $("limpar").addEventListener("click",()=>{ if(confirm("Limpar tudo?")){ D={efeito:"",cats:{}}; CATS.forEach(c=>D.cats[c.k]=[]); $("efeito").value=""; renderChips(); draw(); } });
+  window.addEventListener("resize",draw);
+
+  // exemplo inicial
+  D={ efeito:"Atraso na entrega ao cliente", cats:{ metodo:["Processo sem padrão"], maodeobra:["Falta de treinamento"], medicao:["Prazo mal estimado"], maquina:["Equipamento parado"], material:["Falta de insumo"], meioambiente:["Layout ruim"] } };
+  $("efeito").value=D.efeito; renderCats(); draw();
+</script>
+</body>
+</html>

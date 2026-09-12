@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5W1H · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  a{color:var(--amber-deep)}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(232,163,61,.15);color:var(--amber-deep)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:150px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:80px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+  .card .bd{padding:14px 16px}
+  .objbar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:14px}
+  .objbar .fld{flex:1;min-width:220px}
+  .fld label{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:5px}
+  .fld input.big{width:100%;font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink)}
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;min-width:860px;font-size:13px}
+  thead th{position:sticky;top:0;background:var(--navy);color:#EAF0F8;font-weight:600;text-align:left;padding:9px 8px;font-size:12px}
+  thead th .q{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;color:var(--amber);display:block}
+  tbody td{border-bottom:1px solid var(--line);padding:4px;vertical-align:top}
+  tbody tr:nth-child(even){background:rgba(0,0,0,.015)}
+  @media (prefers-color-scheme: dark){ tbody tr:nth-child(even){background:rgba(255,255,255,.03)} }
+  td textarea{width:100%;font:inherit;font-size:12.5px;border:1px solid transparent;border-radius:7px;padding:6px 7px;background:transparent;color:var(--ink);resize:vertical;min-height:38px;line-height:1.35}
+  td textarea:focus{outline:none;border-color:var(--amber);background:var(--card)}
+  td.num{color:var(--muted);text-align:center;font-family:"IBM Plex Mono",monospace;font-size:11px;width:28px;padding-top:12px}
+  td.del{width:34px;text-align:center}
+  td.del button{border:none;background:transparent;color:var(--red);cursor:pointer;font-size:16px;line-height:1;opacity:.7}
+  td.del button:hover{opacity:1}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:8px 11px}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+  .actions .sp{flex:1}
+  .foot{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
+  .printhead{display:none}
+  @media print{
+    .noprint{display:none!important}
+    body{background:#fff;color:#000}
+    .wrap{max-width:100%;padding:0}
+    .card{box-shadow:none;border:none}
+    .printhead{display:block;margin-bottom:10px}
+    .printhead h2{font-family:"Bricolage Grotesque",sans-serif;margin:0 0 2px;font-size:18px}
+    .printhead p{margin:0;font-size:12px;color:#444}
+    table{min-width:0;font-size:11px}
+    thead th{background:#132542!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    td textarea{border:none;min-height:0;height:auto}
+    @page{size:A4 landscape;margin:12mm}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top noprint">
+    <div class="brand"><span class="mk">✔</span><div><h1>Plano de Ação 5W1H</h1><p>O quê · Por quê · Onde · Quando · Quem · Como — Bloco GQT</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <section class="card">
+    <div class="bd">
+      <div class="printhead">
+        <h2 id="pTitulo">Plano de Ação 5W1H</h2>
+        <p id="pSub">Workshop Verisure</p>
+      </div>
+      <div class="objbar noprint">
+        <div class="fld"><label for="objetivo">Objetivo / Meta do plano</label>
+          <input id="objetivo" class="big" placeholder="Ex.: Reduzir atrasos de entrega em 30% até dezembro"></div>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr>
+            <th class="noprint"></th>
+            <th>O quê<span class="q">WHAT</span></th>
+            <th>Por quê<span class="q">WHY</span></th>
+            <th>Onde<span class="q">WHERE</span></th>
+            <th>Quando<span class="q">WHEN</span></th>
+            <th>Quem<span class="q">WHO</span></th>
+            <th>Como<span class="q">HOW</span></th>
+            <th class="noprint"></th>
+          </tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="actions noprint">
+        <button class="btn ghost sm" id="add">+ Adicionar ação</button>
+        <span class="sp"></span>
+        <button class="btn primary" id="salvar">Salvar</button>
+        <button class="btn ghost sm" id="carregar">Carregar</button>
+        <button class="btn ghost sm" id="imprimir">Imprimir / PDF</button>
+        <button class="btn ghost sm" id="limpar">Limpar</button>
+      </div>
+    </div>
+  </section>
+  <p class="foot noprint">Ferramentas do Workshop · Verisure — cada linha é uma ação; preencha as 6 perguntas para transformar ideia em execução.</p>
+</div>
+
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="5w1h";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const COLS=["oque","porque","onde","quando","quem","como"];
+  let D={ objetivo:"", linhas:[] };
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+
+  $("objetivo").addEventListener("input",()=>{ D.objetivo=$("objetivo").value; $("pTitulo").textContent = D.objetivo? "Plano de Ação — "+D.objetivo : "Plano de Ação 5W1H"; });
+
+  function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+  function novaLinha(v){ v=v||{}; const o={}; COLS.forEach(k=>o[k]=v[k]||""); return o; }
+
+  function render(){
+    const g=$("grupo"); // keep
+    $("rows").innerHTML = D.linhas.map((ln,i)=>`
+      <tr>
+        <td class="num">${i+1}</td>
+        ${COLS.map(k=>`<td><textarea data-i="${i}" data-k="${k}" rows="1">${esc(ln[k])}</textarea></td>`).join("")}
+        <td class="del noprint"><button data-del="${i}" title="Remover">×</button></td>
+      </tr>`).join("");
+    $("rows").querySelectorAll("textarea").forEach(t=>{
+      t.addEventListener("input",()=>{ D.linhas[+t.dataset.i][t.dataset.k]=t.value; });
+    });
+    $("rows").querySelectorAll("button[data-del]").forEach(b=>{
+      b.addEventListener("click",()=>{ D.linhas.splice(+b.dataset.del,1); if(!D.linhas.length)D.linhas.push(novaLinha()); render(); });
+    });
+  }
+
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); if(o.ok&&o.dados&&Array.isArray(o.dados.linhas)){ D={objetivo:o.dados.objetivo||"",linhas:o.dados.linhas.map(novaLinha)}; if(!D.linhas.length)D.linhas.push(novaLinha()); $("objetivo").value=D.objetivo; $("objetivo").dispatchEvent(new Event("input")); render(); status("carregado ✓"); } else status("nada salvo p/ este grupo"); }
+
+  $("add").addEventListener("click",()=>{ D.linhas.push(novaLinha()); render(); });
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+  $("imprimir").addEventListener("click",()=>{ $("pSub").textContent = "Grupo: "+($("grupo").value.trim()||"—")+"  ·  Workshop Verisure"; window.print(); });
+  $("limpar").addEventListener("click",()=>{ if(confirm("Limpar tudo?")){ D={objetivo:"",linhas:[novaLinha()]}; $("objetivo").value=""; $("objetivo").dispatchEvent(new Event("input")); render(); } });
+
+  // exemplo inicial
+  D={ objetivo:"Reduzir atrasos de entrega ao cliente", linhas:[
+    novaLinha({oque:"Padronizar o processo de expedição",porque:"Evitar retrabalho e variação",onde:"Centro de distribuição",quando:"Até 30/out",quem:"Líder de logística",como:"Criar POP e treinar a equipe"}),
+    novaLinha({oque:"Implantar checklist de conferência",porque:"Reduzir erros de separação",onde:"Doca de saída",quando:"Semanal, a partir de 06/out",quem:"Conferente do turno",como:"Folha de verificação impressa"}),
+    novaLinha({oque:"Monitorar prazo de entrega",porque:"Detectar desvios cedo",onde:"Painel de indicadores",quando:"Diário",quem:"Analista de qualidade",como:"Gráfico de controle no sistema"})
+  ]};
+  $("objetivo").value=D.objetivo; $("objetivo").dispatchEvent(new Event("input")); render();
+</script>
+</body>
+</html>
