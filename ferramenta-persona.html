@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Persona + Jornada · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --blue:#3B6FB0;
+    --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1220px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  a{color:var(--amber-deep)}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(59,111,176,.14);color:var(--blue)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:150px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:80px}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:9px 11px}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+  .actions .sp{flex:1}
+
+  .board{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
+  .idbar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dashed var(--line)}
+  .idbar .av{width:52px;height:52px;border-radius:14px;background:rgba(59,111,176,.14);color:var(--blue);display:grid;place-items:center;font-size:26px;flex:none}
+  .fld{display:flex;flex-direction:column;gap:4px}
+  .fld label{font-size:11px;font-weight:700;color:var(--muted)}
+  .fld input{font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;background:var(--card);color:var(--ink)}
+  .fld input:focus{outline:none;border-color:var(--amber)}
+  .idbar .f-nome{flex:2;min-width:200px} .idbar .f-nome input{font-weight:700}
+  .idbar .f-perfil{flex:2;min-width:180px} .idbar .f-contexto{flex:3;min-width:200px}
+
+  .secttl{font-family:"Bricolage Grotesque",sans-serif;font-size:14px;color:var(--ink-2);margin:6px 0 9px;display:flex;align-items:center;gap:8px}
+  .secttl .q{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:820px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.pgrid{grid-template-columns:1fr}}
+  .pc{border:1px solid var(--line);border-radius:12px;overflow:hidden;border-top:4px solid var(--pc,var(--teal));display:flex;flex-direction:column}
+  .pc h4{margin:0;padding:8px 10px 3px;font-size:13px;display:flex;align-items:center;gap:6px}
+  .pc .em{font-size:14px}
+  .pc textarea{width:100%;border:none;border-top:1px dashed var(--line);font:inherit;font-size:12.5px;padding:8px 10px;background:transparent;color:var(--ink);resize:vertical;min-height:78px;line-height:1.4}
+  .pc textarea:focus{outline:none;background:rgba(232,163,61,.05)}
+
+  .jgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px}
+  @media(max-width:820px){.jgrid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.jgrid{grid-template-columns:1fr}}
+  .jc{border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+  .jc .jh{background:var(--navy);color:#EAF0F8;padding:8px 10px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:7px}
+  .jc .jh .n{width:20px;height:20px;border-radius:50%;background:var(--amber);color:#20160A;display:grid;place-items:center;font-size:11px;font-weight:700;flex:none}
+  .jc .jf{padding:8px 10px 2px}
+  .jc .jf label{font-size:10.5px;font-weight:700;color:var(--muted);display:block;margin-bottom:2px}
+  .jc .jf textarea{width:100%;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:12px;padding:6px 8px;background:var(--card);color:var(--ink);resize:vertical;min-height:46px;line-height:1.35;margin-bottom:8px}
+  .jc .jf textarea:focus{outline:none;border-color:var(--amber)}
+  .foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+  @media print{ .noprint{display:none!important} body{background:#fff} .wrap{max-width:100%;padding:0}
+    .board{box-shadow:none;border:none} .pc textarea,.jc .jf textarea{min-height:0}
+    .jc .jh{background:#132542!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    @page{size:A4 landscape;margin:9mm} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top noprint">
+    <div class="brand"><span class="mk">◎</span><div><h1>Persona + Jornada de Compra</h1><p>Quem é o cliente, suas dores e como ele decide · Bloco Vendas</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="actions noprint">
+    <span class="sp"></span>
+    <button class="btn primary" id="salvar">Salvar</button>
+    <button class="btn ghost sm" id="carregar">Carregar</button>
+    <button class="btn ghost sm" id="png">Baixar PNG</button>
+    <button class="btn ghost sm" id="imprimir">Imprimir / PDF</button>
+    <button class="btn ghost sm" id="limpar">Limpar</button>
+  </div>
+
+  <div class="board" id="board">
+    <div class="idbar">
+      <div class="av">🧑</div>
+      <div class="fld f-nome"><label for="nome">Nome fictício da persona</label><input id="nome" placeholder="Ex.: Márcia, a gerente de operações"></div>
+      <div class="fld f-perfil"><label for="perfil">Perfil / cargo</label><input id="perfil" placeholder="Ex.: 42 anos, decisora, área de segurança"></div>
+      <div class="fld f-contexto"><label for="contexto">Contexto / empresa</label><input id="contexto" placeholder="Ex.: rede de lojas, preocupada com furtos"></div>
+    </div>
+
+    <div class="secttl">Retrato da persona <span class="q">quem é e o que a move</span></div>
+    <div class="pgrid" id="pgrid"></div>
+
+    <div class="secttl" style="margin-top:14px">Jornada de compra <span class="q">como ela caminha até o sim</span></div>
+    <div class="jgrid" id="jgrid"></div>
+  </div>
+  <p class="foot noprint">Ferramentas do Workshop · Verisure — venda focada no comprador: entenda a pessoa antes de falar do produto.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="persona";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const PCARDS=[
+    {k:"objetivos",n:"Objetivos",em:"🎯",c:"var(--teal)",ph:"O que ela quer conquistar?"},
+    {k:"dores",n:"Dores / Frustrações",em:"😣",c:"var(--red)",ph:"O que a incomoda hoje?"},
+    {k:"ganhos",n:"Ganhos desejados",em:"✨",c:"var(--amber-deep)",ph:"O que seria uma vitória para ela?"},
+    {k:"criterios",n:"Critérios de decisão",em:"⚖️",c:"var(--blue)",ph:"Como ela compara e escolhe?"},
+    {k:"objecoes",n:"Objeções comuns",em:"🛑",c:"var(--red)",ph:"O que a faz hesitar?"},
+    {k:"fontes",n:"Onde busca informação",em:"🔎",c:"var(--navy)",ph:"Quem/onde ela consulta?"}
+  ];
+  const JSTAGES=[
+    {k:"consciencia",n:"Consciência",em:"1"},
+    {k:"consideracao",n:"Consideração",em:"2"},
+    {k:"decisao",n:"Decisão",em:"3"},
+    {k:"posvenda",n:"Pós-venda",em:"4"}
+  ];
+  const JF=[
+    {k:"pensa",n:"O que sente/pensa"},
+    {k:"pergunta",n:"Pergunta-chave dela"},
+    {k:"movimento",n:"Nosso movimento"}
+  ];
+  let D={ nome:"",perfil:"",contexto:"", persona:{}, jornada:{} };
+  PCARDS.forEach(c=>D.persona[c.k]=""); JSTAGES.forEach(s=>{ D.jornada[s.k]={}; JF.forEach(f=>D.jornada[s.k][f.k]=""); });
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+  function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+  ["nome","perfil","contexto"].forEach(k=>$(k).addEventListener("input",()=>{ D[k]=$(k).value; }));
+
+  function render(){
+    $("pgrid").innerHTML = PCARDS.map(c=>`
+      <div class="pc" style="--pc:${c.c}">
+        <h4><span class="em">${c.em}</span> ${c.n}</h4>
+        <textarea data-p="${c.k}" placeholder="${c.ph}">${esc(D.persona[c.k]||"")}</textarea>
+      </div>`).join("");
+    $("pgrid").querySelectorAll("textarea").forEach(t=>t.addEventListener("input",()=>{ D.persona[t.dataset.p]=t.value; }));
+    $("jgrid").innerHTML = JSTAGES.map(s=>`
+      <div class="jc">
+        <div class="jh"><span class="n">${s.em}</span> ${s.n}</div>
+        <div class="jf">
+          ${JF.map(f=>`<label>${f.n}</label><textarea data-s="${s.k}" data-f="${f.k}">${esc(D.jornada[s.k][f.k]||"")}</textarea>`).join("")}
+        </div>
+      </div>`).join("");
+    $("jgrid").querySelectorAll("textarea").forEach(t=>t.addEventListener("input",()=>{ D.jornada[t.dataset.s][t.dataset.f]=t.value; }));
+  }
+
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); const d=o.dados;
+    if(o.ok&&d&&d.persona){ D={nome:d.nome||"",perfil:d.perfil||"",contexto:d.contexto||"",persona:{},jornada:{}};
+      PCARDS.forEach(c=>D.persona[c.k]=d.persona[c.k]||"");
+      JSTAGES.forEach(s=>{ D.jornada[s.k]={}; JF.forEach(f=>D.jornada[s.k][f.k]=(d.jornada&&d.jornada[s.k]&&d.jornada[s.k][f.k])||""); });
+      ["nome","perfil","contexto"].forEach(k=>$(k).value=D[k]); render(); status("carregado ✓"); }
+    else status("nada salvo p/ este grupo"); }
+  async function png(){ status("gerando imagem…"); const bg=getComputedStyle(document.body).getPropertyValue('--card')||'#fff';
+    try{ const cv=await html2canvas($("board"),{scale:2,backgroundColor:bg.trim()||"#fff",useCORS:true});
+      const a=document.createElement("a"); a.href=cv.toDataURL("image/png"); a.download=("persona_"+($("grupo").value.trim()||"grupo")+".png").replace(/\s+/g,"_"); a.click(); status(""); }
+    catch(e){ status("use Imprimir/PDF",false); } }
+
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+  $("png").addEventListener("click",png);
+  $("imprimir").addEventListener("click",()=>window.print());
+  $("limpar").addEventListener("click",()=>{ if(confirm("Limpar tudo?")){ D={nome:"",perfil:"",contexto:"",persona:{},jornada:{}}; PCARDS.forEach(c=>D.persona[c.k]=""); JSTAGES.forEach(s=>{D.jornada[s.k]={};JF.forEach(f=>D.jornada[s.k][f.k]="");}); ["nome","perfil","contexto"].forEach(k=>$(k).value=""); render(); } });
+
+  // exemplo inicial
+  D={ nome:"Márcia, gerente de operações", perfil:"42 anos · decisora · responsável pela segurança das lojas",
+    contexto:"Rede varejista com 8 lojas; sofre com furtos e sente-se insegura fora do horário",
+    persona:{
+      objetivos:"Reduzir perdas por furto\nDormir tranquila sabendo que as lojas estão protegidas",
+      dores:"Alarmes falsos\nDemora no atendimento de ocorrências\nCusto alto de vigilante",
+      ganhos:"Monitoramento 24h confiável\nResposta rápida a incidentes\nRelatórios para a diretoria",
+      criterios:"Tempo de resposta\nReputação da marca\nCusto-benefício\nFacilidade de uso",
+      objecoes:'"Já tenho câmeras"\n"É caro"\n"Será que funciona mesmo?"',
+      fontes:"Indicação de colegas\nGoogle e avaliações\nDiretoria / financeiro"
+    },
+    jornada:{
+      consciencia:{pensa:"Percebe que as perdas aumentaram",pergunta:"Como proteger melhor as lojas?",movimento:"Conteúdo sobre segurança + prova social"},
+      consideracao:{pensa:"Compara opções (câmera, vigilante, monitoramento)",pergunta:"Qual dá mais tranquilidade pelo preço?",movimento:"Demonstração + comparativo claro"},
+      decisao:{pensa:"Quer segurança na escolha",pergunta:"Vou me arrepender?",movimento:"Garantia, casos de sucesso, condição especial"},
+      posvenda:{pensa:"Quer sentir que valeu a pena",pergunta:"Estou realmente protegida?",movimento:"Acompanhamento + relatórios + relacionamento"}
+    }};
+  ["nome","perfil","contexto"].forEach(k=>$(k).value=D[k]); render();
+</script>
+</body>
+</html>

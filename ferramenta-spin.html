@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perguntas SPIN · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --blue:#3B6FB0; --green:#4E9A51;
+    --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1160px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  a{color:var(--amber-deep)}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(44,140,137,.15);color:var(--teal)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:150px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:80px}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:9px 11px}
+  .board{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
+  .ctx{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dashed var(--line)}
+  .fld{display:flex;flex-direction:column;gap:4px;flex:1;min-width:220px}
+  .fld label{font-size:11px;font-weight:700;color:var(--muted)}
+  .fld input{font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;background:var(--card);color:var(--ink)}
+  .fld input:focus{outline:none;border-color:var(--amber)}
+  .flow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted)}
+  .flow b{color:var(--ink-2)}
+  .steps{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:760px){.steps{grid-template-columns:1fr}}
+  .step{border:1px solid var(--line);border-radius:13px;overflow:hidden;border-left:5px solid var(--sc,var(--teal));display:flex;flex-direction:column}
+  .step .sh{padding:10px 12px 6px}
+  .step .sh .row{display:flex;align-items:center;gap:9px}
+  .step .letter{width:30px;height:30px;border-radius:9px;background:var(--sc,var(--teal));color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px;font-family:"Bricolage Grotesque",sans-serif;flex:none}
+  .step h3{margin:0;font-size:15px}
+  .step h3 small{display:block;font-weight:500;font-size:11px;color:var(--muted);font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
+  .step .desc{font-size:12px;color:var(--ink-2);margin:7px 0 0;line-height:1.4}
+  .step .ex{font-size:11.5px;color:var(--muted);font-style:italic;margin:5px 0 0}
+  .step textarea{width:100%;border:none;border-top:1px dashed var(--line);font:inherit;font-size:13px;padding:9px 12px;background:transparent;color:var(--ink);resize:vertical;min-height:96px;line-height:1.45;margin-top:8px}
+  .step textarea:focus{outline:none;background:rgba(232,163,61,.05)}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+  .actions .sp{flex:1}
+  .foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+  @media print{ .noprint{display:none!important} body{background:#fff} .wrap{max-width:100%;padding:0}
+    .board{box-shadow:none;border:none} .step textarea{min-height:0}
+    @page{size:A4;margin:12mm} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top noprint">
+    <div class="brand"><span class="mk">?</span><div><h1>Perguntas SPIN</h1><p>Situação · Problema · Implicação · Necessidade · Bloco Vendas</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="board" id="board">
+    <div class="ctx">
+      <div class="fld"><label for="oferta">Produto / solução que vamos vender</label><input id="oferta" placeholder="Ex.: Monitoramento 24h com resposta rápida"></div>
+      <div class="fld"><label for="cliente">Cliente-alvo</label><input id="cliente" placeholder="Ex.: Márcia, gerente de operações do varejo"></div>
+    </div>
+    <div class="flow noprint">Ordem das perguntas: <b>Situação</b> → <b>Problema</b> → <b>Implicação</b> → <b>Necessidade de solução</b> &nbsp;·&nbsp; do neutro ao urgente, deixando o cliente concluir sozinho.</div>
+    <div class="steps" id="steps"></div>
+  </div>
+
+  <div class="actions noprint">
+    <span class="sp"></span>
+    <button class="btn primary" id="salvar">Salvar</button>
+    <button class="btn ghost sm" id="carregar">Carregar</button>
+    <button class="btn ghost sm" id="imprimir">Imprimir / PDF</button>
+    <button class="btn ghost sm" id="limpar">Limpar</button>
+  </div>
+  <p class="foot noprint">Ferramentas do Workshop · Verisure — quem faz as boas perguntas conduz a conversa. Escreva as perguntas que VOCÊS fariam.</p>
+</div>
+
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="spin";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const STEPS=[
+    {k:"situacao",l:"S",n:"Situação",en:"SITUATION",c:"var(--blue)",
+      desc:"Entenda o cenário atual do cliente. Perguntas neutras que coletam fatos — use com moderação para não cansar.",
+      ex:"Ex.: Como funciona hoje a segurança das suas lojas?",
+      ph:"Escreva 2–3 perguntas de situação…"},
+    {k:"problema",l:"P",n:"Problema",en:"PROBLEM",c:"var(--amber-deep)",
+      desc:"Revele dificuldades, insatisfações e dores. Aqui o cliente admite que algo não vai bem.",
+      ex:"Ex.: Você já teve prejuízo com furtos fora do horário?",
+      ph:"Escreva perguntas que exponham as dores…"},
+    {k:"implicacao",l:"I",n:"Implicação",en:"IMPLICATION",c:"var(--red)",
+      desc:"Amplie o problema: mostre as consequências de não resolver. Aumenta a urgência e o valor da solução.",
+      ex:"Ex.: Se isso continuar, quanto pode custar por ano em perdas?",
+      ph:"Escreva perguntas que ampliem as consequências…"},
+    {k:"necessidade",l:"N",n:"Necessidade de solução",en:"NEED-PAYOFF",c:"var(--green)",
+      desc:"Leve o cliente a verbalizar o valor de resolver. Ele mesmo descreve o ganho — e se convence.",
+      ex:"Ex.: O que mudaria se você tivesse resposta em minutos?",
+      ph:"Escreva perguntas que façam o cliente enxergar o ganho…"}
+  ];
+  let D={ oferta:"",cliente:"", spin:{} }; STEPS.forEach(s=>D.spin[s.k]="");
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+  function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+  ["oferta","cliente"].forEach(k=>$(k).addEventListener("input",()=>{ D[k]=$(k).value; }));
+
+  function render(){
+    $("steps").innerHTML = STEPS.map(s=>`
+      <div class="step" style="--sc:${s.c}">
+        <div class="sh">
+          <div class="row"><span class="letter">${s.l}</span><h3>${s.n}<small>${s.en}</small></h3></div>
+          <p class="desc">${s.desc}</p>
+          <p class="ex noprint">${s.ex}</p>
+        </div>
+        <textarea data-k="${s.k}" placeholder="${s.ph}">${esc(D.spin[s.k]||"")}</textarea>
+      </div>`).join("");
+    $("steps").querySelectorAll("textarea").forEach(t=>t.addEventListener("input",()=>{ D.spin[t.dataset.k]=t.value; }));
+  }
+
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); const d=o.dados;
+    if(o.ok&&d&&d.spin){ D={oferta:d.oferta||"",cliente:d.cliente||"",spin:{}}; STEPS.forEach(s=>D.spin[s.k]=d.spin[s.k]||""); ["oferta","cliente"].forEach(k=>$(k).value=D[k]); render(); status("carregado ✓"); }
+    else status("nada salvo p/ este grupo"); }
+
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+  $("imprimir").addEventListener("click",()=>window.print());
+  $("limpar").addEventListener("click",()=>{ if(confirm("Limpar tudo?")){ D={oferta:"",cliente:"",spin:{}}; STEPS.forEach(s=>D.spin[s.k]=""); ["oferta","cliente"].forEach(k=>$(k).value=""); render(); } });
+
+  // exemplo inicial
+  D={ oferta:"Monitoramento 24h com resposta rápida", cliente:"Márcia, gerente de operações do varejo",
+    spin:{
+      situacao:"Como é feita hoje a segurança das lojas fora do horário?\nQuantas unidades vocês precisam cobrir?\nQuem é avisado quando algo acontece?",
+      problema:"Vocês já tiveram furtos ou prejuízos recentes?\nOs alarmes falsos atrapalham a rotina?\nO tempo de resposta atual te deixa tranquila?",
+      implicacao:"Se um furto acontece de madrugada, qual o impacto no dia seguinte?\nQuanto essas perdas somam ao longo do ano?\nComo a diretoria reage quando há uma ocorrência?",
+      necessidade:"O que mudaria se você tivesse resposta em poucos minutos?\nQuanto valeria dormir tranquila sabendo que as lojas estão monitoradas?\nSe pudesse mostrar relatórios de segurança à diretoria, como isso te ajudaria?"
+    }};
+  ["oferta","cliente"].forEach(k=>$(k).value=D[k]); render();
+</script>
+</body>
+</html>
