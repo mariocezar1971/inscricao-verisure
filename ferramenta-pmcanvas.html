@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Model Canvas · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B;
+    --g-porque:#C7841F; --g-oque:#2C8C89; --g-quem:#3B6FB0; --g-como:#4E9A51; --g-quando:#B84A6A;
+    --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1320px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  a{color:var(--amber-deep)}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(19,37,66,.1);color:var(--navy)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:150px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:80px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+  .toolbar .proj{flex:1;min-width:220px;display:flex;flex-direction:column;gap:4px}
+  .toolbar .proj label{font-size:11px;font-weight:700;color:var(--muted)}
+  .toolbar .proj input{font:inherit;font-size:15px;font-weight:600;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;background:var(--card);color:var(--ink)}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:9px 11px}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 10px;font-size:12px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+  .legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+  .board{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:12px}
+  .canvas{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+    grid-template-areas:
+      "just  obj   stake prem  risc"
+      "just  prod  stake entr  tempo"
+      "benef req   equip restr cust";}
+  @media(max-width:980px){ .canvas{grid-template-columns:repeat(2,1fr);grid-template-areas:none} }
+  @media(max-width:560px){ .canvas{grid-template-columns:1fr} }
+  .blk{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);min-height:118px;border-top:4px solid var(--gc,var(--line))}
+  .blk .h{display:flex;align-items:baseline;gap:7px;padding:8px 10px 4px}
+  .blk .h b{font-size:13px}
+  .blk .h .q{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--gc,var(--muted));font-weight:600}
+  .blk .hint{font-size:10.5px;color:var(--muted);padding:0 10px 4px;line-height:1.3}
+  .blk textarea{flex:1;width:100%;font:inherit;font-size:12.5px;border:none;border-top:1px dashed var(--line);padding:8px 10px;background:transparent;color:var(--ink);resize:vertical;min-height:56px;line-height:1.4}
+  .blk textarea:focus{outline:none;background:rgba(232,163,61,.05)}
+  .just{grid-area:just} .obj{grid-area:obj} .benef{grid-area:benef} .prod{grid-area:prod} .req{grid-area:req}
+  .stake{grid-area:stake} .equip{grid-area:equip} .prem{grid-area:prem} .entr{grid-area:entr} .restr{grid-area:restr}
+  .risc{grid-area:risc} .tempo{grid-area:tempo} .cust{grid-area:cust}
+  .foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+  @media print{
+    .noprint{display:none!important} body{background:#fff}
+    .wrap{max-width:100%;padding:0} .board{box-shadow:none;border:none;padding:0}
+    .blk textarea{min-height:0} @page{size:A4 landscape;margin:8mm}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top noprint">
+    <div class="brand"><span class="mk">▧</span><div><h1>Project Model Canvas</h1><p>Os 13 blocos do projeto em uma página · Bloco PM Canvas</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="toolbar noprint">
+    <div class="proj"><label for="projeto">Nome do projeto</label>
+      <input id="projeto" placeholder="Ex.: Implantação do novo fluxo de atendimento"></div>
+    <button class="btn primary" id="salvar">Salvar</button>
+    <button class="btn ghost sm" id="carregar">Carregar</button>
+    <button class="btn ghost sm" id="png">Baixar PNG</button>
+    <button class="btn ghost sm" id="imprimir">Imprimir / PDF</button>
+    <button class="btn ghost sm" id="limpar">Limpar</button>
+  </div>
+
+  <div class="legend noprint">
+    <span><i style="background:var(--g-porque)"></i>Por quê?</span>
+    <span><i style="background:var(--g-oque)"></i>O quê?</span>
+    <span><i style="background:var(--g-quem)"></i>Quem?</span>
+    <span><i style="background:var(--g-como)"></i>Como?</span>
+    <span><i style="background:var(--g-quando)"></i>Quando e Quanto?</span>
+  </div>
+
+  <div class="board">
+    <div class="canvas" id="canvas"></div>
+  </div>
+  <p class="foot noprint">Ferramentas do Workshop · Verisure — preencha uma ideia por linha; leia da esquerda (Por quê?) para a direita (Quanto?).</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="pmcanvas";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const GRP={porque:"Por quê?",oque:"O quê?",quem:"Quem?",como:"Como?",quando:"Quando e Quanto?"};
+  const GCOL={porque:"var(--g-porque)",oque:"var(--g-oque)",quem:"var(--g-quem)",como:"var(--g-como)",quando:"var(--g-quando)"};
+  const BLK=[
+    {k:"justificativas",cls:"just", g:"porque", n:"Justificativas",       h:"Por que o projeto existe? Que problema ou oportunidade o motiva?"},
+    {k:"objetivo",      cls:"obj",  g:"porque", n:"Objetivo SMART",       h:"Específico, Mensurável, Atingível, Relevante e Temporal."},
+    {k:"beneficios",    cls:"benef",g:"porque", n:"Benefícios",           h:"Ganhos esperados depois do projeto (ligados às justificativas)."},
+    {k:"produto",       cls:"prod", g:"oque",   n:"Produto",              h:"O que será entregue ao final do projeto."},
+    {k:"requisitos",    cls:"req",  g:"oque",   n:"Requisitos",           h:"Condições que o produto precisa atender."},
+    {k:"stakeholders",  cls:"stake",g:"quem",   n:"Stakeholders Externos",h:"Quem influencia ou é influenciado (fora da equipe)."},
+    {k:"equipe",        cls:"equip",g:"quem",   n:"Equipe",               h:"Quem executa o projeto e responsabilidades."},
+    {k:"premissas",     cls:"prem", g:"como",   n:"Premissas",            h:"O que assumimos como verdadeiro para planejar."},
+    {k:"entregas",      cls:"entr", g:"como",   n:"Grupo de Entregas",    h:"Blocos de trabalho / entregas principais."},
+    {k:"restricoes",    cls:"restr",g:"como",   n:"Restrições",           h:"Limitações impostas ao projeto."},
+    {k:"riscos",        cls:"risc", g:"quando", n:"Riscos",               h:"Eventos incertos que podem afetar o projeto."},
+    {k:"tempo",         cls:"tempo",g:"quando", n:"Linha do Tempo",       h:"Marcos e prazos principais."},
+    {k:"custos",        cls:"cust", g:"quando", n:"Custos",               h:"Estimativa de custos do projeto."}
+  ];
+  let D={ projeto:"", blocos:{} }; BLK.forEach(b=>D.blocos[b.k]="");
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+  $("projeto").addEventListener("input",()=>{ D.projeto=$("projeto").value; });
+  function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+  function render(){
+    $("canvas").innerHTML = BLK.map(b=>`
+      <div class="blk ${b.cls}" style="--gc:${GCOL[b.g]}">
+        <div class="h"><b>${b.n}</b><span class="q">${GRP[b.g]}</span></div>
+        <div class="hint noprint">${b.h}</div>
+        <textarea data-k="${b.k}" placeholder="uma ideia por linha…">${esc(D.blocos[b.k]||"")}</textarea>
+      </div>`).join("");
+    $("canvas").querySelectorAll("textarea").forEach(t=>{
+      t.addEventListener("input",()=>{ D.blocos[t.dataset.k]=t.value; });
+    });
+  }
+
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); if(o.ok&&o.dados&&o.dados.blocos){ D={projeto:o.dados.projeto||"",blocos:{}}; BLK.forEach(b=>D.blocos[b.k]=o.dados.blocos[b.k]||""); $("projeto").value=D.projeto; render(); status("carregado ✓"); } else status("nada salvo p/ este grupo"); }
+  async function png(){
+    status("gerando imagem…");
+    const bg=getComputedStyle(document.body).getPropertyValue('--card')||'#fff';
+    try{
+      const cv=await html2canvas($("canvas"),{scale:2,backgroundColor:bg.trim()||"#fff",useCORS:true});
+      const a=document.createElement("a"); a.href=cv.toDataURL("image/png");
+      a.download=("pmcanvas_"+($("grupo").value.trim()||"grupo")+".png").replace(/\s+/g,"_"); a.click();
+      status("");
+    }catch(e){ status("use Imprimir/PDF",false); }
+  }
+
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+  $("png").addEventListener("click",png);
+  $("imprimir").addEventListener("click",()=>window.print());
+  $("limpar").addEventListener("click",()=>{ if(confirm("Limpar todo o canvas?")){ D={projeto:"",blocos:{}}; BLK.forEach(b=>D.blocos[b.k]=""); $("projeto").value=""; render(); } });
+
+  // exemplo inicial
+  D={ projeto:"Implantação do novo fluxo de atendimento", blocos:{
+    justificativas:"Retrabalho alto\nReclamações de prazo\nEquipe sobrecarregada",
+    objetivo:"Reduzir o tempo de atendimento em 30% até dezembro/2026",
+    beneficios:"Cliente mais satisfeito\nMenos horas extras\nMarca fortalecida",
+    produto:"Fluxo padronizado + painel de acompanhamento",
+    requisitos:"Rodar no sistema atual\nTreinar 100% da equipe",
+    stakeholders:"Clientes\nDiretoria\nFornecedor do sistema",
+    equipe:"Patrocinador: Diretoria\nLíder: Gestor de operações\nEquipe: 4 atendentes",
+    premissas:"Sistema atual comporta a mudança\nEquipe disponível 4h/semana",
+    entregas:"1. Mapa do processo\n2. POP\n3. Treinamento\n4. Painel",
+    restricoes:"Sem novo software pago\nPrazo de 3 meses",
+    riscos:"Resistência da equipe\nAtraso do fornecedor",
+    tempo:"Set: mapeamento\nOut: POP + treino\nNov-Dez: rodar e medir",
+    custos:"Horas da equipe\nMaterial de treinamento\nSem custo de licença"
+  }};
+  $("projeto").value=D.projeto; render();
+</script>
+</body>
+</html>
