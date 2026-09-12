@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Storytelling · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --green:#4E9A51; --blue:#3B6FB0;
+    --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  a{color:var(--amber-deep)}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(232,163,61,.15);color:var(--amber-deep)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:150px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:80px}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:9px 11px}
+
+  .grid{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .board{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
+  .topfld{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+  .fld{display:flex;flex-direction:column;gap:4px;flex:1;min-width:220px}
+  .fld label{font-size:11px;font-weight:700;color:var(--muted)}
+  .fld input{font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;background:var(--card);color:var(--ink)}
+  .fld.tit input{font-weight:700;font-family:"Bricolage Grotesque",sans-serif;font-size:16px}
+  .fld input:focus{outline:none;border-color:var(--amber)}
+
+  .beat{border:1px solid var(--line);border-radius:12px;overflow:hidden;border-left:5px solid var(--bc,var(--teal));margin-bottom:10px}
+  .beat .bh{display:flex;align-items:center;gap:9px;padding:9px 11px 5px}
+  .beat .num{width:26px;height:26px;border-radius:8px;background:var(--bc,var(--teal));color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:none;font-family:"Bricolage Grotesque",sans-serif}
+  .beat .bh b{font-size:14px}
+  .beat .bh .tag{font-size:11px;color:var(--muted);font-style:italic}
+  .beat .bh .sug{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--bc,var(--muted));font-weight:600;white-space:nowrap}
+  .beat .hint{font-size:11px;color:var(--muted);padding:0 11px 5px;line-height:1.35}
+  .beat textarea{width:100%;border:none;border-top:1px dashed var(--line);font:inherit;font-size:13px;padding:9px 11px;background:transparent;color:var(--ink);resize:vertical;min-height:60px;line-height:1.45}
+  .beat textarea:focus{outline:none;background:rgba(232,163,61,.05)}
+
+  .side{position:sticky;top:14px;display:flex;flex-direction:column;gap:14px}
+  .timer{background:var(--navy);color:#EAF0F8;border-radius:16px;box-shadow:var(--shadow);padding:16px;text-align:center}
+  .timer h3{margin:0 0 4px;font-size:13px;font-weight:600;color:#AFC0D8;font-family:"IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+  .clock{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:52px;line-height:1.05;letter-spacing:.02em;transition:color .3s}
+  .clock small{display:block;font-size:13px;color:#9FB1C8;font-weight:500;margin-top:2px}
+  .bar{height:8px;border-radius:6px;background:rgba(255,255,255,.15);overflow:hidden;margin:12px 0 14px}
+  .bar i{display:block;height:100%;width:0;background:var(--green);transition:width .3s,background .3s}
+  .tbtns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .tbtn{border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 16px;background:var(--amber);color:#20160A}
+  .tbtn.sec{background:rgba(255,255,255,.12);color:#EAF0F8}
+  .tset{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:12px;color:#9FB1C8}
+  .tset input{width:56px;font:inherit;font-family:"IBM Plex Mono",monospace;text-align:center;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;border-radius:8px;padding:5px 6px}
+  .tset input:focus{outline:none;border-color:var(--amber)}
+  .tip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:12.5px;color:var(--ink-2)}
+  .tip b{color:var(--ink)}
+  .actions{display:flex;flex-wrap:wrap;gap:8px}
+  .foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+  @media print{ .noprint{display:none!important} body{background:#fff} .wrap{max-width:100%;padding:0}
+    .grid{grid-template-columns:1fr} .board{box-shadow:none;border:none} .beat textarea{min-height:0}
+    @page{size:A4;margin:12mm} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top noprint">
+    <div class="brand"><span class="mk">✎</span><div><h1>Estrutura da História</h1><p>Monte a narrativa e ensaie com cronômetro · Bloco Storytelling</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="grid">
+    <div>
+      <div class="board" id="board">
+        <div class="topfld">
+          <div class="fld tit"><label for="titulo">Título da história</label><input id="titulo" placeholder="Ex.: A noite em que tudo mudou"></div>
+          <div class="fld"><label for="gancho">Gancho de abertura (a 1ª frase)</label><input id="gancho" placeholder="Ex.: Eram 3 da manhã quando o telefone tocou…"></div>
+        </div>
+        <div id="beats"></div>
+      </div>
+      <div class="actions noprint" style="margin-top:14px">
+        <button class="btn primary" id="salvar">Salvar</button>
+        <button class="btn ghost sm" id="carregar">Carregar</button>
+        <button class="btn ghost sm" id="imprimir">Imprimir / PDF</button>
+        <button class="btn ghost sm" id="limpar">Limpar</button>
+      </div>
+      <p class="foot noprint">Ferramentas do Workshop · Verisure — uma boa história tem gente, conflito e uma virada. Ensaie até caber no tempo.</p>
+    </div>
+
+    <aside class="side noprint">
+      <div class="timer">
+        <h3>Cronômetro de ensaio</h3>
+        <div class="clock" id="clock">0:00<small id="alvoLbl">alvo 3:00</small></div>
+        <div class="bar"><i id="bar"></i></div>
+        <div class="tbtns">
+          <button class="tbtn" id="startBtn">Iniciar</button>
+          <button class="tbtn sec" id="resetBtn">Zerar</button>
+        </div>
+        <div class="tset">tempo-alvo <input id="mm" type="number" min="0" max="59" value="3">:<input id="ss" type="number" min="0" max="59" value="0"> min</div>
+      </div>
+      <div class="tip">
+        <b>Dica de ritmo:</b> conte devagar. A maioria fala rápido demais ao apresentar. Se estourar o tempo, corte detalhes do começo — nunca a virada nem a mensagem final.
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="storytelling";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const BEATS=[
+    {k:"personagem",n:"Personagem + Contexto",tag:"Era uma vez…",c:"var(--blue)",p:0.20,h:"Quem é o protagonista? Onde e como era a vida antes? Faça o público se identificar."},
+    {k:"objetivo",n:"Objetivo / Desejo",tag:"…queria…",c:"var(--teal)",p:0.10,h:"O que o personagem queria ou precisava? Qual era o sonho ou a meta?"},
+    {k:"conflito",n:"Conflito / Obstáculo",tag:"…mas então…",c:"var(--amber-deep)",p:0.25,h:"O que deu errado? Qual problema, tensão ou inimigo surgiu? É o coração da história."},
+    {k:"virada",n:"Virada / Ação",tag:"…por isso…",c:"var(--red)",p:0.25,h:"O momento de decisão e mudança. O que o personagem fez para enfrentar o conflito?"},
+    {k:"resultado",n:"Resultado / Transformação",tag:"…até que…",c:"var(--green)",p:0.15,h:"Como terminou? O que mudou? Mostre a transformação, não só o final feliz."},
+    {k:"mensagem",n:"Mensagem / Chamada",tag:"…e a lição é…",c:"var(--navy)",p:0.05,h:"Qual o aprendizado? O que você quer que o público sinta ou faça agora?"}
+  ];
+  let D={ titulo:"",gancho:"", beats:{}, alvo:180 }; BEATS.forEach(b=>D.beats[b.k]="");
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+  function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+  function fmt(sec){ sec=Math.max(0,Math.round(sec)); const m=Math.floor(sec/60),s=sec%60; return m+":"+String(s).padStart(2,"0"); }
+  ["titulo","gancho"].forEach(k=>$(k).addEventListener("input",()=>{ D[k]=$(k).value; }));
+
+  function render(){
+    $("beats").innerHTML = BEATS.map((b,i)=>`
+      <div class="beat" style="--bc:${b.c}">
+        <div class="bh"><span class="num">${i+1}</span><b>${b.n}</b><span class="tag">${b.tag}</span><span class="sug" data-sug="${b.k}"></span></div>
+        <div class="hint noprint">${b.h}</div>
+        <textarea data-k="${b.k}" placeholder="Escreva este momento…">${esc(D.beats[b.k]||"")}</textarea>
+      </div>`).join("");
+    $("beats").querySelectorAll("textarea").forEach(t=>t.addEventListener("input",()=>{ D.beats[t.dataset.k]=t.value; }));
+    updateSug();
+  }
+  function updateSug(){ BEATS.forEach(b=>{ const el=document.querySelector('[data-sug="'+b.k+'"]'); if(el) el.textContent="~"+fmt(D.alvo*b.p); }); }
+
+  // ---- cronômetro ----
+  let elapsed=0, running=false, tick=null, beeped=false;
+  function refreshClock(){
+    $("clock").firstChild.textContent=fmt(elapsed);
+    $("alvoLbl").textContent="alvo "+fmt(D.alvo);
+    const frac=D.alvo>0?elapsed/D.alvo:0;
+    $("bar").style.width=Math.min(100,frac*100)+"%";
+    let col=elapsed>D.alvo?"var(--red)":frac>=0.8?"var(--amber)":"var(--green)";
+    $("bar").style.background=col;
+    $("clock").style.color=elapsed>D.alvo?"#F0A6A0":"#EAF0F8";
+  }
+  function beep(){ try{ const a=new (window.AudioContext||window.webkitAudioContext)(); const o=a.createOscillator(),g=a.createGain(); o.connect(g); g.connect(a.destination); o.type="sine"; o.frequency.value=880; g.gain.setValueAtTime(.001,a.currentTime); g.gain.exponentialRampToValueAtTime(.3,a.currentTime+.02); g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.5); o.start(); o.stop(a.currentTime+.5);}catch(e){} if(navigator.vibrate)navigator.vibrate(200); }
+  function start(){ if(running){ running=false; clearInterval(tick); $("startBtn").textContent="Continuar"; return; }
+    running=true; $("startBtn").textContent="Pausar"; const t0=Date.now()-elapsed*1000;
+    tick=setInterval(()=>{ elapsed=(Date.now()-t0)/1000; if(!beeped&&elapsed>=D.alvo&&D.alvo>0){ beeped=true; beep(); } refreshClock(); },200);
+  }
+  function reset(){ running=false; clearInterval(tick); elapsed=0; beeped=false; $("startBtn").textContent="Iniciar"; refreshClock(); }
+  function setAlvo(){ const m=Math.max(0,Math.min(59,parseInt($("mm").value)||0)), s=Math.max(0,Math.min(59,parseInt($("ss").value)||0)); D.alvo=m*60+s; if(elapsed<D.alvo)beeped=false; refreshClock(); updateSug(); }
+  $("startBtn").addEventListener("click",start);
+  $("resetBtn").addEventListener("click",reset);
+  $("mm").addEventListener("input",setAlvo); $("ss").addEventListener("input",setAlvo);
+
+  // ---- backend ----
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); const d=o.dados;
+    if(o.ok&&d&&d.beats){ D={titulo:d.titulo||"",gancho:d.gancho||"",beats:{},alvo:d.alvo||180}; BEATS.forEach(b=>D.beats[b.k]=d.beats[b.k]||"");
+      $("titulo").value=D.titulo; $("gancho").value=D.gancho; $("mm").value=Math.floor(D.alvo/60); $("ss").value=D.alvo%60; render(); refreshClock(); status("carregado ✓"); }
+    else status("nada salvo p/ este grupo"); }
+
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+  $("imprimir").addEventListener("click",()=>window.print());
+  $("limpar").addEventListener("click",()=>{ if(confirm("Limpar a história?")){ D={titulo:"",gancho:"",beats:{},alvo:D.alvo}; BEATS.forEach(b=>D.beats[b.k]=""); $("titulo").value=""; $("gancho").value=""; render(); } });
+
+  // exemplo inicial
+  D={ titulo:"A noite em que tudo mudou", gancho:"Eram 3 da manhã quando o alarme disparou…", alvo:180, beats:{
+    personagem:"Dona Márcia tinha uma pequena rede de lojas e orgulho de cada uma. Trabalhava duro, mas dormia mal.",
+    objetivo:"Só queria uma coisa: sentir que suas lojas estavam seguras mesmo quando ela não estava lá.",
+    conflito:"Numa madrugada, invadiram a loja do centro. Quando soube, o prejuízo já estava feito — e a sensação de impotência foi pior que o dinheiro perdido.",
+    virada:"Ela decidiu que nunca mais seria pega de surpresa. Buscou um monitoramento que respondesse na hora, não no dia seguinte.",
+    resultado:"Semanas depois, um novo alerta soou de madrugada. Desta vez, em minutos a ocorrência foi contida. Márcia soube pela manhã — já resolvida.",
+    mensagem:"Segurança não é sobre câmeras: é sobre dormir tranquilo. E é isso que a gente entrega."
+  }};
+  $("titulo").value=D.titulo; $("gancho").value=D.gancho; render(); refreshClock();
+</script>
+</body>
+</html>
