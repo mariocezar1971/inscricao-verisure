@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6 Armas da Persuasão · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --green:#4E9A51; --blue:#3B6FB0;
+    --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box} html,body{margin:0} [hidden]{display:none!important}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1160px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(59,111,176,.14);color:var(--blue)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:150px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:80px}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:9px 11px}
+  .fld{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+  .fld label{font-size:11px;font-weight:700;color:var(--muted)}
+  .fld input{font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink)}
+  .fld input:focus{outline:none;border-color:var(--amber)}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}}
+  .w{border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;border-top:5px solid var(--wc,var(--teal));background:var(--card)}
+  .w .h{display:flex;align-items:center;gap:10px;padding:11px 13px 6px}
+  .w .h .ic{width:34px;height:34px;border-radius:9px;background:var(--wc,var(--teal));color:#fff;display:grid;place-items:center;font-size:18px;flex:none}
+  .w .h h3{margin:0;font-size:15px;font-family:"Bricolage Grotesque",sans-serif}
+  .w .h .pr{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--wc);font-weight:600}
+  .w .concept{font-size:12.5px;color:var(--ink-2);padding:2px 13px 0;line-height:1.4}
+  .w .ex{font-size:11.5px;color:var(--muted);font-style:italic;padding:6px 13px 0;line-height:1.35}
+  .w .ex b{color:var(--wc);font-style:normal}
+  .w textarea{margin:8px 13px 0;width:calc(100% - 26px);font:inherit;font-size:13px;border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--card);color:var(--ink);resize:vertical;min-height:56px;line-height:1.4}
+  .w textarea:focus{outline:none;border-color:var(--amber)}
+  .w .force{display:flex;gap:5px;padding:9px 13px 12px;margin-top:auto}
+  .w .force button{flex:1;border:1.5px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:6px 4px;cursor:pointer;font:inherit;font-size:11.5px;font-weight:600}
+  .w .force button.on{background:var(--wc);border-color:var(--wc);color:#fff}
+  .summary{margin-top:14px;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow);padding:14px 16px}
+  .summary h3{font-family:"Bricolage Grotesque",sans-serif;font-size:15px;margin:0 0 10px}
+  .cover{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .cover .num{font-family:"Bricolage Grotesque",sans-serif;font-size:30px;line-height:1}
+  .barwrap{flex:1;min-width:180px;height:12px;background:var(--line);border-radius:8px;overflow:hidden}
+  .barwrap i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--amber),var(--green));transition:width .3s}
+  .weak{margin-top:10px;font-size:13px}
+  .weak b{color:var(--red)}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+  .actions .sp{flex:1}
+  .foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+  @media print{ .noprint{display:none!important} body{background:#fff} .wrap{max-width:100%;padding:0}
+    .cards{grid-template-columns:1fr 1fr} .w textarea{min-height:0} @page{size:A4;margin:10mm} }
+</style>
+</head>
+<body>
+<div class="wrap" id="board">
+  <header class="top noprint">
+    <div class="brand"><span class="mk">🎯</span><div><h1>As 6 Armas da Persuasão</h1><p>Cialdini aplicado à sua abordagem · Bloco Vendas</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="fld noprint"><label for="contexto">O que vamos vender e para quem</label>
+    <input id="contexto" placeholder="Ex.: Monitoramento 24h para a Márcia, gerente de operações do varejo"></div>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="summary">
+    <h3>Cobertura de persuasão da nossa abordagem</h3>
+    <div class="cover"><span class="num" id="pct">0%</span><div class="barwrap"><i id="bar"></i></div><span id="pts" style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted)">0/18</span></div>
+    <div class="weak" id="weak"></div>
+  </div>
+
+  <div class="actions noprint">
+    <span class="sp"></span>
+    <button class="btn primary" id="salvar">Salvar</button>
+    <button class="btn ghost sm" id="carregar">Carregar</button>
+    <button class="btn ghost sm" id="png">Baixar PNG</button>
+    <button class="btn ghost sm" id="imprimir">Imprimir / PDF</button>
+    <button class="btn ghost sm" id="limpar">Limpar</button>
+  </div>
+  <p class="foot noprint">Ferramentas do Workshop · Verisure — persuasão ética: use as armas para revelar valor real, nunca para enganar. (Cialdini descreveu depois uma 7ª: a Unidade.)</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="persuasao";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const ARMAS=[
+    {k:"reciprocidade",n:"Reciprocidade",ic:"🎁",c:"var(--teal)",
+      concept:"As pessoas tendem a retribuir o que recebem. Dê valor primeiro.",
+      ex:"<b>Ex.:</b> oferecer uma avaliação de segurança gratuita antes de propor o contrato."},
+    {k:"coerencia",n:"Compromisso & Coerência",ic:"🤝",c:"var(--blue)",
+      concept:"Queremos ser coerentes com o que já assumimos. Comece com pequenos “sins”.",
+      ex:"<b>Ex.:</b> “Proteger o patrimônio é prioridade, certo?” → depois, o grande sim."},
+    {k:"prova",n:"Prova Social",ic:"👥",c:"var(--green)",
+      concept:"Fazemos o que pessoas parecidas conosco fazem. Mostre que outros já escolheram.",
+      ex:"<b>Ex.:</b> “3 das 5 maiores lojas da sua região já usam nosso monitoramento.”"},
+    {k:"autoridade",n:"Autoridade",ic:"🎓",c:"var(--navy)",
+      concept:"Confiamos em especialistas e provas de competência. Demonstre domínio.",
+      ex:"<b>Ex.:</b> certificações, anos de atuação, dados de tempo de resposta, cases reais."},
+    {k:"afinidade",n:"Afinidade (Simpatia)",ic:"💬",c:"var(--amber-deep)",
+      concept:"Dizemos “sim” a quem gostamos. Crie rapport, semelhança e elogio sincero.",
+      ex:"<b>Ex.:</b> ouvir de verdade, encontrar pontos em comum, cooperar em vez de empurrar."},
+    {k:"escassez",n:"Escassez",ic:"⏳",c:"var(--red)",
+      concept:"Valorizamos o raro e o urgente. Torne clara a perda de não agir agora.",
+      ex:"<b>Ex.:</b> “condição especial válida até sexta” ou “poucas vagas de instalação neste mês”."}
+  ];
+  const FORCAS=["Não uso","Fraca","Média","Forte"];
+  let D={ contexto:"", armas:{} }; ARMAS.forEach(a=>D.armas[a.k]={app:"",forca:0});
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+  function esc(s){ return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+  $("contexto").addEventListener("input",()=>{ D.contexto=$("contexto").value; });
+
+  function render(){
+    $("cards").innerHTML=ARMAS.map((a,i)=>{ const st=D.armas[a.k];
+      return `<div class="w" style="--wc:${a.c}">
+        <div class="h"><span class="ic">${a.ic}</span><div><div class="pr">ARMA ${i+1}</div><h3>${a.n}</h3></div></div>
+        <div class="concept">${a.concept}</div>
+        <div class="ex noprint">${a.ex}</div>
+        <textarea data-app="${a.k}" placeholder="Como vamos aplicar isso na nossa abordagem?">${esc(st.app)}</textarea>
+        <div class="force">${FORCAS.map((f,fi)=>`<button data-k="${a.k}" data-f="${fi}" class="${st.forca===fi?'on':''}">${f}</button>`).join("")}</div>
+      </div>`; }).join("");
+    $("cards").querySelectorAll("textarea").forEach(t=>t.addEventListener("input",()=>{ D.armas[t.dataset.app].app=t.value; }));
+    $("cards").querySelectorAll(".force button").forEach(b=>b.addEventListener("click",()=>{ D.armas[b.dataset.k].forca=+b.dataset.f; render(); }));
+    summary();
+  }
+  function summary(){
+    const total=ARMAS.reduce((s,a)=>s+(D.armas[a.k].forca||0),0), max=ARMAS.length*3, pct=Math.round(total/max*100);
+    $("pct").textContent=pct+"%"; $("pts").textContent=total+"/"+max; $("bar").style.width=pct+"%";
+    const fracas=ARMAS.filter(a=>(D.armas[a.k].forca||0)<=1).map(a=>a.n);
+    $("weak").innerHTML = fracas.length
+      ? `Reforçar: <b>${fracas.join(", ")}</b> — ainda pouco presente(s) na abordagem.`
+      : `<span style="color:var(--green)">✓ As 6 armas estão presentes na abordagem. Cuide para que soem naturais, não forçadas.</span>`;
+  }
+
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); const d=o.dados;
+    if(o.ok&&d&&d.armas){ D={contexto:d.contexto||"",armas:{}}; ARMAS.forEach(a=>{ const x=d.armas[a.k]||{}; D.armas[a.k]={app:x.app||"",forca:+x.forca||0}; }); $("contexto").value=D.contexto; render(); status("carregado ✓"); }
+    else status("nada salvo p/ este grupo"); }
+  async function png(){ status("gerando imagem…"); const bg=getComputedStyle(document.body).getPropertyValue('--paper')||'#fff';
+    try{ const cv=await html2canvas($("board"),{scale:2,backgroundColor:bg.trim()||"#fff"}); const a=document.createElement("a"); a.href=cv.toDataURL("image/png"); a.download=("persuasao_"+($("grupo").value.trim()||"grupo")+".png").replace(/\s+/g,"_"); a.click(); status(""); }catch(e){ status("use Imprimir/PDF",false); } }
+
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+  $("png").addEventListener("click",png);
+  $("imprimir").addEventListener("click",()=>window.print());
+  $("limpar").addEventListener("click",()=>{ if(confirm("Limpar tudo?")){ D={contexto:"",armas:{}}; ARMAS.forEach(a=>D.armas[a.k]={app:"",forca:0}); $("contexto").value=""; render(); } });
+
+  // exemplo inicial
+  D={ contexto:"Monitoramento 24h para a Márcia, gerente de operações do varejo", armas:{
+    reciprocidade:{app:"Oferecer uma vistoria de segurança gratuita nas 3 lojas mais críticas.",forca:2},
+    coerencia:{app:"Levá-la a concordar que 'resposta rápida' é o que mais importa, e ancorar a proposta nisso.",forca:2},
+    prova:{app:"Mostrar depoimento de outra rede varejista da região que reduziu perdas.",forca:3},
+    autoridade:{app:"Apresentar tempo médio de resposta e certificações da empresa.",forca:3},
+    afinidade:{app:"Começar ouvindo a rotina dela; encontrar algo em comum antes de falar de produto.",forca:1},
+    escassez:{app:"Condição de instalação sem custo válida só neste mês.",forca:1}
+  }};
+  $("contexto").value=D.contexto; render();
+</script>
+</body>
+</html>
