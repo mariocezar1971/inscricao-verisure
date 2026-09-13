@@ -85,7 +85,7 @@
     <div class="overlay" id="ov">
       <div class="card">
         <h2 id="ovTit">🏁 Rota da Qualidade</h2>
-        <p id="ovMsg">Leve o carro do <b>A</b> (largada) até o <b>B</b> (chegada). Cada metro custa, e bater nos cones custa mais. Chegue com o menor custo!</p>
+        <p id="ovMsg">Leve o carro do <b>A</b> (largada) até o <b>B</b> (chegada) pelo slalom. Cada metro custa, e bater nos espinhos custa mais. Chegue com o menor custo!</p>
         <p class="help">Use as <b>setas</b> do teclado (ou os botões ▲◀▶▼ abaixo, no toque).</p>
         <div class="btns"><button class="btn primary" id="ovBtn">Começar</button></div>
       </div>
@@ -112,7 +112,7 @@
     <button class="btn ghost sm" id="carregar">Carregar</button>
     <span id="tent" style="font-size:12px;color:var(--muted)"></span>
   </div>
-  <p class="foot">Ferramentas do Workshop · Verisure — os cones são a “não qualidade”: cada choque é um custo de retrabalho. Planejar a rota sai mais barato que dirigir no susto.</p>
+  <p class="foot">Ferramentas do Workshop · Verisure — os espinhos são a “não qualidade”: cada choque é um custo de retrabalho. Planejar a rota sai mais barato que dirigir no susto.</p>
 </div>
 
 <script>
@@ -125,14 +125,17 @@
 
   // curso
   const START={x:56,y:260}, FINISH={x:812,y:180,w:70,h:160};
-  const CONES=[
-    [210,120],[210,300],[210,440],
-    [315,60],[315,220],[315,400],
-    [420,140],[420,320],[420,470],
-    [530,80],[530,260],[530,440],
-    [640,160],[640,350],
-    [730,100],[730,300],[730,470]
-  ].map(([x,y])=>({x,y,r:12,touch:false}));
+  // paredes de espinhos (ponta aguda) com um vão que alterna alto/baixo -> slalom em S
+  const COLS=[
+    {x:175,g0:200,g1:360},
+    {x:290,g0:60, g1:210},
+    {x:405,g0:320,g1:480},
+    {x:520,g0:70, g1:230},
+    {x:635,g0:320,g1:480},
+    {x:745,g0:180,g1:340}
+  ];
+  const CONES=[];
+  COLS.forEach(c=>{ for(let y=46;y<=498;y+=42){ if(y<c.g0||y>c.g1) CONES.push({x:c.x,y,r:13,touch:false}); } });
 
   let D={ melhorCusto:null, distancia:0, colisoes:0, tempo:0, tentativas:0, custoM:2, custoColisao:50 };
   let car, keys={up:false,down:false,left:false,right:false}, started=false, finished=false, lastT=0, raf=null;
@@ -149,7 +152,7 @@
     started=false; finished=false; lastT=0;
     updHUD(); draw();
     $("ov").hidden=false; $("ovTit").textContent="🏁 Rota da Qualidade";
-    $("ovMsg").innerHTML="Leve o carro do <b>A</b> (largada) até o <b>B</b> (chegada). Cada metro custa, e bater nos cones custa mais. Chegue com o menor custo!";
+    $("ovMsg").innerHTML="Leve o carro do <b>A</b> (largada) até o <b>B</b> (chegada) pelo slalom. Cada metro custa, e bater nos espinhos custa mais. Chegue com o menor custo!";
     $("ovBtn").textContent="Começar"; $("ovBtn").onclick=begin;
   }
   function begin(){ $("ov").hidden=true; if(!started){ started=true; D.tentativas++; $("tent").textContent="tentativa "+D.tentativas; } lastT=performance.now(); loop(lastT); }
@@ -164,16 +167,16 @@
     if(!finished) raf=requestAnimationFrame(loop);
   }
 
-  const ACC=340, MAXF=270, MAXR=-130, STEER=2.9, RCAR=13;
+  const ACC=470, BRAKE=560, MAXF=310, MAXR=-150, STEER=3.7, RCAR=13;
   function step(dt){
-    // aceleração
-    if(keys.up) car.sp += ACC*dt; else if(keys.down) car.sp -= ACC*dt;
-    else { // atrito
-      if(car.sp>0){ car.sp=Math.max(0,car.sp-220*dt); } else if(car.sp<0){ car.sp=Math.min(0,car.sp+220*dt); }
+    // aceleração / freio mais responsivos
+    if(keys.up) car.sp += ACC*dt; else if(keys.down) car.sp -= BRAKE*dt;
+    else { // atrito (leve, para o carro não parar seco)
+      if(car.sp>0){ car.sp=Math.max(0,car.sp-160*dt); } else if(car.sp<0){ car.sp=Math.min(0,car.sp+160*dt); }
     }
     car.sp=Math.max(MAXR,Math.min(MAXF,car.sp));
-    // direção (só vira em movimento; inverte ao dar ré)
-    const grip=Math.min(1,Math.abs(car.sp)/70);
+    // direção ágil: quase toda a agilidade já com pouca velocidade
+    const grip=Math.min(1,0.45+Math.abs(car.sp)/60);
     if(keys.left) car.a -= STEER*grip*dt*(car.sp<0?-1:1);
     if(keys.right) car.a += STEER*grip*dt*(car.sp<0?-1:1);
     // movimento
@@ -206,9 +209,11 @@
     const F=FINISH, sq=16;
     for(let yy=0; yy<F.h; yy+=sq){ for(let xx=0; xx<F.w; xx+=sq){ ctx.fillStyle=((xx/sq+yy/sq)%2===0)?"#EAF0F8":"#33415A"; ctx.fillRect(F.x+xx,F.y+yy,sq,sq); } }
     ctx.fillStyle="#132542"; ctx.font='bold 22px "Bricolage Grotesque"'; ctx.fillText("B",F.x+F.w/2,F.y-8);
-    // cones
-    CONES.forEach(c=>{ ctx.fillStyle=c.touch?"#C0392B":"#E8A33D"; ctx.beginPath(); ctx.arc(c.x,c.y,c.r,0,7); ctx.fill();
-      ctx.fillStyle="rgba(255,255,255,.35)"; ctx.beginPath(); ctx.arc(c.x,c.y,c.r*0.55,0,7); ctx.fill(); });
+    // espinhos (ponta aguda)
+    CONES.forEach(c=>{ const r=c.r+2; ctx.fillStyle=c.touch?"#C0392B":"#E8A33D"; ctx.strokeStyle=c.touch?"#7a2018":"#8a5a10"; ctx.lineWidth=1.5;
+      ctx.beginPath();
+      for(let i=0;i<8;i++){ const ang=-Math.PI/2 + i*Math.PI/4; const rad=(i%2===0)?r:r*0.42; const px=c.x+Math.cos(ang)*rad, py=c.y+Math.sin(ang)*rad; i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
+      ctx.closePath(); ctx.fill(); ctx.stroke(); });
     // carro
     if(car){ ctx.save(); ctx.translate(car.x,car.y); ctx.rotate(car.a);
       ctx.fillStyle=flash>0?"#C0392B":"#2C8C89"; roundRect(ctx,-15,-9,30,18,4); ctx.fill();
