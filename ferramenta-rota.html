@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rota da Qualidade · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --navy-2:#0B1526; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --green:#4E9A51; --blue:#3B6FB0;
+    --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; --navy-2:#070E1B; } }
+  *{box-sizing:border-box} html,body{margin:0} [hidden]{display:none!important}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1000px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(44,140,137,.15);color:var(--teal)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:140px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:70px}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:9px 11px}
+  /* HUD */
+  .hud{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .kpi{flex:1;min-width:96px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;box-shadow:var(--shadow)}
+  .kpi .k{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+  .kpi .v{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:20px}
+  .kpi.cost .v{color:var(--amber-deep)} .kpi.col .v{color:var(--red)} .kpi.best .v{color:var(--green);font-size:16px}
+  /* arena */
+  .stage{position:relative;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);background:#1c2436}
+  canvas{display:block;width:100%;height:auto;background:#1c2436}
+  .overlay{position:absolute;inset:0;display:grid;place-items:center;background:rgba(11,21,38,.72);color:#EAF0F8;text-align:center;padding:20px}
+  .overlay .card{background:var(--card);color:var(--ink);border-radius:16px;padding:20px 22px;max-width:380px;box-shadow:var(--shadow)}
+  .overlay h2{font-family:"Bricolage Grotesque",sans-serif;margin:0 0 6px;font-size:20px}
+  .overlay p{margin:6px 0;font-size:13.5px;color:var(--ink-2)}
+  .overlay .big{font-family:"Bricolage Grotesque",sans-serif;font-size:34px;color:var(--amber-deep);margin:6px 0}
+  .overlay .brk{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--muted);margin:8px 0}
+  .overlay .newbest{color:var(--green);font-weight:700}
+  .overlay .btns{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+  /* controles touch */
+  .pad{display:none;grid-template-columns:repeat(3,54px);grid-template-rows:repeat(2,54px);gap:6px;justify-content:center;margin:12px auto 0}
+  .pad button{border:none;background:var(--navy);color:#EAF0F8;border-radius:12px;font-size:20px;font-weight:700;cursor:pointer;user-select:none;touch-action:none}
+  .pad button:active{background:var(--amber);color:#20160A}
+  .pad .up{grid-column:2;grid-row:1} .pad .left{grid-column:1;grid-row:2} .pad .down{grid-column:2;grid-row:2} .pad .right{grid-column:3;grid-row:2}
+  @media(hover:none) and (pointer:coarse){ .pad{display:grid} }
+  .cfg{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .cfg .fld{display:flex;flex-direction:column;gap:3px}
+  .cfg .fld label{font-size:10.5px;font-weight:700;color:var(--muted)}
+  .cfg .fld input{width:80px;font:inherit;font-family:"IBM Plex Mono",monospace;font-size:14px;border:1.5px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--card);color:var(--ink)}
+  .cfg .fld input:focus{outline:none;border-color:var(--amber)}
+  .cfg .sp{flex:1}
+  .help{font-size:12px;color:var(--muted);margin-top:8px}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+  .actions .sp{flex:1}
+  .foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="mk">🚗</span><div><h1>Rota da Qualidade</h1><p>Do ponto A ao B com o menor custo · Jogo/Dinâmica</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="hud">
+    <div class="kpi"><div class="k">Distância</div><div class="v"><span id="dist">0</span> m</div></div>
+    <div class="kpi col"><div class="k">Colisões</div><div class="v" id="col">0</div></div>
+    <div class="kpi"><div class="k">Tempo</div><div class="v"><span id="tempo">0.0</span> s</div></div>
+    <div class="kpi cost"><div class="k">Custo</div><div class="v">R$ <span id="custo">0</span></div></div>
+    <div class="kpi best"><div class="k">Melhor do grupo</div><div class="v" id="best">—</div></div>
+  </div>
+
+  <div class="stage">
+    <canvas id="cv" width="900" height="520"></canvas>
+    <div class="overlay" id="ov">
+      <div class="card">
+        <h2 id="ovTit">🏁 Rota da Qualidade</h2>
+        <p id="ovMsg">Leve o carro do <b>A</b> (largada) até o <b>B</b> (chegada). Cada metro custa, e bater nos cones custa mais. Chegue com o menor custo!</p>
+        <p class="help">Use as <b>setas</b> do teclado (ou os botões ▲◀▶▼ abaixo, no toque).</p>
+        <div class="btns"><button class="btn primary" id="ovBtn">Começar</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pad" id="pad">
+    <button class="up" data-key="up">▲</button>
+    <button class="left" data-key="left">◀</button>
+    <button class="down" data-key="down">▼</button>
+    <button class="right" data-key="right">▶</button>
+  </div>
+
+  <div class="cfg">
+    <div class="fld"><label for="cm">Custo por metro (R$)</label><input id="cm" type="number" min="0" step="0.5" value="2"></div>
+    <div class="fld"><label for="cc">Custo por colisão (R$)</label><input id="cc" type="number" min="0" step="5" value="50"></div>
+    <div class="sp"></div>
+    <button class="btn ghost sm" id="reiniciar">Reiniciar corrida</button>
+  </div>
+
+  <div class="actions">
+    <span class="sp"></span>
+    <button class="btn primary" id="salvar">Salvar melhor resultado</button>
+    <button class="btn ghost sm" id="carregar">Carregar</button>
+    <span id="tent" style="font-size:12px;color:var(--muted)"></span>
+  </div>
+  <p class="foot">Ferramentas do Workshop · Verisure — os cones são a “não qualidade”: cada choque é um custo de retrabalho. Planejar a rota sai mais barato que dirigir no susto.</p>
+</div>
+
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="rota";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const W=900,H=520, PXPM=11; // 11 px = 1 m
+  const cv=$("cv"), ctx=cv.getContext("2d");
+
+  // curso
+  const START={x:56,y:260}, FINISH={x:812,y:180,w:70,h:160};
+  const CONES=[
+    [210,120],[210,300],[210,440],
+    [315,60],[315,220],[315,400],
+    [420,140],[420,320],[420,470],
+    [530,80],[530,260],[530,440],
+    [640,160],[640,350],
+    [730,100],[730,300],[730,470]
+  ].map(([x,y])=>({x,y,r:12,touch:false}));
+
+  let D={ melhorCusto:null, distancia:0, colisoes:0, tempo:0, tentativas:0, custoM:2, custoColisao:50 };
+  let car, keys={up:false,down:false,left:false,right:false}, started=false, finished=false, lastT=0, raf=null;
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+  const custoM=()=>Math.max(0,parseFloat($("cm").value)||0);
+  const custoC=()=>Math.max(0,parseFloat($("cc").value)||0);
+
+  function reset(){
+    car={ x:START.x, y:START.y, a:0, sp:0, dist:0, col:0, t:0 };
+    CONES.forEach(c=>c.touch=false);
+    started=false; finished=false; lastT=0;
+    updHUD(); draw();
+    $("ov").hidden=false; $("ovTit").textContent="🏁 Rota da Qualidade";
+    $("ovMsg").innerHTML="Leve o carro do <b>A</b> (largada) até o <b>B</b> (chegada). Cada metro custa, e bater nos cones custa mais. Chegue com o menor custo!";
+    $("ovBtn").textContent="Começar"; $("ovBtn").onclick=begin;
+  }
+  function begin(){ $("ov").hidden=true; if(!started){ started=true; D.tentativas++; $("tent").textContent="tentativa "+D.tentativas; } lastT=performance.now(); loop(lastT); }
+
+  function custoAtual(){ const m=Math.round(car.dist/PXPM); return Math.round(m*custoM() + car.col*custoC()); }
+  function updHUD(){ $("dist").textContent=Math.round(car.dist/PXPM); $("col").textContent=car.col; $("tempo").textContent=car.t.toFixed(1); $("custo").textContent=custoAtual().toLocaleString("pt-BR"); $("best").textContent=D.melhorCusto==null?"—":("R$ "+D.melhorCusto.toLocaleString("pt-BR")); }
+
+  function loop(now){
+    let dt=(now-lastT)/1000; lastT=now; if(dt>0.05)dt=0.05;
+    if(started && !finished){ step(dt); car.t+=dt; }
+    draw(); updHUD();
+    if(!finished) raf=requestAnimationFrame(loop);
+  }
+
+  const ACC=340, MAXF=270, MAXR=-130, STEER=2.9, RCAR=13;
+  function step(dt){
+    // aceleração
+    if(keys.up) car.sp += ACC*dt; else if(keys.down) car.sp -= ACC*dt;
+    else { // atrito
+      if(car.sp>0){ car.sp=Math.max(0,car.sp-220*dt); } else if(car.sp<0){ car.sp=Math.min(0,car.sp+220*dt); }
+    }
+    car.sp=Math.max(MAXR,Math.min(MAXF,car.sp));
+    // direção (só vira em movimento; inverte ao dar ré)
+    const grip=Math.min(1,Math.abs(car.sp)/70);
+    if(keys.left) car.a -= STEER*grip*dt*(car.sp<0?-1:1);
+    if(keys.right) car.a += STEER*grip*dt*(car.sp<0?-1:1);
+    // movimento
+    const nx=car.x+Math.cos(car.a)*car.sp*dt, ny=car.y+Math.sin(car.a)*car.sp*dt;
+    car.dist+=Math.abs(car.sp)*dt;
+    car.x=Math.max(RCAR,Math.min(W-RCAR,nx)); car.y=Math.max(RCAR,Math.min(H-RCAR,ny));
+    if(car.x!==nx||car.y!==ny) car.sp*=0.5; // bateu na parede: freia (sem multa)
+    // colisões com cones
+    CONES.forEach(c=>{ const dx=car.x-c.x, dy=car.y-c.y, d=Math.hypot(dx,dy);
+      if(d < RCAR+c.r){ if(!c.touch){ c.touch=true; car.col++; car.sp*=-0.35; flash=1; } }
+      else if(d > RCAR+c.r+6) c.touch=false; });
+    // chegada
+    if(car.x>FINISH.x && car.y>FINISH.y && car.y<FINISH.y+FINISH.h){ finish(); }
+  }
+
+  let flash=0;
+  function draw(){
+    const dpr=window.devicePixelRatio||1, cssW=cv.clientWidth||W;
+    cv.width=W*dpr; cv.height=H*dpr; cv.style.height=(H*(cssW/W))+"px"; ctx.setTransform(dpr,0,0,dpr,0,0);
+    // fundo
+    ctx.fillStyle="#1c2436"; ctx.fillRect(0,0,W,H);
+    // grade
+    ctx.strokeStyle="rgba(255,255,255,.05)"; ctx.lineWidth=1;
+    for(let x=0;x<W;x+=40){ ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke(); }
+    for(let y=0;y<H;y+=40){ ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke(); }
+    // largada A
+    ctx.fillStyle="rgba(78,154,81,.18)"; ctx.beginPath(); ctx.arc(START.x,START.y,34,0,7); ctx.fill();
+    ctx.fillStyle="#4E9A51"; ctx.font='bold 22px "Bricolage Grotesque"'; ctx.textAlign="center"; ctx.fillText("A",START.x,START.y+8);
+    // chegada B (xadrez)
+    const F=FINISH, sq=16;
+    for(let yy=0; yy<F.h; yy+=sq){ for(let xx=0; xx<F.w; xx+=sq){ ctx.fillStyle=((xx/sq+yy/sq)%2===0)?"#EAF0F8":"#33415A"; ctx.fillRect(F.x+xx,F.y+yy,sq,sq); } }
+    ctx.fillStyle="#132542"; ctx.font='bold 22px "Bricolage Grotesque"'; ctx.fillText("B",F.x+F.w/2,F.y-8);
+    // cones
+    CONES.forEach(c=>{ ctx.fillStyle=c.touch?"#C0392B":"#E8A33D"; ctx.beginPath(); ctx.arc(c.x,c.y,c.r,0,7); ctx.fill();
+      ctx.fillStyle="rgba(255,255,255,.35)"; ctx.beginPath(); ctx.arc(c.x,c.y,c.r*0.55,0,7); ctx.fill(); });
+    // carro
+    if(car){ ctx.save(); ctx.translate(car.x,car.y); ctx.rotate(car.a);
+      ctx.fillStyle=flash>0?"#C0392B":"#2C8C89"; roundRect(ctx,-15,-9,30,18,4); ctx.fill();
+      ctx.fillStyle="#EAF0F8"; ctx.fillRect(6,-6,6,12); // nariz/farol
+      ctx.restore(); if(flash>0)flash-=0.08; }
+  }
+  function roundRect(c,x,y,w,h,r){ c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
+
+  function finish(){
+    finished=true; const custo=custoAtual(); const novo=(D.melhorCusto==null||custo<D.melhorCusto);
+    if(novo) D.melhorCusto=custo;
+    D.distancia=Math.round(car.dist/PXPM); D.colisoes=car.col; D.tempo=Math.round(car.t*10)/10; D.custoM=custoM(); D.custoColisao=custoC();
+    updHUD();
+    $("ov").hidden=false; $("ovTit").textContent="🏁 Chegou ao B!";
+    $("ovMsg").innerHTML=`<span class="big">R$ ${custo.toLocaleString("pt-BR")}</span><br>`+
+      `<span class="brk">${D.distancia} m × R$ ${custoM()} = R$ ${Math.round(D.distancia*custoM()).toLocaleString("pt-BR")}<br>${car.col} colisões × R$ ${custoC()} = R$ ${(car.col*custoC()).toLocaleString("pt-BR")}<br>tempo: ${D.tempo}s</span>`+
+      (novo?`<br><span class="newbest">★ Novo melhor do grupo!</span>`:`<br>melhor do grupo: R$ ${D.melhorCusto.toLocaleString("pt-BR")}`);
+    $("ovBtn").textContent="Correr de novo"; $("ovBtn").onclick=()=>{ reset(); begin(); };
+  }
+
+  // controles
+  const KM={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right",w:"up",s:"down",a:"left",d:"right",W:"up",S:"down",A:"left",D:"right"};
+  window.addEventListener("keydown",e=>{ const k=KM[e.key]; if(k){ e.preventDefault(); keys[k]=true; if(!started&&!finished){ $("ovBtn").click(); } } });
+  window.addEventListener("keyup",e=>{ const k=KM[e.key]; if(k){ keys[k]=false; } });
+  $("pad").querySelectorAll("button").forEach(b=>{ const k=b.dataset.key;
+    const on=(e)=>{ e.preventDefault(); keys[k]=true; if(!started&&!finished)$("ovBtn").click(); };
+    const off=(e)=>{ e.preventDefault(); keys[k]=false; };
+    b.addEventListener("pointerdown",on); b.addEventListener("pointerup",off); b.addEventListener("pointerleave",off); b.addEventListener("pointercancel",off); });
+
+  $("reiniciar").addEventListener("click",reset);
+  $("cm").addEventListener("input",updHUD); $("cc").addEventListener("input",updHUD);
+
+  // backend
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} if(D.melhorCusto==null){status("corra até o B primeiro",false);return;}
+    $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); const d=o.dados;
+    if(o.ok&&d&&typeof d.melhorCusto!=="undefined"){ D.melhorCusto=d.melhorCusto; D.tentativas=d.tentativas||0; D.distancia=d.distancia||0; D.colisoes=d.colisoes||0; D.tempo=d.tempo||0;
+      if(d.custoM)$("cm").value=d.custoM; if(d.custoColisao)$("cc").value=d.custoColisao; $("tent").textContent=D.tentativas?("tentativas: "+D.tentativas):""; updHUD(); status("carregado ✓"); }
+    else status("nada salvo p/ este grupo"); }
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+
+  reset();
+</script>
+</body>
+</html>
