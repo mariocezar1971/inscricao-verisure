@@ -85,7 +85,7 @@
     <div class="overlay" id="ov">
       <div class="card">
         <h2 id="ovTit">🏁 Rota da Qualidade</h2>
-        <p id="ovMsg">Leve o carro do <b>A</b> (largada) até o <b>B</b> (chegada) pelo slalom. Cada metro custa, e bater nos espinhos custa mais. Chegue com o menor custo!</p>
+        <p id="ovMsg">Leve o carro do <b>A</b> (largada) até o <b>B</b> (chegada) pelo slalom. Cada metro custa, e bater nos obstáculos custa mais. Chegue com o menor custo!</p>
         <p class="help">Use as <b>setas</b> do teclado (ou os botões ▲◀▶▼ abaixo, no toque).</p>
         <div class="btns"><button class="btn primary" id="ovBtn">Começar</button></div>
       </div>
@@ -113,7 +113,7 @@
     <button class="btn ghost sm" id="carregar">Carregar</button>
     <span id="tent" style="font-size:12px;color:var(--muted)"></span>
   </div>
-  <p class="foot">Ferramentas do Workshop · Verisure — os espinhos são a “não qualidade”: cada choque é um custo de retrabalho. Planejar a rota sai mais barato que dirigir no susto.</p>
+  <p class="foot">Ferramentas do Workshop · Verisure — os obstáculos são a “não qualidade”: cada choque é um custo de retrabalho. Planejar a rota sai mais barato que dirigir no susto.</p>
 </div>
 
 <script>
@@ -122,10 +122,11 @@
   const $=(id)=>document.getElementById(id);
   const GKEY="verisure_grupo";
   const W=900,H=520, PXPM=11; // 11 px = 1 m
+  const WALLT=40, WALLB=40;   // faixas superior e inferior bloqueadas
   const cv=$("cv"), ctx=cv.getContext("2d");
 
   // curso
-  const START={x:56,y:260}, FINISH={x:812,y:180,w:70,h:160};
+  const START={x:56,y:460}, FINISH={x:826,y:58,w:56,h:78};
   // percurso aleatório (semeado pelo grupo) — paredes de espinhos grandes com vão que varia
   let CONES=[], seedBump=0;
   function hashStr(s){ let h=2166136261>>>0; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; }
@@ -133,13 +134,17 @@
   function genCourse(){
     const seed=($("grupo").value.trim()||"rota")+"#"+seedBump;
     const rng=mulberry32(hashStr(seed));
-    const COLS=8, X0=140, X1=775, SP=18, GAPH=120, out=[];
-    let prev=260;
-    for(let i=0;i<COLS;i++){
-      const x=Math.round(X0+(X1-X0)*i/(COLS-1));
-      let c=prev+(rng()*2-1)*160; c=Math.max(140,Math.min(380,c)); prev=c;
-      const g0=c-GAPH/2, g1=c+GAPH/2;
-      for(let y=42;y<=500;y+=36){ if(y<g0||y>g1) out.push({x,y,r:SP,touch:false}); }
+    const RMIN=16, RMAX=27, GAP=44, TARGET=999, X0=104, X1=800, MY=WALLT, out=[];
+    let tries=0;
+    while(out.length<TARGET && tries<60000){
+      tries++;
+      const r=RMIN+rng()*(RMAX-RMIN);
+      const x=X0+r+rng()*(X1-X0-2*r), y=MY+r+rng()*(H-2*MY-2*r);
+      if(Math.hypot(x-START.x,y-START.y)<100+r) continue;                     // largada livre
+      if(x>772-r && y>6-r && y<198+r) continue; // chegada livre (zona fixa — obstáculos não mudam)
+      let ok=true; for(const o of out){ if(Math.hypot(x-o.x,y-o.y) < o.r+r+GAP){ ok=false; break; } }
+      if(!ok) continue;
+      out.push({x,y,r,rot:rng()*Math.PI*2,touch:false});
     }
     return out;
   }
@@ -155,11 +160,11 @@
 
   function reset(){
     CONES=genCourse();
-    car={ x:START.x, y:START.y, a:0, sp:0, dist:0, col:0, t:0 };
+    car={ x:START.x, y:START.y, a:-Math.PI/4, sp:0, dist:0, col:0, t:0 };
     started=false; finished=false; lastT=0;
     updHUD(); draw();
     $("ov").hidden=false; $("ovTit").textContent="🏁 Rota da Qualidade";
-    $("ovMsg").innerHTML="Leve o carro do <b>A</b> (largada) até o <b>B</b> (chegada) pelo slalom. Cada metro custa, e bater nos espinhos custa mais. Chegue com o menor custo!";
+    $("ovMsg").innerHTML="Leve o carro do <b>A</b> (largada) até o <b>B</b> (chegada) pelo slalom. Cada metro custa, e bater nos obstáculos custa mais. Chegue com o menor custo!";
     $("ovBtn").textContent="Começar"; $("ovBtn").onclick=begin;
   }
   function begin(){ $("ov").hidden=true; if(!started){ started=true; D.tentativas++; $("tent").textContent="tentativa "+D.tentativas; } lastT=performance.now(); loop(lastT); }
@@ -174,7 +179,7 @@
     if(!finished) raf=requestAnimationFrame(loop);
   }
 
-  const ACC=470, BRAKE=560, MAXF=310, MAXR=-150, STEER=3.7, RCAR=13;
+  const ACC=470, BRAKE=560, MAXF=310, MAXR=-150, STEER=3.7, RCAR=19;
   function step(dt){
     // aceleração / freio mais responsivos
     if(keys.up) car.sp += ACC*dt; else if(keys.down) car.sp -= BRAKE*dt;
@@ -189,7 +194,7 @@
     // movimento
     const nx=car.x+Math.cos(car.a)*car.sp*dt, ny=car.y+Math.sin(car.a)*car.sp*dt;
     car.dist+=Math.abs(car.sp)*dt;
-    car.x=Math.max(RCAR,Math.min(W-RCAR,nx)); car.y=Math.max(RCAR,Math.min(H-RCAR,ny));
+    car.x=Math.max(RCAR,Math.min(W-RCAR,nx)); car.y=Math.max(WALLT+RCAR,Math.min(H-WALLB-RCAR,ny));
     if(car.x!==nx||car.y!==ny) car.sp*=0.5; // bateu na parede: freia (sem multa)
     // colisões com cones
     CONES.forEach(c=>{ const dx=car.x-c.x, dy=car.y-c.y, d=Math.hypot(dx,dy);
@@ -209,6 +214,8 @@
     ctx.strokeStyle="rgba(255,255,255,.05)"; ctx.lineWidth=1;
     for(let x=0;x<W;x+=40){ ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke(); }
     for(let y=0;y<H;y+=40){ ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke(); }
+    // barreiras (faixas bloqueadas) topo e base
+    hazardBar(0,0,W,WALLT); hazardBar(0,H-WALLB,W,WALLB);
     // largada A
     ctx.fillStyle="rgba(78,154,81,.18)"; ctx.beginPath(); ctx.arc(START.x,START.y,34,0,7); ctx.fill();
     ctx.fillStyle="#4E9A51"; ctx.font='bold 22px "Bricolage Grotesque"'; ctx.textAlign="center"; ctx.fillText("A",START.x,START.y+8);
@@ -216,18 +223,24 @@
     const F=FINISH, sq=16;
     for(let yy=0; yy<F.h; yy+=sq){ for(let xx=0; xx<F.w; xx+=sq){ ctx.fillStyle=((xx/sq+yy/sq)%2===0)?"#EAF0F8":"#33415A"; ctx.fillRect(F.x+xx,F.y+yy,sq,sq); } }
     ctx.fillStyle="#132542"; ctx.font='bold 22px "Bricolage Grotesque"'; ctx.fillText("B",F.x+F.w/2,F.y-8);
-    // espinhos (ponta aguda)
-    CONES.forEach(c=>{ const r=c.r+2; ctx.fillStyle=c.touch?"#C0392B":"#E8A33D"; ctx.strokeStyle=c.touch?"#7a2018":"#8a5a10"; ctx.lineWidth=1.5;
+    // obstáculos triangulares (dispersos)
+    CONES.forEach(c=>{ const r=c.r+2, rot=c.rot||0; ctx.fillStyle=c.touch?"#C0392B":"#E8A33D"; ctx.strokeStyle=c.touch?"#7a2018":"#8a5a10"; ctx.lineWidth=2; ctx.lineJoin="round";
       ctx.beginPath();
-      for(let i=0;i<8;i++){ const ang=-Math.PI/2 + i*Math.PI/4; const rad=(i%2===0)?r:r*0.42; const px=c.x+Math.cos(ang)*rad, py=c.y+Math.sin(ang)*rad; i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
+      for(let i=0;i<3;i++){ const ang=rot - Math.PI/2 + i*2*Math.PI/3; const px=c.x+Math.cos(ang)*r, py=c.y+Math.sin(ang)*r; i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
       ctx.closePath(); ctx.fill(); ctx.stroke(); });
     // carro
     if(car){ ctx.save(); ctx.translate(car.x,car.y); ctx.rotate(car.a);
-      ctx.fillStyle=flash>0?"#C0392B":"#2C8C89"; roundRect(ctx,-15,-9,30,18,4); ctx.fill();
-      ctx.fillStyle="#EAF0F8"; ctx.fillRect(6,-6,6,12); // nariz/farol
+      ctx.fillStyle=flash>0?"#C0392B":"#2C8C89"; roundRect(ctx,-23,-13,46,26,6); ctx.fill();
+      ctx.fillStyle="#EAF0F8"; ctx.fillRect(10,-8,8,16); // nariz/farol
       ctx.restore(); if(flash>0)flash-=0.08; }
   }
   function roundRect(c,x,y,w,h,r){ c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
+  function hazardBar(x,y,w,h){ ctx.save(); ctx.beginPath(); ctx.rect(x,y,w,h); ctx.clip();
+    ctx.fillStyle="#0B1526"; ctx.fillRect(x,y,w,h);
+    ctx.strokeStyle="rgba(232,163,61,.5)"; ctx.lineWidth=9;
+    for(let i=-h;i<w+h;i+=24){ ctx.beginPath(); ctx.moveTo(x+i,y); ctx.lineTo(x+i+h,y+h); ctx.stroke(); }
+    ctx.restore(); ctx.strokeStyle="#E8A33D"; ctx.lineWidth=2; ctx.beginPath();
+    const iy=(y===0)?y+h:y; ctx.moveTo(x,iy); ctx.lineTo(x+w,iy); ctx.stroke(); }
 
   function finish(){
     finished=true; const custo=custoAtual(); const novo=(D.melhorCusto==null||custo<D.melhorCusto);
