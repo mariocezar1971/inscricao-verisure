@@ -134,14 +134,14 @@
   function genCourse(){
     const seed=($("grupo").value.trim()||"rota")+"#"+seedBump;
     const rng=mulberry32(hashStr(seed));
-    const RMIN=16, RMAX=27, GAP=44, TARGET=999, X0=104, X1=800, MY=WALLT, out=[];
+    const RMIN=16, RMAX=29, GAP=40, TARGET=999, X0=48, X1=858, MY=WALLT, out=[];
     let tries=0;
     while(out.length<TARGET && tries<60000){
       tries++;
       const r=RMIN+rng()*(RMAX-RMIN);
       const x=X0+r+rng()*(X1-X0-2*r), y=MY+r+rng()*(H-2*MY-2*r);
-      if(Math.hypot(x-START.x,y-START.y)<100+r) continue;                     // largada livre
-      if(x>772-r && y>6-r && y<198+r) continue; // chegada livre (zona fixa — obstáculos não mudam)
+      if(Math.hypot(x-START.x,y-START.y)<64+r) continue;   // só um bolsão pequeno na largada
+      if(x>800-r && y<150+r) continue;                     // só o cantinho do B (bandeira) livre
       let ok=true; for(const o of out){ if(Math.hypot(x-o.x,y-o.y) < o.r+r+GAP){ ok=false; break; } }
       if(!ok) continue;
       out.push({x,y,r,rot:rng()*Math.PI*2,touch:false});
