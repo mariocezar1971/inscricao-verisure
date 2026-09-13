@@ -25,6 +25,29 @@
   .grpbox input::placeholder{color:#9FB1C8}
   .grpbox input:focus{outline:none;border-color:var(--amber)}
   .grpbox .hint{font-size:12px;color:#9FB1C8}
+  .grpbox input[readonly]{opacity:.9;border-style:dashed;cursor:not-allowed}
+
+  details.facil{max-width:1000px;margin:6px auto 0;padding:0 22px}
+  details.facil>summary{cursor:pointer;font-size:12.5px;color:var(--muted);font-weight:600;list-style:none}
+  details.facil>summary::-webkit-details-marker{display:none}
+  details.facil>summary::before{content:"⚙ "}
+  .fbd{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:10px}
+  .fbd .row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:6px}
+  .fbd label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:var(--ink-2)}
+  .fbd input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--card);color:var(--ink)}
+  .fbd .btn{border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px;background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .fbd .btn.g{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .qrs{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-top:10px}
+  .qrcard{border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;background:#fff;break-inside:avoid}
+  .qrcard .qrt{font-weight:700;font-size:14px;color:#132542;margin-bottom:8px}
+  .qrcard .qrimg{display:flex;justify-content:center}
+  .qrcard .qrl{display:inline-block;margin-top:8px;font-size:10px;color:var(--amber-deep);word-break:break-all}
+  @media print{
+    body.printqr>*{display:none!important}
+    body.printqr>details.facil{display:block!important;padding:0}
+    body.printqr details.facil>summary,body.printqr .fbd .row{display:none!important}
+    body.printqr .fbd{border:none;padding:0}
+  }
 
   h2.block{font-family:"Bricolage Grotesque",sans-serif;font-size:16px;margin:26px 0 12px;color:var(--ink-2)}
   h2.block span{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);letter-spacing:.1em}
@@ -47,9 +70,11 @@
       <h1>Ferramentas do treinamento</h1>
       <p>Abra a ferramenta do bloco, trabalhe em grupo e salve/exporte o resultado.</p>
       <div class="grpbox">
-        <label for="grupo">Nome do seu grupo</label>
-        <input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off">
-        <span class="hint">usado para salvar e recuperar o trabalho — combine com os colegas</span>
+        <label for="sala">Sala</label>
+        <input id="sala" placeholder="ex.: VERISURE" autocomplete="off" style="min-width:130px">
+        <label for="grupo">Grupo</label>
+        <input id="grupo" placeholder="ex.: Grupo 1" autocomplete="off">
+        <span class="hint" id="idhint">o facilitador informa a sala; escolha o seu grupo</span>
       </div>
     </div>
   </div>
@@ -132,13 +157,65 @@
         <div class="go">Abrir →</div></a>
     </div>
 
-    <p class="foot">O nome do grupo fica salvo neste navegador e é reaproveitado em todas as ferramentas.</p>
+    <p class="foot">A identidade (Sala · Grupo) fica salva neste navegador e é reaproveitada em todas as ferramentas.</p>
   </div>
 
+  <details class="facil">
+    <summary>Facilitador — gerar links e QR das mesas (para os grupos entrarem sem digitar)</summary>
+    <div class="fbd">
+      <div class="row">
+        <label>Sala <input id="fSala" value="VERISURE"></label>
+        <label>Nº de grupos <input id="fN" type="number" min="1" max="20" value="6" style="width:90px"></label>
+        <button class="btn" id="fGen">Gerar</button>
+        <button class="btn g" id="fPrint">🖨 Imprimir QRs</button>
+      </div>
+      <p class="hint" style="color:var(--muted);font-size:12px;margin:2px 0 0">Cada grupo escaneia o QR da sua mesa e entra já com a identidade certa. Imprima e coloque um em cada mesa.</p>
+      <div id="fOut" class="qrs"></div>
+    </div>
+  </details>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-  var G="verisure_grupo", el=document.getElementById("grupo");
-  try{ el.value=localStorage.getItem(G)||""; }catch(e){}
-  el.addEventListener("input",function(){ try{ localStorage.setItem(G, el.value.trim()); }catch(e){} });
+  var G="verisure_grupo", SALA_K="verisure_sala", GRP_K="verisure_grnome";
+  var qs=new URLSearchParams(location.search);
+  var elS=document.getElementById("sala"), elG=document.getElementById("grupo"), hint=document.getElementById("idhint");
+  var uSala=qs.get("sala"), uGrupo=qs.get("grupo");
+  try{
+    elS.value = uSala!=null ? uSala : (localStorage.getItem(SALA_K)||"");
+    elG.value = uGrupo!=null ? uGrupo : (localStorage.getItem(GRP_K)||"");
+  }catch(e){}
+  function compose(){
+    var s=elS.value.trim(), g=elG.value.trim();
+    var full = s ? (g? s+" · "+g : s) : g;
+    try{ localStorage.setItem(G, full); localStorage.setItem(SALA_K,s); localStorage.setItem(GRP_K,g); }catch(e){}
+    hint.textContent = full ? ("✓ identidade: "+full+" — abra qualquer ferramenta") : "informe a sala e o grupo";
+  }
+  elS.addEventListener("input",compose); elG.addEventListener("input",compose);
+  if(uSala!=null) elS.readOnly=true;
+  if(uGrupo!=null) elG.readOnly=true;
+  compose();
+
+  // ---- facilitador: gerar links/QR por mesa ----
+  function baseUrl(){ return location.origin+location.pathname; }
+  document.getElementById("fGen").addEventListener("click",function(){
+    var sala=document.getElementById("fSala").value.trim();
+    var n=Math.max(1,Math.min(20,parseInt(document.getElementById("fN").value)||6));
+    var out=document.getElementById("fOut"); out.innerHTML="";
+    for(var i=1;i<=n;i++){
+      var grupo="Grupo "+i;
+      var url=baseUrl()+"?sala="+encodeURIComponent(sala)+"&grupo="+encodeURIComponent(grupo);
+      var card=document.createElement("div"); card.className="qrcard";
+      var t=document.createElement("div"); t.className="qrt"; t.textContent=(sala?sala+" · ":"")+grupo; card.appendChild(t);
+      var qd=document.createElement("div"); qd.className="qrimg"; card.appendChild(qd);
+      try{ new QRCode(qd,{text:url,width:150,height:150,correctLevel:QRCode.CorrectLevel.M}); }catch(e){ qd.textContent="(QR indisponível — use o link)"; }
+      var a=document.createElement("a"); a.className="qrl"; a.href=url; a.target="_blank"; a.textContent=url; card.appendChild(a);
+      out.appendChild(card);
+    }
+  });
+  document.getElementById("fPrint").addEventListener("click",function(){
+    if(!document.getElementById("fOut").children.length) document.getElementById("fGen").click();
+    document.body.classList.add("printqr"); window.print(); setTimeout(function(){ document.body.classList.remove("printqr"); },600);
+  });
 </script>
 </body>
 </html>
