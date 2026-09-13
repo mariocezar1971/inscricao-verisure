@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sobrevivência na Lua · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --navy-2:#0B1526; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --green:#4E9A51; --blue:#3B6FB0;
+    --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; --navy-2:#070E1B; } }
+  *{box-sizing:border-box} html,body{margin:0} [hidden]{display:none!important}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:960px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(19,37,66,.1);color:var(--navy)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:150px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:80px}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:9px 11px}
+  .btn.rev{background:linear-gradient(160deg,var(--navy),var(--navy-2));color:#EAF0F8}
+  .cen{background:radial-gradient(500px 200px at 88% -30%,rgba(232,163,61,.20),transparent 60%),linear-gradient(160deg,var(--navy),var(--navy-2));color:#EAF0F8;border-radius:16px;padding:16px 18px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .cen h2{font-family:"Bricolage Grotesque",sans-serif;margin:0 0 6px;font-size:16px}
+  .cen p{margin:0;color:#C5D2E4;font-size:13px}
+  .cen .step{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--amber);letter-spacing:.06em;text-transform:uppercase;margin-top:8px}
+  .board{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:12px}
+  .rank{list-style:none;margin:0;padding:0;counter-reset:r}
+  .row{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:11px;padding:8px 10px;margin-bottom:7px;background:var(--card)}
+  .row .pos{width:30px;height:30px;flex:none;border-radius:8px;background:var(--navy);color:#EAF0F8;display:grid;place-items:center;font-weight:800;font-family:"IBM Plex Mono",monospace;font-size:14px}
+  .row .nm{flex:1;font-size:14px;font-weight:500}
+  .row .mv{display:flex;flex-direction:column;gap:2px}
+  .row .mv button{border:1.5px solid var(--line);background:var(--card);color:var(--ink-2);border-radius:6px;width:26px;height:17px;cursor:pointer;font-size:10px;line-height:1;padding:0}
+  .row .mv button:disabled{opacity:.3;cursor:default}
+  .row.dragging{opacity:.5}
+  .grip{color:var(--muted);cursor:grab;font-size:16px;user-select:none}
+  /* revelado */
+  .row .rev{display:none;align-items:center;gap:10px}
+  .revealed .row{padding:8px 12px}
+  .revealed .row .mv,.revealed .grip{display:none}
+  .revealed .row .rev{display:flex}
+  .row .rev .nasa{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted);white-space:nowrap}
+  .row .rev .nasa b{color:var(--navy);font-size:14px}
+  .row .rev .diff{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:13px;min-width:30px;text-align:center;border-radius:6px;padding:2px 6px}
+  .row .rev .why{flex-basis:100%;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.35}
+  .revealed .row{flex-wrap:wrap}
+  .d0{background:rgba(78,154,81,.15);color:var(--green)} .d1{background:rgba(232,163,61,.15);color:var(--amber-deep)} .d2{background:rgba(192,57,43,.13);color:var(--red)}
+  .score{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:none}
+  .revealed .score{display:block}
+  .score .big{font-family:"Bricolage Grotesque",sans-serif;font-size:34px;line-height:1}
+  .score .band{display:inline-block;font-weight:700;font-size:13px;padding:3px 10px;border-radius:20px;margin-left:10px;vertical-align:middle}
+  .score .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-bottom:2px}
+  .syn{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+  .syn .fld{display:flex;flex-direction:column;gap:4px}
+  .syn .fld label{font-size:11px;font-weight:700;color:var(--muted)}
+  .syn .fld input{width:90px;font:inherit;font-family:"IBM Plex Mono",monospace;font-size:15px;text-align:center;border:1.5px solid var(--line);border-radius:9px;padding:8px;background:var(--card);color:var(--ink)}
+  .syn .fld input:focus{outline:none;border-color:var(--amber)}
+  .syn .out{font-size:13px}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+  .actions .sp{flex:1}
+  .foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+  @media print{ .noprint{display:none!important} body{background:#fff} .wrap{max-width:100%;padding:0}
+    .cen{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact} .board{box-shadow:none;border:none}
+    .row .mv,.grip{display:none!important} @page{size:A4;margin:12mm} }
+</style>
+</head>
+<body>
+<div class="wrap" id="board">
+  <header class="top noprint">
+    <div class="brand"><span class="mk">🌖</span><div><h1>Sobrevivência na Lua</h1><p>Decisão em grupo por consenso (NASA) · Dinâmica</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="cen">
+    <h2>🚀 O cenário</h2>
+    <p>Sua tripulação deveria encontrar a nave-mãe no lado iluminado da Lua, mas problemas mecânicos forçaram um pouso a <b>320 km</b> do ponto de encontro. Muita coisa foi danificada. Sobraram <b>15 itens intactos</b>. A sobrevivência depende de chegar à nave-mãe — coloquem os itens em <b>ordem de importância</b> (1 = mais importante, 15 = menos).</p>
+    <div class="step noprint">Passo 1 (individual, no papel) → Passo 2: cheguem ao consenso do grupo aqui → Passo 3: revelem o gabarito da NASA</div>
+  </div>
+
+  <div class="board">
+    <ul class="rank" id="rank"></ul>
+
+    <div class="score" id="score"></div>
+
+    <div class="syn noprint" id="synBox" hidden>
+      <div class="fld"><label for="ind">Melhor pontuação individual do grupo</label><input id="ind" type="number" min="0" placeholder="ex.: 38"></div>
+      <div class="out" id="synOut">Informe a menor (melhor) pontuação individual do grupo para calcular a sinergia.</div>
+    </div>
+  </div>
+
+  <div class="actions noprint">
+    <button class="btn rev" id="revelar">Revelar gabarito da NASA</button>
+    <span class="sp"></span>
+    <button class="btn primary" id="salvar">Salvar</button>
+    <button class="btn ghost sm" id="carregar">Carregar</button>
+    <button class="btn ghost sm" id="png">Baixar PNG</button>
+    <button class="btn ghost sm" id="imprimir">Imprimir / PDF</button>
+    <button class="btn ghost sm" id="limpar">Reiniciar</button>
+  </div>
+  <p class="foot noprint">Ferramentas do Workshop · Verisure — na prática, o consenso do grupo quase sempre supera o melhor palpite individual. Isso é sinergia.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="lua";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const ITENS=[
+    {k:"oxigenio", n:"Dois tanques de oxigênio (100 lb cada)", nasa:1,  why:"Necessidade de sobrevivência mais urgente — não há ar na Lua."},
+    {k:"agua",     n:"20 litros de água",                     nasa:2,  why:"Repõe a enorme perda de líquido no lado iluminado."},
+    {k:"mapa",     n:"Mapa estelar (constelações da Lua)",    nasa:3,  why:"Principal meio de navegação — padrões de estrelas."},
+    {k:"alimento", n:"Concentrado de alimento",               nasa:4,  why:"Fonte eficiente de energia para a caminhada."},
+    {k:"radio",    n:"Rádio FM (transmissor solar)",          nasa:5,  why:"Comunicação com a nave-mãe (FM: linha de visada, curto alcance)."},
+    {k:"corda",    n:"15 metros de corda de náilon",          nasa:6,  why:"Útil para escalar e amarrar os feridos."},
+    {k:"kit",      n:"Kit de primeiros socorros com agulhas", nasa:7,  why:"As agulhas encaixam em aberturas especiais dos trajes da NASA."},
+    {k:"paraquedas",n:"Tecido de paraquedas (seda)",          nasa:8,  why:"Proteção contra os raios solares."},
+    {k:"bote",     n:"Bote salva-vidas",                       nasa:9,  why:"A garrafa de CO₂ serve para autopropulsão ao cruzar fendas."},
+    {k:"sinal",    n:"Sinalizadores (flares)",                nasa:10, why:"Sinal de socorro quando a nave-mãe estiver à vista."},
+    {k:"pistolas", n:"Duas pistolas calibre .45",             nasa:11, why:"Podem servir como dispositivos de autopropulsão."},
+    {k:"leite",    n:"Uma caixa de leite em pó",              nasa:12, why:"Alimento, misturado com água para beber."},
+    {k:"aquecedor",n:"Aquecedor portátil",                    nasa:13, why:"Só serve no lado escuro — vocês estão no lado iluminado."},
+    {k:"bussola",  n:"Bússola magnética",                     nasa:14, why:"O campo magnético da Lua não é polarizado — inútil para navegar."},
+    {k:"fosforos", n:"Caixa de fósforos",                     nasa:15, why:"Quase inútil — sem oxigênio não há combustão."}
+  ];
+  const META={}; ITENS.forEach(i=>META[i.k]=i);
+  const BANDS=[[25,"Excelente","var(--green)"],[32,"Bom","var(--teal)"],[45,"Médio","var(--amber-deep)"],[55,"Razoável","var(--amber-deep)"],[70,"Fraco (lógica terrestre)","var(--red)"],[999,"Muito fraco — a tripulação não sobreviveu","var(--red)"]];
+  function band(s){ for(const b of BANDS){ if(s<=b[0])return b; } return BANDS[BANDS.length-1]; }
+  // ordem inicial = ordem do handout (embaralhada em relação ao gabarito)
+  const START=["fosforos","alimento","corda","paraquedas","aquecedor","pistolas","leite","oxigenio","mapa","bote","bussola","agua","sinal","kit","radio"];
+  let D={ ordem:START.slice(), revelado:false, individual:"" };
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+  function esc(s){ return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+  function move(i,dir){ const j=i+dir; if(j<0||j>=D.ordem.length)return; const a=D.ordem; [a[i],a[j]]=[a[j],a[i]]; render(); }
+
+  function render(){
+    document.body.classList.toggle("revealed", !!D.revelado);
+    $("board").classList.toggle("revealed", !!D.revelado);
+    const rev=D.revelado;
+    $("rank").innerHTML = D.ordem.map((k,i)=>{ const it=META[k]; const gr=i+1; const diff=Math.abs(gr-it.nasa); const dc=diff===0?"d0":diff<=2?"d1":"d2";
+      return `<li class="row" data-k="${k}" ${rev?'':'draggable="true"'}>
+        <span class="pos">${gr}</span>
+        ${rev?'':'<span class="grip" title="arraste">⋮⋮</span>'}
+        <span class="nm">${esc(it.n)}</span>
+        <span class="mv noprint"><button data-up="${i}" ${i===0?'disabled':''}>▲</button><button data-dn="${i}" ${i===D.ordem.length-1?'disabled':''}>▼</button></span>
+        <span class="rev">
+          <span class="nasa">NASA <b>${it.nasa}</b></span>
+          <span class="diff ${dc}">${diff}</span>
+          <span class="why">${esc(it.why)}</span>
+        </span>
+      </li>`; }).join("");
+    if(!rev){
+      $("rank").querySelectorAll("button[data-up]").forEach(b=>b.addEventListener("click",()=>move(+b.dataset.up,-1)));
+      $("rank").querySelectorAll("button[data-dn]").forEach(b=>b.addEventListener("click",()=>move(+b.dataset.dn,+1)));
+      dragSetup();
+    }
+    // score
+    if(rev){ const total=D.ordem.reduce((s,k,i)=>s+Math.abs((i+1)-META[k].nasa),0); const b=band(total);
+      $("score").innerHTML=`<div class="k">Pontuação da equipe (soma das diferenças — quanto menor, melhor)</div>
+        <span class="big">${total}</span><span class="band" style="background:${b[2]}22;color:${b[2]}">${b[1]}</span>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px">Faixas: 0–25 Excelente · 26–32 Bom · 33–45 Médio · 46–55 Razoável · 56–70 Fraco · 71+ Muito fraco</div>`;
+      $("synBox").hidden=false; calcSyn(total);
+    } else { $("synBox").hidden=true; }
+  }
+
+  function calcSyn(total){ const ind=parseInt($("ind").value); if(isNaN(ind)){ $("synOut").innerHTML="Informe a menor (melhor) pontuação individual do grupo para calcular a sinergia."; return; }
+    const syn=ind-total; const pos=syn>0;
+    $("synOut").innerHTML=`Sinergia = <b>${ind} − ${total} = ${syn>0?'+':''}${syn}</b>. `+
+      (pos?`<span style="color:var(--green)">✓ O grupo superou o melhor indivíduo — a colaboração valeu a pena!</span>`
+          :syn===0?`<span style="color:var(--amber-deep)">O grupo empatou com o melhor indivíduo.</span>`
+          :`<span style="color:var(--red)">O melhor indivíduo foi melhor que o grupo — vale discutir o que travou o consenso.</span>`);
+  }
+  $("ind").addEventListener("input",()=>{ D.individual=$("ind").value; const total=D.ordem.reduce((s,k,i)=>s+Math.abs((i+1)-META[k].nasa),0); calcSyn(total); });
+
+  // drag & drop
+  let dragK=null;
+  function dragSetup(){
+    $("rank").querySelectorAll(".row").forEach(row=>{
+      row.addEventListener("dragstart",e=>{ dragK=row.dataset.k; row.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; });
+      row.addEventListener("dragend",()=>{ row.classList.remove("dragging"); dragK=null; });
+      row.addEventListener("dragover",e=>{ e.preventDefault(); const over=row.dataset.k; if(!dragK||over===dragK)return;
+        const a=D.ordem, from=a.indexOf(dragK), to=a.indexOf(over); a.splice(from,1); a.splice(to,0,dragK); render(); });
+    });
+  }
+
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); const d=o.dados;
+    if(o.ok&&d&&Array.isArray(d.ordem)){ const ord=d.ordem.filter(k=>META[k]); ITENS.forEach(i=>{ if(!ord.includes(i.k))ord.push(i.k); });
+      D={ordem:ord.slice(0,15),revelado:!!d.revelado,individual:d.individual||""}; $("ind").value=D.individual; render(); status("carregado ✓"); }
+    else status("nada salvo p/ este grupo"); }
+  async function png(){ status("gerando imagem…"); const bg=getComputedStyle(document.body).getPropertyValue('--paper')||'#fff';
+    try{ const cv=await html2canvas($("board"),{scale:2,backgroundColor:bg.trim()||"#fff"}); const a=document.createElement("a"); a.href=cv.toDataURL("image/png"); a.download=("lua_"+($("grupo").value.trim()||"grupo")+".png").replace(/\s+/g,"_"); a.click(); status(""); }catch(e){ status("use Imprimir/PDF",false); } }
+
+  $("revelar").addEventListener("click",()=>{ D.revelado=!D.revelado; $("revelar").textContent=D.revelado?"Voltar a editar o ranking":"Revelar gabarito da NASA"; render(); if(D.revelado)$("score").scrollIntoView({behavior:"smooth",block:"center"}); });
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+  $("png").addEventListener("click",png);
+  $("imprimir").addEventListener("click",()=>window.print());
+  $("limpar").addEventListener("click",()=>{ if(confirm("Reiniciar a dinâmica?")){ D={ordem:START.slice(),revelado:false,individual:""}; $("ind").value=""; $("revelar").textContent="Revelar gabarito da NASA"; render(); } });
+
+  render();
+</script>
+</body>
+</html>
