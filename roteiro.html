@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roteiro do Dia · Workshop Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --navy-2:#0B1526; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --green:#4E9A51; --blue:#3B6FB0; --violet:#8E5AA8;
+    --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; --navy-2:#070E1B; } }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  a{color:var(--amber-deep)}
+  .hero{background:radial-gradient(700px 300px at 85% -20%,rgba(232,163,61,.20),transparent 60%),linear-gradient(160deg,var(--navy),var(--navy-2));color:#EAF0F8}
+  .wrap{max-width:1040px;margin:0 auto;padding:24px 22px}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin:0 0 8px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(23px,4vw,32px);margin:0}
+  .hero p{color:#C5D2E4;margin:10px 0 0;font-size:14.5px}
+  .fio{margin-top:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px 14px;font-size:13.5px;color:#D7E1F0}
+  .fio b{color:#fff}
+  .clock{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+  .clock .big{font-family:"IBM Plex Mono",monospace;font-size:26px;font-weight:700;color:#fff}
+  .clock .agora{font-size:13px;color:#C5D2E4}
+  .clock .agora b{color:var(--amber)}
+  .navlink{color:#EAF0F8;text-decoration:none;border:1px solid rgba(255,255,255,.25);border-radius:9px;padding:7px 11px;font-size:13px;font-weight:600}
+
+  h2.sec{font-family:"Bricolage Grotesque",sans-serif;font-size:18px;margin:28px 0 12px}
+  /* timeline */
+  .tl{display:flex;flex-direction:column;gap:6px}
+  .row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;text-decoration:none;color:inherit;box-shadow:var(--shadow)}
+  .row.pausa{box-shadow:none;background:transparent;border-style:dashed}
+  .row.pre{opacity:.85}
+  .row .time{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:var(--ink-2);white-space:nowrap;min-width:104px}
+  .row .nm{flex:1;font-size:14px;font-weight:600}
+  .row .dur{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted)}
+  .row .tag{font-family:"IBM Plex Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:20px;font-weight:600}
+  .row.bloco .tag{background:rgba(44,140,137,.14);color:var(--teal)}
+  .row.pausa .tag{background:var(--line);color:var(--muted)}
+  .row.conteudo .tag{background:rgba(232,163,61,.14);color:var(--amber-deep)}
+  .row.pre .tag{background:rgba(59,111,176,.14);color:var(--blue)}
+  .row.now{outline:3px solid var(--amber);outline-offset:-1px}
+  .row .live{font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:700;color:#20160A;background:var(--amber);padding:2px 7px;border-radius:20px}
+
+  .blk{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-bottom:16px;border-top:5px solid var(--bc,var(--teal))}
+  .blk .bh{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+  .blk .bh h3{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:17px}
+  .blk .bh .win{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted)}
+  .blk .obj{font-size:13px;color:var(--ink-2);margin:6px 0 12px}
+  .step{display:flex;gap:12px;padding:9px 0;border-top:1px dashed var(--line)}
+  .step .st-t{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--bc,var(--teal));font-weight:600;white-space:nowrap;min-width:92px}
+  .step .st-b{flex:1}
+  .step .st-b b{font-size:13.5px}
+  .step .st-b .d{font-size:12.5px;color:var(--ink-2);margin-top:2px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+  .chip{display:inline-flex;align-items:center;gap:5px;background:rgba(232,163,61,.1);border:1px solid rgba(232,163,61,.28);color:var(--amber-deep);border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;text-decoration:none}
+  .chip.din{background:rgba(44,140,137,.1);border-color:rgba(44,140,137,.28);color:var(--teal)}
+  .meta{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--ink-2)}
+  .meta .k{color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 14px;margin-bottom:10px;box-shadow:var(--shadow)}
+  details>summary{cursor:pointer;font-weight:700;font-size:14.5px;padding:10px 0;list-style:none}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::before{content:"▸ ";color:var(--amber-deep)}
+  details[open]>summary::before{content:"▾ "}
+  .dbd{padding:2px 0 12px;font-size:13px;color:var(--ink-2)}
+  table.t{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:6px}
+  table.t th,table.t td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  table.t th{background:var(--navy);color:#EAF0F8;font-weight:600;font-size:11.5px}
+  ul.clean{margin:6px 0;padding-left:18px} ul.clean li{margin:3px 0}
+  .foot{color:var(--muted);font-size:12px;text-align:center;margin:24px 0 10px}
+  @media print{ .navlink,.clock{display:none} .hero{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact} details{break-inside:avoid} .blk{break-inside:avoid} }
+</style>
+</head>
+<body>
+  <div class="hero"><div class="wrap">
+    <p class="eyebrow">Workshop Verisure · 8 horas · até 20 participantes</p>
+    <h1>Roteiro do Dia</h1>
+    <p>GQT · Project Model Canvas · Buyer Focusing Selling · Storytelling — quatro competências, uma jornada.</p>
+    <div class="fio"><b>Fio condutor:</b> identificar um problema (GQT) → estruturá-lo como projeto (Canvas) → vendê-lo com foco no cliente (Buyer Focusing) → comunicá-lo com emoção (Storytelling).</div>
+    <div class="clock">
+      <span class="big" id="relogio">--:--</span>
+      <span class="agora" id="agora">carregando o momento atual…</span>
+      <span style="flex:1"></span>
+      <a class="navlink" href="ferramentas.html">🧰 Ferramentas</a>
+    </div>
+  </div></div>
+
+  <div class="wrap">
+    <h2 class="sec">Agenda</h2>
+    <div class="tl" id="tl"></div>
+    <p style="font-size:12px;color:var(--muted);margin-top:8px">Conteúdo líquido: 8 h (30 + 4×105 + 30). Coffee-breaks (35 min) e almoço (60 min) à parte. Credenciamento 07:15–08:00 (pré-evento).</p>
+
+    <h2 class="sec">Blocos em detalhe</h2>
+    <div id="blocos"></div>
+
+    <h2 class="sec">Referências do dia</h2>
+
+    <details>
+      <summary>🎵 Trilha sonora por momento (YouTube)</summary>
+      <div class="dbd">Deixe as faixas pré-abertas em abas. Volume baixo na recepção e nas atividades em grupo; mais alto nas pausas e na abertura/encerramento.
+        <table class="t"><tr><th>Momento</th><th>Faixa</th><th>Por quê</th></tr>
+        <tr><td>07:15 Recepção</td><td><a href="https://www.youtube.com/watch?v=KQetemT1sWc" target="_blank">The Beatles — Here Comes the Sun</a></td><td>“Bom dia” musical, leve, como fundo do credenciamento.</td></tr>
+        <tr><td>08:00 Abertura</td><td><a href="https://www.youtube.com/watch?v=co6WMzDOh1o" target="_blank">U2 — Beautiful Day</a></td><td>Energia positiva e ideia de novo começo.</td></tr>
+        <tr><td>08:30 GQT</td><td><a href="https://www.youtube.com/watch?v=-0kcet4aPpQ" target="_blank">Pink Floyd — Money</a></td><td>Abre com caixa registradora — gancho da “Máquina Registradora”.</td></tr>
+        <tr><td>10:15 Coffee manhã</td><td><a href="https://www.youtube.com/watch?v=5D_Lom2pjZQ" target="_blank">Jobim & João — Garota de Ipanema</a></td><td>Bossa nova leve para relaxar sem dispersar.</td></tr>
+        <tr><td>10:30 PM Canvas</td><td><a href="https://www.youtube.com/watch?v=gOZgo8gMIoM" target="_blank">Bill Withers — Lean on Me</a></td><td>Apoio mútuo — casa com “mesmo saco”.</td></tr>
+        <tr><td>12:15 Almoço</td><td><a href="https://www.youtube.com/watch?v=uNCYLgmw6C0" target="_blank">Elis & Tom — Águas de Março</a></td><td>Trilha tranquila para o intervalo maior.</td></tr>
+        <tr><td>13:15 Buyer Focusing</td><td><a href="https://www.youtube.com/watch?v=nrzYbc3rWzc" target="_blank">Caetano Veloso — Gente</a></td><td>“Gente é para brilhar” — valorizar a pessoa (dinâmica “Rótulos”).</td></tr>
+        <tr><td>15:00 Coffee tarde</td><td><a href="https://www.youtube.com/watch?v=HgzGwKwLmgM" target="_blank">Queen — Don’t Stop Me Now</a></td><td>Reenergiza no pós-almoço.</td></tr>
+        <tr><td>15:20 Storytelling</td><td><a href="https://www.youtube.com/watch?v=sWhy1VcvvgY" target="_blank">Ana Vilela — Trem-Bala</a></td><td>A letra conta uma história de vida — modelo de storytelling.</td></tr>
+        <tr><td>17:05 Encerramento</td><td><a href="https://www.youtube.com/watch?v=Ty1Wjkij_ik" target="_blank">Almir Sater — Tocando em Frente</a></td><td>“Cada um compõe a sua história” — conecta ao plano de ação.</td></tr>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>👥 Equipe por momento</summary>
+      <div class="dbd">Papéis: <b>FP</b> facilitador principal · <b>CF</b> co-facilitador/monitor · <b>AV</b> audiovisual · <b>LOG</b> logística/recepção · <b>COPA</b> alimentação. Mínimo: 1 FP + 1 CF + 1 AV + 1 LOG + copa.
+        <table class="t"><tr><th>Momento</th><th>Equipe</th><th>Papel</th></tr>
+        <tr><td>08:00 Abertura</td><td>FP · LOG · AV</td><td>FP dá boas-vindas e agenda; LOG recepção/crachás/presença; AV som, slide e música.</td></tr>
+        <tr><td>08:30 GQT</td><td>FP · CF · AV</td><td>FP conduz fundamentação e dinâmica; CF apoia Ishikawa/Pareto e distribui a “Máquina Registradora”; AV slides/vídeo/trilha.</td></tr>
+        <tr><td>10:15 Coffee</td><td>COPA · LOG · (AV)</td><td>COPA serve; LOG repõe materiais; AV música. FP e CF preparam o próximo bloco.</td></tr>
+        <tr><td>10:30 PM Canvas</td><td>FP · CF · AV · LOG</td><td>FP conduz; CF apoia canvas e cronometra pitches; AV vídeo/trilha; LOG distribui A0 e post-it.</td></tr>
+        <tr><td>12:15 Almoço</td><td>COPA · LOG</td><td>Serviço; LOG orienta local e controla o retorno.</td></tr>
+        <tr><td>13:15 Buyer Focusing</td><td>FP · CF · AV</td><td>FP conduz; CF organiza role-plays e fichas; AV microfone/vídeo/trilha. “Rótulos” pelo FP.</td></tr>
+        <tr><td>15:00 Coffee</td><td>COPA · LOG · (AV)</td><td>COPA serve; LOG retorno; AV faixa energizante.</td></tr>
+        <tr><td>15:20 Storytelling</td><td>FP · CF · AV</td><td>FP conduz; CF organiza fila do palco e cronometra (60–90 s); AV microfone/som/luz/vídeos.</td></tr>
+        <tr><td>17:05 Encerramento</td><td>FP · LOG · AV</td><td>FP síntese e plano de ação; LOG avaliação e certificados; AV slide e trilha.</td></tr>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>🚪 Recepção e credenciamento (07:15–08:00)</summary>
+      <div class="dbd">Mesa na entrada do auditório, de frente para quem chega. Objetivo: registrar presença, entregar material e <b>já distribuir os grupos pela cor da etiqueta</b> — evita panelinhas e economiza tempo na abertura. Para 20 pessoas: 4 cores (5/grupo) ou 5 cores (4/grupo).
+        <table class="t"><tr><th>#</th><th>Etapa</th><th>Resp.</th></tr>
+        <tr><td>1</td><td>Identificação: nome + assinatura na lista (ordem alfabética; folha extra para não inscritos).</td><td>LOG</td></tr>
+        <tr><td>2</td><td>Crachá com etiqueta colorida — a cor define o grupo/mesa (distribuir equilibrado).</td><td>LOG</td></tr>
+        <tr><td>3</td><td>Kit do participante: bloco, caneta, folder e QR code de materiais/avaliação.</td><td>LOG</td></tr>
+        <tr><td>4</td><td>Orientação: ilha pela cor, café de boas-vindas, banheiros e saídas.</td><td>LOG / CF</td></tr>
+        <tr><td>5</td><td>Acolhimento: FP e CF circulam; AV mantém música baixa e slide de boas-vindas.</td><td>FP · CF · AV</td></tr>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>🍽 Alimentação e infraestrutura</summary>
+      <div class="dbd">
+        <b>Pausas:</b> coffee manhã 10:15–10:30 · almoço 12:15–13:15 (livre, à parte) · coffee tarde 15:00–15:20. Mantenha água e café ao fundo o dia todo.
+        <br><b>Infra-chave:</b> auditório/palco, datashow, caixa de som, microfone, notebooks + internet, YouTube, mesas em ilhas (4–5 pessoas), cartazes A0 para canvas, post-it + canetões, ar-condicionado.
+      </div>
+    </details>
+
+    <details>
+      <summary>📦 Materiais a preparar antes do evento</summary>
+      <div class="dbd"><ul class="clean">
+        <li>Crachás/etiquetas coloridas (formação de grupos).</li>
+        <li>Canvas do Project Model impresso em A0 — 1 por grupo (4–5 cópias).</li>
+        <li>Templates impressos: Folha de Verificação, Ishikawa e Pareto (Bloco 1).</li>
+        <li>Cartões de papéis para as simulações (vendedor/comprador/observador; comitê da qualidade; banca de patrocinadores).</li>
+        <li>Ficha de feedback estruturado para os observadores.</li>
+        <li>Post-it (cores variadas) e canetões — ≥ 2 blocos por grupo.</li>
+        <li>Formulário de avaliação de reação (impresso ou QR code) e lista de presença.</li>
+        <li>Modelo de plano de ação individual (“o que vou aplicar na segunda-feira”).</li>
+      </ul></div>
+    </details>
+
+    <details>
+      <summary>🧯 Recursos complementares e contingência</summary>
+      <div class="dbd"><ul class="clean">
+        <li><b>Redundância:</b> clicker com laser; adaptadores HDMI/VGA/USB-C + HDMI reserva; réguas/extensões; pilhas do microfone; internet reserva (4G/hotspot); pen drive e, se possível, notebook reserva.</li>
+        <li><b>Facilitação:</b> cronômetro/timer no telão; sino para transições; flip chart; fita crepe, tesoura, grampeador; placas de mesa por cor.</li>
+        <li><b>Conforto:</b> iluminação ajustável; água/balas; primeiros socorros; relógio de parede.</li>
+        <li><b>LGPD:</b> termo de autorização de imagem; aviso de privacidade no formulário (consentimento já registrado online).</li>
+        <li><b>Plano B:</b> queda de energia (o que fazer em 10–15 min); cópias impressas extras; tubo/sacos para transportar os A0.</li>
+        <li><b>Pós-evento:</b> pesquisa de acompanhamento; canal de follow-up (WhatsApp/e-mail); envio de materiais e fotos depois.</li>
+      </ul></div>
+    </details>
+
+    <details>
+      <summary>✅ Avaliação e encerramento (17:05–17:35)</summary>
+      <div class="dbd">Três níveis: <b>Reação</b> (formulário rápido / QR) · <b>Produção</b> (cartazes, canvas e histórias entregues) · <b>Aplicação</b> (plano de ação individual “o que vou aplicar na segunda-feira”). Fechamento emocional com o storytelling pessoal e a faixa “Tocando em Frente”.</div>
+    </details>
+
+    <p class="foot">Roteiro do Workshop · Verisure — toque num bloco da agenda para pular ao detalhe. Os botões abrem as ferramentas do app.</p>
+  </div>
+
+<script>
+  const $=(id)=>document.getElementById(id);
+  const TOOLS={
+    pareto:{l:"Pareto",h:"ferramenta-pareto.html"}, ishikawa:{l:"Ishikawa",h:"ferramenta-ishikawa.html"},
+    "5w1h":{l:"5W1H",h:"ferramenta-5w1h.html"}, folha:{l:"Folha de Verificação",h:"ferramenta-folha.html"},
+    controle:{l:"Gráfico de Controle",h:"ferramenta-controle.html"}, brainstorming:{l:"Brainstorming",h:"ferramenta-brainstorming.html"},
+    "5s":{l:"5S",h:"ferramenta-5s.html"}, pmcanvas:{l:"Project Model Canvas",h:"ferramenta-pmcanvas.html"},
+    persona:{l:"Persona + Jornada",h:"ferramenta-persona.html"}, spin:{l:"Perguntas SPIN",h:"ferramenta-spin.html"},
+    persuasao:{l:"6 Armas da Persuasão",h:"ferramenta-persuasao.html"}, storytelling:{l:"Estrutura da História",h:"ferramenta-storytelling.html"},
+    lua:{l:"Sobrevivência na Lua",h:"ferramenta-lua.html"}, rota:{l:"Rota da Qualidade",h:"ferramenta-rota.html"},
+    linha:{l:"Linha de Produção",h:"ferramenta-linha.html"}, defeito:{l:"Caça ao Defeito",h:"ferramenta-defeito.html"}, alvo:{l:"Alvo do Processo",h:"ferramenta-alvo.html"}
+  };
+  const SCHEDULE=[
+    {t0:"07:15",t1:"08:00",nm:"Recepção e credenciamento",tp:"pre",tag:"pré-evento"},
+    {t0:"08:00",t1:"08:30",nm:"Abertura, aquecimento e contrato de convivência",tp:"conteudo",tag:"conteúdo"},
+    {t0:"08:30",t1:"10:15",nm:"Bloco 1 — Gestão da Qualidade Total (GQT)",tp:"bloco",tag:"bloco",go:"b1"},
+    {t0:"10:15",t1:"10:30",nm:"Coffee-break da manhã",tp:"pausa",tag:"pausa"},
+    {t0:"10:30",t1:"12:15",nm:"Bloco 2 — Project Model Canvas",tp:"bloco",tag:"bloco",go:"b2"},
+    {t0:"12:15",t1:"13:15",nm:"Almoço (à parte)",tp:"pausa",tag:"pausa"},
+    {t0:"13:15",t1:"15:00",nm:"Bloco 3 — Buyer Focusing Selling",tp:"bloco",tag:"bloco",go:"b3"},
+    {t0:"15:00",t1:"15:20",nm:"Coffee-break da tarde",tp:"pausa",tag:"pausa"},
+    {t0:"15:20",t1:"17:05",nm:"Bloco 4 — Storytelling",tp:"bloco",tag:"bloco",go:"b4"},
+    {t0:"17:05",t1:"17:35",nm:"Encerramento, avaliação e plano de ação",tp:"conteudo",tag:"conteúdo"}
+  ];
+  const BLOCKS=[
+    {id:"b1",cor:"var(--teal)",titulo:"Bloco 1 — Gestão da Qualidade Total (GQT)",start:"08:30",
+     obj:"Enxergar processos, decidir por fatos e usar as ferramentas básicas da qualidade para atacar problemas reais.",
+     equipe:"FP · CF · AV", musica:"Pink Floyd — Money (caixa registradora)", recursos:"Datashow, cartazes, post-it, templates de Folha/Ishikawa/Pareto.",
+     din:"‘A História da Máquina Registradora’ — evidencia como suposições contaminam decisões (decidir por fatos).",
+     steps:[
+      {n:"Fundamentação",m:20,d:"Qualidade total e melhoria contínua; PDCA/SDCA e MASP; as 7 ferramentas da qualidade e a lógica dos 5S."},
+      {n:"Atividade",m:25,d:"Cada grupo escolhe um problema real e analisa com Ishikawa (causas) + Pareto (priorizar as vitais), em cartaz com post-it.",tools:["ishikawa","pareto","folha","brainstorming"]},
+      {n:"Simulação",m:25,d:"Rodada de PDCA: planejam uma contramedida e apresentam ao ‘Comitê da Qualidade’, que questiona e valida.",tools:["5w1h","controle"]},
+      {n:"Storytelling",m:20,d:"Em rodízio, participantes contam um caso real de problema de qualidade e o que aprenderam."},
+      {n:"Dinâmica",m:15,d:"‘Máquina Registradora’ (acervo). Alternativas digitais no app:",tools:["linha","defeito","alvo","lua","rota"],din:true}
+     ]},
+    {id:"b2",cor:"var(--navy)",titulo:"Bloco 2 — Project Model Canvas",start:"10:30",
+     obj:"Estruturar um projeto em uma página, do ‘porquê’ ao ‘quando e quanto’.",
+     equipe:"FP · CF · AV · LOG", musica:"Bill Withers — Lean on Me", recursos:"Cartazes A0 para canvas, muito post-it, canetões, vídeo curto do YouTube sobre PM Canvas.",
+     din:"‘Estamos todos no mesmo saco’ — vivência de interdependência e ritmo de equipe.",
+     steps:[
+      {n:"Fundamentação",m:20,d:"O Project Model Canvas e seus 13 componentes na lógica pensar–integrar–comunicar."},
+      {n:"Atividade",m:25,d:"Cada grupo preenche um Canvas gigante (A0) com post-it — de preferência a melhoria do Bloco 1.",tools:["pmcanvas"]},
+      {n:"Simulação",m:25,d:"‘Pitch do projeto’: 3 min para apresentar o canvas a uma ‘banca de patrocinadores’ que decide o investimento."},
+      {n:"Storytelling",m:20,d:"Participantes contam um projeto que deu certo (ou errado) e qual bloco do canvas faltou planejar."},
+      {n:"Dinâmica",m:15,d:"‘Mesmo saco’ (acervo). Alternativas digitais:",tools:["rota","linha","lua"],din:true}
+     ]},
+    {id:"b3",cor:"var(--blue)",titulo:"Bloco 3 — Buyer Focusing Selling",start:"13:15",
+     obj:"Deslocar o foco do produto para o processo de compra e as necessidades reais do cliente.",
+     equipe:"FP · CF · AV", musica:"Caetano Veloso — Gente", recursos:"Notebooks + internet para a persona, microfone, vídeo de atendimento consultivo.",
+     din:"‘Rótulos’ — mostra como estereótipos atrapalham; conecta com escutar o cliente sem pré-julgar.",
+     steps:[
+      {n:"Fundamentação",m:20,d:"‘Vender’ × ‘ajudar a comprar’; jornada de compra; perguntas de diagnóstico (situação, problema, implicação, necessidade); escuta ativa e proposta de valor centrada no comprador."},
+      {n:"Atividade",m:25,d:"Cada grupo constrói uma persona, mapeia dores e jornada, e formula um roteiro de perguntas de diagnóstico.",tools:["persona","spin","persuasao"]},
+      {n:"Simulação",m:25,d:"Role-play vendedor × comprador em rodízio; observadores registram o quanto o ‘vendedor’ ouviu antes de oferecer."},
+      {n:"Storytelling",m:20,d:"Participantes contam uma compra memorável como clientes — o que no atendimento fez a diferença."},
+      {n:"Dinâmica",m:15,d:"‘Rótulos’ (acervo). Alternativa digital — quem convence mais:",tools:["persuasao","lua"],din:true}
+     ]},
+    {id:"b4",cor:"var(--amber-deep)",titulo:"Bloco 4 — Storytelling",start:"15:20",
+     obj:"Estruturar e contar histórias que engajam e comunicam ideias, projetos e propostas.",
+     equipe:"FP · CF · AV", musica:"Ana Vilela — Trem-Bala", recursos:"Microfone, caixa de som, palco, vídeos do YouTube (TED e exemplos).",
+     din:"‘Sociodrama’ / ‘Jornal Falado’ — dramatização coletiva que consolida a linguagem narrativa.",
+     steps:[
+      {n:"Fundamentação",m:20,d:"Por que histórias funcionam melhor que dados soltos; estrutura clássica (contexto → conflito → virada → desfecho) e a jornada do herói."},
+      {n:"Atividade",m:25,d:"Cada grupo transforma um dado/projeto (reaproveitando o canvas do Bloco 2) numa história de 1 minuto.",tools:["storytelling"]},
+      {n:"Simulação",m:25,d:"Cada grupo sobe ao palco e conta a história ao microfone; a plateia dá feedback estruturado.",tools:["storytelling"]},
+      {n:"Storytelling",m:20,d:"‘A minha virada’: 60–90 s de uma história pessoal de superação — o fechamento emocional do dia."},
+      {n:"Dinâmica",m:15,d:"‘Sociodrama’ (acervo). Encerramento reflexivo com o plano de ação."}
+     ]}
+  ];
+
+  function toMin(t){ const [h,m]=t.split(":").map(Number); return h*60+m; }
+  function pad(n){ return String(n).padStart(2,"0"); }
+  function fromMin(x){ return pad(Math.floor(x/60))+":"+pad(x%60); }
+
+  // agenda
+  $("tl").innerHTML=SCHEDULE.map((s,i)=>{
+    const dur=toMin(s.t1)-toMin(s.t0);
+    const tagcls=s.tp;
+    const inner=`<span class="time">${s.t0} – ${s.t1}</span><span class="nm">${s.nm}</span><span class="dur">${dur} min</span><span class="tag">${s.tag}</span><span class="live" id="live-${i}" hidden>AGORA</span>`;
+    return s.go ? `<a class="row ${tagcls}" data-i="${i}" href="#${s.go}">${inner}</a>` : `<div class="row ${tagcls}" data-i="${i}">${inner}</div>`;
+  }).join("");
+
+  // blocos
+  $("blocos").innerHTML=BLOCKS.map(b=>{
+    let clock=toMin(b.start);
+    const steps=b.steps.map(st=>{
+      const win=`${fromMin(clock)}–${fromMin(clock+st.m)}`; clock+=st.m;
+      const chips=(st.tools||[]).map(k=>{ const t=TOOLS[k]; return t?`<a class="chip ${st.din?'din':''}" href="${t.h}">${st.din?'▶ ':'🔧 '}${t.l}</a>`:""; }).join("");
+      return `<div class="step"><div class="st-t">${win}<br>${st.n} · ${st.m}′</div><div class="st-b"><b>${st.n}</b><div class="d">${st.d}</div>${chips?`<div class="chips">${chips}</div>`:""}</div></div>`;
+    }).join("");
+    return `<div class="blk" id="${b.id}" style="--bc:${b.cor}">
+      <div class="bh"><h3>${b.titulo}</h3><span class="win">${b.start} · 105 min</span></div>
+      <div class="obj">${b.obj}</div>
+      ${steps}
+      <div class="meta"><span><span class="k">Equipe</span> ${b.equipe}</span><span><span class="k">Música</span> ${b.musica}</span><span><span class="k">Recursos</span> ${b.recursos}</span></div>
+    </div>`;
+  }).join("");
+
+  // relógio "agora"
+  function tick(){
+    const now=new Date(); const cur=now.getHours()*60+now.getMinutes();
+    $("relogio").textContent=pad(now.getHours())+":"+pad(now.getMinutes());
+    let activeI=-1;
+    SCHEDULE.forEach((s,i)=>{ const on=(cur>=toMin(s.t0)&&cur<toMin(s.t1)); const live=$("live-"+i); if(live)live.hidden=!on;
+      const row=document.querySelector('.row[data-i="'+i+'"]'); if(row)row.classList.toggle("now",on); if(on)activeI=i; });
+    const ag=$("agora");
+    if(activeI>=0){ const s=SCHEDULE[activeI]; ag.innerHTML="agora: <b>"+s.nm+"</b> (até "+s.t1+")"; }
+    else{ const nxt=SCHEDULE.find(s=>cur<toMin(s.t0)); ag.innerHTML=nxt?("a seguir: <b>"+nxt.nm+"</b> às "+nxt.t0):"workshop encerrado — bom descanso!"; }
+  }
+  tick(); setInterval(tick,20000);
+</script>
+</body>
+</html>
