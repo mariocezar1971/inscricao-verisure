@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alvo do Processo · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --navy-2:#0B1526; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --green:#4E9A51; --blue:#3B6FB0;
+    --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; --navy-2:#070E1B; } }
+  *{box-sizing:border-box} html,body{margin:0} [hidden]{display:none!important}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1040px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(44,140,137,.15);color:var(--teal)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:140px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:70px}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:9px 11px}
+  .grid{display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+  .chart .bd{padding:8px}
+  canvas{width:100%;height:auto;display:block;border-radius:12px}
+  .panel .bd{padding:14px 16px}
+  .stat{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .st{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+  .st .k{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+  .st .v{font-family:"IBM Plex Mono",monospace;font-size:18px;font-weight:700}
+  .st.pct .v{color:var(--green)} .st.best .v{color:var(--amber-deep);font-size:15px}
+  .lab{font-size:11px;font-weight:700;color:var(--ink-2);margin:10px 0 4px}
+  .aim{display:grid;grid-template-columns:repeat(3,40px);grid-template-rows:repeat(3,34px);gap:5px;justify-content:center}
+  .aim button{border:1.5px solid var(--line);background:var(--card);color:var(--ink-2);border-radius:8px;cursor:pointer;font-size:15px;font-weight:700}
+  .aim .up{grid-column:2;grid-row:1}.aim .left{grid-column:1;grid-row:2}.aim .ctr{grid-column:2;grid-row:2;font-size:11px}.aim .right{grid-column:3;grid-row:2}.aim .down{grid-column:2;grid-row:3}
+  input[type=range]{width:100%;accent-color:var(--teal)}
+  .rangeval{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted)}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+  .save{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+  .save .sp{flex:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="mk">🎯</span><div><h1>Alvo do Processo</h1><p>Centralizar + reduzir a variação = peça conforme (capacidade) — Bloco GQT</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="grid">
+    <section class="card chart"><div class="bd"><canvas id="cv" width="620" height="620"></canvas></div></section>
+
+    <section class="card panel"><div class="bd">
+      <div class="stat">
+        <div class="st"><div class="k">Disparos</div><div class="v" id="n">0</div></div>
+        <div class="st pct"><div class="k">Conformes</div><div class="v"><span id="pct">0</span>%</div></div>
+        <div class="st"><div class="k">Dispersão (σ)</div><div class="v" id="sig">26</div></div>
+        <div class="st best"><div class="k">Melhor do grupo</div><div class="v" id="best">—</div></div>
+      </div>
+
+      <div class="lab">Centralização (mire no alvo)</div>
+      <div class="aim">
+        <button class="up" data-d="u">▲</button>
+        <button class="left" data-d="l">◀</button>
+        <button class="ctr" data-d="c">centro</button>
+        <button class="right" data-d="r">▶</button>
+        <button class="down" data-d="dn">▼</button>
+      </div>
+
+      <div class="lab">Variação do processo (padronização)</div>
+      <input type="range" id="range" min="8" max="44" value="26">
+      <div class="rangeval">← menos variação (melhor) &nbsp;·&nbsp; mais variação →</div>
+
+      <div class="actions">
+        <button class="btn primary" id="lote">Produzir lote (20)</button>
+        <button class="btn ghost sm" id="um">Disparar 1</button>
+        <button class="btn ghost sm" id="limpar">Limpar</button>
+      </div>
+
+      <div class="save">
+        <button class="btn ghost sm" id="salvar">Salvar</button>
+        <button class="btn ghost sm" id="carregar">Carregar</button>
+        <span id="tent" style="font-size:12px;color:var(--muted)"></span>
+      </div>
+    </div></section>
+  </div>
+  <p class="foot">O círculo verde é a <b>especificação</b>. Cada peça sai um pouco fora da mira por causa da <b>variação</b>. Você tem duas alavancas: <b>centralizar</b> (mirar) e <b>reduzir a variação</b>. Correr mais não ajuda — reduzir a dispersão, sim (Cpk / Gráfico de Controle).</p>
+</div>
+
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="alvo";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const cv=$("cv"), ctx=cv.getContext("2d"), W=620,H=620, CX=W/2, CY=H/2, SPEC=64;
+  let ax=0, ay=0, sigma=26, shots=[]; // shots: {x,y,ok}
+  let D={ melhorPct:null, tentativas:0 };
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+
+  function gauss(){ let u=0,v=0; while(u===0)u=Math.random(); while(v===0)v=Math.random(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+  function fireOne(){ const x=CX+ax+gauss()*sigma, y=CY+ay+gauss()*sigma; const ok=Math.hypot(x-CX,y-CY)<=SPEC; shots.push({x,y,ok}); }
+  function stats(){ const n=shots.length, c=shots.filter(s=>s.ok).length; return {n,c,pct:n?Math.round(c/n*100):0}; }
+
+  function draw(){
+    const dpr=window.devicePixelRatio||1, cssW=cv.clientWidth||W; cv.width=W*dpr;cv.height=H*dpr;cv.style.height=(H*(cssW/W))+"px"; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    const st=getComputedStyle(document.body); const card=st.getPropertyValue('--card')||'#fff', line=st.getPropertyValue('--line')||'#e4e9f1';
+    ctx.fillStyle="#0f1a2e"; ctx.fillRect(0,0,W,H);
+    // anéis de tolerância
+    const rings=[[SPEC*2.0,"#1b2942"],[SPEC*1.55,"#22344f"],[SPEC*1.15,"#2b4763"]];
+    rings.forEach(([r,c])=>{ ctx.fillStyle=c; ctx.beginPath(); ctx.arc(CX,CY,r,0,7); ctx.fill(); });
+    // faixa de especificação (verde)
+    ctx.fillStyle="rgba(78,154,81,.28)"; ctx.beginPath(); ctx.arc(CX,CY,SPEC,0,7); ctx.fill();
+    ctx.strokeStyle="#4E9A51"; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(CX,CY,SPEC,0,7); ctx.stroke();
+    // centro (alvo)
+    ctx.strokeStyle="rgba(255,255,255,.5)"; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(CX-14,CY);ctx.lineTo(CX+14,CY);ctx.moveTo(CX,CY-14);ctx.lineTo(CX,CY+14); ctx.stroke();
+    ctx.fillStyle="#EAF0F8"; ctx.font='11px "IBM Plex Mono"'; ctx.textAlign="center"; ctx.fillText("alvo",CX,CY+26);
+    // mira atual
+    const mx=CX+ax,my=CY+ay; ctx.strokeStyle="#E8A33D"; ctx.lineWidth=2; ctx.setLineDash([5,4]); ctx.beginPath(); ctx.arc(mx,my,9,0,7); ctx.stroke(); ctx.setLineDash([]);
+    // tiros
+    shots.forEach(s=>{ ctx.fillStyle=s.ok?"#7fd487":"#E06A5E"; ctx.beginPath(); ctx.arc(s.x,s.y,5,0,7); ctx.fill(); ctx.strokeStyle="rgba(0,0,0,.3)"; ctx.lineWidth=1; ctx.stroke(); });
+    const s=stats(); $("n").textContent=s.n; $("pct").textContent=s.pct; $("sig").textContent=sigma; $("best").textContent=D.melhorPct==null?"—":(D.melhorPct+"%");
+  }
+
+  // controles
+  document.querySelectorAll(".aim button").forEach(b=>b.addEventListener("click",()=>{ const d=b.dataset.d, S=14;
+    if(d==="u")ay-=S; else if(d==="dn")ay+=S; else if(d==="l")ax-=S; else if(d==="r")ax+=S; else if(d==="c"){ax=0;ay=0;}
+    ax=Math.max(-160,Math.min(160,ax)); ay=Math.max(-160,Math.min(160,ay)); draw(); }));
+  $("range").addEventListener("input",()=>{ sigma=+$("range").value; draw(); });
+
+  $("um").addEventListener("click",()=>{ fireOne(); draw(); });
+  $("lote").addEventListener("click",()=>{ shots=[]; for(let i=0;i<20;i++)fireOne(); const s=stats();
+    const novo=(D.melhorPct==null||s.pct>D.melhorPct); if(novo)D.melhorPct=s.pct; D.tentativas++; $("tent").textContent="tentativas: "+D.tentativas; draw(); });
+  $("limpar").addEventListener("click",()=>{ shots=[]; draw(); });
+  window.addEventListener("resize",draw);
+
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} if(D.melhorPct==null){status("produza um lote primeiro",false);return;}
+    $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); const d=o.dados;
+    if(o.ok&&d&&typeof d.melhorPct!=="undefined"){ D.melhorPct=d.melhorPct; D.tentativas=d.tentativas||0; $("tent").textContent=D.tentativas?("tentativas: "+D.tentativas):""; draw(); status("carregado ✓"); }
+    else status("nada salvo p/ este grupo"); }
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+
+  draw();
+</script>
+</body>
+</html>
