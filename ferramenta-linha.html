@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linha de Produção · Ferramentas Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --navy-2:#0B1526; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --green:#4E9A51; --blue:#3B6FB0;
+    --shadow:0 16px 40px -22px rgba(15,23,41,.35); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; --navy-2:#070E1B; } }
+  *{box-sizing:border-box} html,body{margin:0} [hidden]{display:none!important}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:rgba(44,140,137,.15);color:var(--teal)}
+  .brand p{margin:0;color:var(--muted);font-size:12.5px}
+  .grpbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .grpbar label{font-size:12px;color:var(--muted);font-weight:600}
+  .grpbar input{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--card);color:var(--ink);width:140px}
+  .grpbar input:focus{outline:none;border-color:var(--amber)}
+  #status{font-size:12px;color:var(--muted);min-width:70px}
+  .btn{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:10px 14px}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn.sm{font-size:13px;padding:9px 11px}
+  .btn:disabled{opacity:.5;cursor:default}
+
+  .hud{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .kpi{flex:1;min-width:120px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;box-shadow:var(--shadow)}
+  .kpi .k{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+  .kpi .v{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:20px}
+  .kpi.ent .v{color:var(--green)} .kpi.wip .v{color:var(--red)} .kpi.best .v{color:var(--amber-deep);font-size:16px}
+
+  .line{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;overflow-x:auto}
+  .flow{display:flex;align-items:flex-end;gap:6px;min-width:760px}
+  .src,.sink{flex:none;width:74px;text-align:center}
+  .src .box,.sink .box{border-radius:12px;padding:10px 6px;font-weight:700;font-size:13px}
+  .src .box{background:rgba(59,111,176,.12);color:var(--blue);border:1px solid rgba(59,111,176,.3)}
+  .sink .box{background:rgba(78,154,81,.14);color:var(--green);border:1px solid rgba(78,154,81,.35)}
+  .src .n,.sink .n{font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:700;margin-top:4px}
+  .stn{flex:1;min-width:64px;text-align:center}
+  .stn .die{font-size:34px;line-height:1;height:38px}
+  .stn .box{margin-top:4px;border:1.5px solid var(--line);border-radius:11px;padding:8px 4px;background:var(--card)}
+  .stn .box b{display:block;font-size:12.5px}
+  .stn .box .tot{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted)}
+  .stn.bottleneck .box{border-color:var(--red);box-shadow:0 0 0 2px rgba(192,57,43,.18)}
+  .buf{flex:none;width:40px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+  .buf .bar{width:22px;background:linear-gradient(180deg,var(--amber),var(--amber-deep));border-radius:5px 5px 0 0;transition:height .25s;min-height:2px}
+  .buf .c{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:700;margin-top:3px}
+  .buf .arrow{color:var(--muted);font-size:13px;margin-top:-2px}
+  .scale{height:120px;display:flex;align-items:flex-end}
+
+  .cfg{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+  .cfg .modo{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:4px}
+  .cfg .modo button{border:none;background:transparent;color:var(--ink-2);border-radius:7px;padding:7px 10px;cursor:pointer;font:inherit;font-size:12.5px;font-weight:600}
+  .cfg .modo button.on{background:var(--navy);color:#EAF0F8}
+  .cfg .sp{flex:1}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+  .actions .sp{flex:1}
+
+  .overlay{position:fixed;inset:0;display:grid;place-items:center;background:rgba(11,21,38,.6);padding:20px;z-index:5}
+  .overlay .card{background:var(--card);border-radius:16px;padding:20px 22px;max-width:420px;box-shadow:var(--shadow);text-align:center}
+  .overlay h2{font-family:"Bricolage Grotesque",sans-serif;margin:0 0 6px;font-size:20px}
+  .overlay .big{font-family:"Bricolage Grotesque",sans-serif;font-size:34px;color:var(--green);margin:6px 0}
+  .overlay .brk{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--muted);margin:8px 0}
+  .overlay p{font-size:13px;color:var(--ink-2);margin:8px 0}
+  .foot{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="mk">🎲</span><div><h1>Linha de Produção (Jogo dos Dados)</h1><p>Variação e gargalo · Teoria das Restrições — Bloco GQT</p></div></div>
+    <div class="grpbar"><label for="grupo">Grupo</label><input id="grupo" placeholder="Ex.: Grupo Azul" autocomplete="off"><span id="status"></span></div>
+  </header>
+
+  <div class="hud">
+    <div class="kpi"><div class="k">Rodada</div><div class="v"><span id="rod">0</span>/<span id="tot">20</span></div></div>
+    <div class="kpi ent"><div class="k">Entregue</div><div class="v" id="ent">0</div></div>
+    <div class="kpi wip"><div class="k">Estoque parado (WIP)</div><div class="v" id="wip">0</div></div>
+    <div class="kpi"><div class="k">Média/rodada</div><div class="v" id="media">0,0</div></div>
+    <div class="kpi best"><div class="k">Melhor do grupo</div><div class="v" id="best">—</div></div>
+  </div>
+
+  <div class="line">
+    <div class="flow" id="flow"></div>
+  </div>
+
+  <div class="cfg">
+    <span style="font-size:12.5px;color:var(--muted);font-weight:600">Capacidade de cada estação:</span>
+    <div class="modo">
+      <button data-modo="normal" class="on">Dado normal (1–6)</button>
+      <button data-modo="baixa">Baixa variação (3–4)</button>
+    </div>
+    <span class="sp"></span>
+    <span style="font-size:12px;color:var(--muted)">Ideal sem variação: <b id="ideal">70</b> peças</span>
+  </div>
+
+  <div class="actions">
+    <button class="btn primary" id="rolar">🎲 Rolar rodada</button>
+    <button class="btn ghost sm" id="auto">▶ Rodar até o fim</button>
+    <button class="btn ghost sm" id="zerar">Zerar</button>
+    <span class="sp"></span>
+    <button class="btn ghost sm" id="salvar">Salvar resultado</button>
+    <button class="btn ghost sm" id="carregar">Carregar</button>
+    <span id="tent" style="font-size:12px;color:var(--muted)"></span>
+  </div>
+  <p class="foot">Cada estação processa quantas peças o dado permitir — mas só se tiver peças esperando. O estoque se acumula antes das estações azaradas. Mesmo com média 3,5 em todas, a linha entrega bem menos que o ideal: é o efeito da <b>variação + dependência</b>.</p>
+</div>
+
+<div class="overlay" id="ov" hidden><div class="card">
+  <h2 id="ovT">Fim dos 20 turnos</h2>
+  <div class="big" id="ovBig">0 peças</div>
+  <div class="brk" id="ovBrk"></div>
+  <p id="ovMsg"></p>
+  <button class="btn primary" id="ovBtn">Jogar de novo</button>
+</div></div>
+
+<script>
+  const API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/trabalhos-verisure";
+  const FERRAMENTA="linha";
+  const $=(id)=>document.getElementById(id);
+  const GKEY="verisure_grupo";
+  const NEST=6, ROUNDS=20, DICE=["","⚀","⚁","⚂","⚃","⚄","⚅"];
+
+  let modo="normal", D={ melhorEntregue:null, wipFinal:0, rodadas:ROUNDS, tentativas:0, modo:"normal" };
+  // buffers: buf[0]=matéria-prima(∞), buf[1..5]=WIP, buf[6]=entregue ; proc[i]=total processado pela estação i
+  let buf, proc, rodada, dice, autoTimer=null;
+
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",()=>{ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+  function status(m,ok){ $("status").textContent=m; $("status").style.color=ok===false?"var(--red)":"var(--muted)"; }
+  $("tot").textContent=ROUNDS;
+
+  function reset(){
+    buf=[Infinity,0,0,0,0,0,0]; proc=[0,0,0,0,0,0,0]; rodada=0; dice=[0,0,0,0,0,0,0];
+    if(autoTimer){clearInterval(autoTimer);autoTimer=null; $("auto").textContent="▶ Rodar até o fim";}
+    $("rolar").disabled=false; $("auto").disabled=false;
+    render();
+  }
+  function roll(){ return modo==="baixa" ? (3+Math.floor(Math.random()*2)) : (1+Math.floor(Math.random()*6)); }
+
+  function step(){
+    if(rodada>=ROUNDS) return;
+    rodada++;
+    const prev=buf.slice();
+    for(let i=1;i<=NEST;i++){
+      const d=roll(); dice[i]=d;
+      const avail = (i===1)? Infinity : prev[i-1];
+      const moved=Math.min(d, avail);
+      if(i>1) buf[i-1]-=moved;
+      buf[i]+=moved; proc[i]+=moved;
+    }
+    render();
+    if(rodada>=ROUNDS) finish();
+  }
+
+  function bottleneckIdx(){ // estação logo após o maior estoque
+    let mx=-1, idx=-1; for(let i=1;i<=5;i++){ if(buf[i]>mx){mx=buf[i];idx=i;} } return mx>0? idx+1 : -1;
+  }
+
+  function render(){
+    const entregue=buf[6], wip=buf.slice(1,6).reduce((s,v)=>s+v,0);
+    $("rod").textContent=rodada; $("ent").textContent=entregue; $("wip").textContent=wip;
+    $("media").textContent=(rodada? (entregue/rodada):0).toFixed(1).replace(".",",");
+    $("best").textContent=D.melhorEntregue==null?"—":(D.melhorEntregue+" pç");
+    const bn=bottleneckIdx();
+    const maxBar=Math.max(6, ...buf.slice(1,6));
+    let html=`<div class="src"><div class="box">Matéria-prima<div class="n">∞</div></div></div>`;
+    for(let i=1;i<=NEST;i++){
+      html+=`<div class="stn ${i===bn?'bottleneck':''}">
+        <div class="die">${dice[i]?DICE[dice[i]]:"·"}</div>
+        <div class="box"><b>E${i}</b><span class="tot">${proc[i]} pç</span></div>
+      </div>`;
+      if(i<NEST){ const h=Math.round(buf[i]/maxBar*100); html+=`<div class="buf"><div class="scale"><div class="bar" style="height:${h}%"></div></div><div class="c">${buf[i]}</div><div class="arrow">▶</div></div>`; }
+    }
+    html+=`<div class="sink"><div class="box">Entregue<div class="n">${buf[6]}</div></div></div>`;
+    $("flow").innerHTML=html;
+  }
+
+  function finish(){
+    $("rolar").disabled=true; $("auto").disabled=true;
+    if(autoTimer){clearInterval(autoTimer);autoTimer=null; $("auto").textContent="▶ Rodar até o fim";}
+    const entregue=buf[6], wip=buf.slice(1,6).reduce((s,v)=>s+v,0), ideal=ROUNDS*(modo==="baixa"?3.5:3.5);
+    const novo=(D.melhorEntregue==null||entregue>D.melhorEntregue);
+    if(novo){ D.melhorEntregue=entregue; }
+    D.wipFinal=wip; D.rodadas=ROUNDS; D.modo=modo; D.tentativas++;
+    $("ovBig").textContent=entregue+" peças";
+    $("ovBrk").innerHTML=`ideal sem variação: ${Math.round(ideal)} pç · você: ${entregue} pç (${Math.round(entregue/ideal*100)}%)<br>estoque parado no fim: <b style="color:var(--red)">${wip} peças</b>`;
+    $("ovMsg").innerHTML = modo==="baixa"
+      ? "Com <b>pouca variação</b> a linha chega perto do ideal e quase não sobra estoque. Reduzir a variação é o caminho — não correr mais."
+      : (novo?"★ Novo recorde do grupo! ":"")+"Repare: a média de cada estação é 3,5, mas a linha entrega bem menos e junta pilhas de estoque. Agora troque para <b>Baixa variação</b> e rode de novo — a diferença é o recado.";
+    $("tent").textContent="tentativas: "+D.tentativas;
+    $("ov").hidden=false; render();
+  }
+
+  $("rolar").addEventListener("click",step);
+  $("auto").addEventListener("click",function(){
+    if(autoTimer){ clearInterval(autoTimer); autoTimer=null; this.textContent="▶ Rodar até o fim"; $("rolar").disabled=false; return; }
+    this.textContent="⏸ Pausar"; $("rolar").disabled=true;
+    autoTimer=setInterval(()=>{ if(rodada>=ROUNDS){ clearInterval(autoTimer); autoTimer=null; $("auto").textContent="▶ Rodar até o fim"; return; } step(); },380);
+  });
+  $("zerar").addEventListener("click",reset);
+  $("ovBtn").addEventListener("click",()=>{ $("ov").hidden=true; reset(); });
+  document.querySelectorAll(".modo button").forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll(".modo button").forEach(x=>x.classList.remove("on")); b.classList.add("on");
+    modo=b.dataset.modo; reset();
+  }));
+
+  async function api(p){ const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(p)}); return r.json().catch(()=>({ok:false})); }
+  async function salvar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} if(D.melhorEntregue==null){status("jogue até o fim primeiro",false);return;}
+    $("salvar").disabled=true; status("salvando…"); const o=await api({action:"save",grupo:g,ferramenta:FERRAMENTA,dados:D}); status(o.ok?"salvo ✓":"erro",o.ok); $("salvar").disabled=false; }
+  async function carregar(){ const g=$("grupo").value.trim(); if(!g){status("informe o grupo",false);return;} status("carregando…"); const o=await api({action:"get",grupo:g,ferramenta:FERRAMENTA}); const d=o.dados;
+    if(o.ok&&d&&typeof d.melhorEntregue!=="undefined"){ D.melhorEntregue=d.melhorEntregue; D.tentativas=d.tentativas||0; D.wipFinal=d.wipFinal||0; $("tent").textContent=D.tentativas?("tentativas: "+D.tentativas):""; render(); status("carregado ✓"); }
+    else status("nada salvo p/ este grupo"); }
+  $("salvar").addEventListener("click",salvar);
+  $("carregar").addEventListener("click",carregar);
+
+  reset();
+</script>
+</body>
+</html>
