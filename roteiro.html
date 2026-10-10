@@ -317,7 +317,7 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
     let clock=toMin(b.start);
     const steps=b.steps.map(st=>{
       const win=`${fromMin(clock)}–${fromMin(clock+st.m)}`; clock+=st.m;
-      const chips=(st.tools||[]).map(k=>{ const t=TOOLS[k]; return t?`<a class="chip ${st.din?'din':''}" href="${t.h}">${st.din?'▶ ':'🔧 '}${t.l}</a>`:""; }).join("");
+      const chips=(st.tools||[]).map(k=>{ const t=TOOLS[k]; return t?`<a class="chip ${st.din?'din':''} vztool" href="${t.h}" data-file="${t.h}" data-label="${t.l}">${st.din?'▶ ':'🔧 '}${t.l}</a>`:""; }).join("");
       return `<div class="step"><div class="st-t">${win}<br>${st.n} · ${st.m}′</div><div class="st-b"><b>${st.n}</b><div class="d">${st.d}</div>${chips?`<div class="chips">${chips}</div>`:""}</div></div>`;
     }).join("");
     return `<div class="blk" id="${b.id}" style="--bc:${b.cor}">
@@ -341,5 +341,38 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
   }
   tick(); setInterval(tick,20000);
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<div id="vzQR" style="position:fixed;inset:0;display:none;place-items:center;background:rgba(11,21,38,.72);z-index:200;padding:20px">
+  <div style="background:#fff;color:#0E1729;border-radius:16px;padding:22px;max-width:360px;width:100%;text-align:center;box-shadow:0 30px 70px -20px rgba(0,0,0,.6)">
+    <h3 id="vzQRt" style="font-family:'Bricolage Grotesque',system-ui;margin:0 0 4px;font-size:19px"></h3>
+    <p style="margin:0 0 12px;color:#647089;font-size:12.5px;line-height:1.4">📷 Aponte a câmera do celular. Cada grupo entra com a <b>identidade da sua mesa</b> (definida no QR da recepção).</p>
+    <div id="vzQRimg" style="display:flex;justify-content:center;align-items:center;min-height:220px"></div>
+    <div id="vzQRurl" style="font:11px ui-monospace,monospace;color:#8a93a6;word-break:break-all;margin:10px 0"></div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <a id="vzQRopen" href="#" target="_blank" rel="noopener" style="text-decoration:none;background:#E8A33D;color:#20160A;font:800 14px system-ui;border-radius:10px;padding:10px 16px">Abrir ferramenta</a>
+      <button id="vzQRclose" type="button" style="background:#fff;border:1.5px solid #E4E9F1;color:#33415A;font:700 14px system-ui;border-radius:10px;padding:10px 16px;cursor:pointer">Fechar</button>
+    </div>
+  </div>
+</div>
+<script>(function(){
+  var PUB="https://mariocezar1971.github.io/inscricao-verisure/";
+  function base(){ var local=(["localhost","127.0.0.1",""].indexOf(location.hostname)>=0||location.protocol==="file:"); return local?PUB:(location.origin+location.pathname.replace(/[^/]*$/,"")); }
+  var modal=document.getElementById("vzQR"), img=document.getElementById("vzQRimg");
+  function openQR(file,label){ var url=base()+file;
+    document.getElementById("vzQRt").textContent=label;
+    document.getElementById("vzQRurl").textContent=url;
+    document.getElementById("vzQRopen").href=url;
+    img.innerHTML="";
+    try{ new QRCode(img,{text:url,width:230,height:230,correctLevel:QRCode.CorrectLevel.M}); }
+    catch(e){ img.textContent="(QR requer internet — use o link)"; }
+    modal.style.display="grid"; }
+  function closeQR(){ modal.style.display="none"; }
+  document.addEventListener("click",function(e){ var a=e.target.closest&&e.target.closest(".vztool"); if(a){ e.preventDefault(); openQR(a.getAttribute("data-file"),a.getAttribute("data-label")); } });
+  document.getElementById("vzQRclose").addEventListener("click",closeQR);
+  modal.addEventListener("click",function(e){ if(e.target===modal)closeQR(); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape")closeQR(); });
+})();</script>
+
 </body>
 </html>
