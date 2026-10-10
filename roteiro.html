@@ -317,7 +317,7 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
     let clock=toMin(b.start);
     const steps=b.steps.map(st=>{
       const win=`${fromMin(clock)}–${fromMin(clock+st.m)}`; clock+=st.m;
-      const chips=(st.tools||[]).map(k=>{ const t=TOOLS[k]; return t?`<a class="chip ${st.din?'din':''} vztool" href="${t.h}" data-file="${t.h}" data-label="${t.l}" data-min="${st.m}">${st.din?'▶ ':'🔧 '}${t.l}</a>`:""; }).join("");
+      const chips=(st.tools||[]).map(k=>{ const t=TOOLS[k]; return t?`<a class="chip ${st.din?'din':''} vztool" href="${t.h}" data-file="${t.h}" data-label="${t.l}" data-min="${st.m}" data-audio="audio/${k}.mp3">${st.din?'▶ ':'🔧 '}${t.l}</a>`:""; }).join("");
       return `<div class="step"><div class="st-t">${win}<br>${st.n} · ${st.m}′</div><div class="st-b"><b>${st.n}</b><div class="d">${st.d}</div>${chips?`<div class="chips">${chips}</div>`:""}</div></div>`;
     }).join("");
     return `<div class="blk" id="${b.id}" style="--bc:${b.cor}">
@@ -369,6 +369,7 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
         <div style="font:600 12px system-ui;color:#647089">Minutos:
           <input id="vzMin" type="number" min="1" max="120" value="25" style="width:64px;font:700 14px 'IBM Plex Mono',monospace;text-align:center;border:1.5px solid #E4E9F1;border-radius:8px;padding:5px"></div>
         <p style="font-size:11.5px;color:#8a93a6;margin:10px 0 0;line-height:1.4">Clique <b>▶ Iniciar</b> quando <b>todos os grupos</b> tiverem escaneado.</p>
+        <div id="vzSnd" style="font-size:11px;color:#8a93a6;margin-top:6px">🎵 <span id="vzSndt">—</span></div>
       </div>
     </div>
   </div>
@@ -378,6 +379,10 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
   function base(){ var local=(["localhost","127.0.0.1",""].indexOf(location.hostname)>=0||location.protocol==="file:"); return local?PUB:(location.origin+location.pathname.replace(/[^/]*$/,"")); }
   var modal=document.getElementById("vzQR"), img=document.getElementById("vzQRimg");
   var dur=25*60, left=25*60, running=false, iv=null, beeped=false;
+  var audio=new Audio(); audio.loop=true; var audioSrc="";
+  function playMusic(){ if(!audioSrc)return; audio.play().catch(function(){ var s=document.getElementById("vzSndt"); if(s)s.textContent=s.textContent+" (arquivo não encontrado)"; }); }
+  function pauseMusic(){ try{audio.pause();}catch(e){} }
+  function stopMusic(){ try{audio.pause(); audio.currentTime=0;}catch(e){} }
   function fmt(s){ s=Math.max(0,Math.round(s)); var m=Math.floor(s/60); return (m<10?"0":"")+m+":"+((s%60)<10?"0":"")+(s%60); }
   function paint(){ var T=document.getElementById("vzTime"), B=document.getElementById("vzBar");
     T.textContent=fmt(left); var f=dur>0?left/dur:0;
@@ -385,18 +390,20 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
     var col=left<=0?"#C0392B":(f<=0.15?"#E8A33D":"#4E9A51"); B.style.background=col; T.style.color=col; }
   function beep(){ try{var a=new (window.AudioContext||window.webkitAudioContext)();var o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.type="sine";o.frequency.value=880;g.gain.setValueAtTime(.001,a.currentTime);g.gain.exponentialRampToValueAtTime(.4,a.currentTime+.02);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.6);o.start();o.stop(a.currentTime+.6);}catch(e){} if(navigator.vibrate)navigator.vibrate(300); }
   function tick(){ var t0=Date.now()-((dur-left)*1000);
-    iv=setInterval(function(){ left=dur-(Date.now()-t0)/1000; if(left<=0){ left=0; if(!beeped){beeped=true;beep();} clearInterval(iv); iv=null; running=false; document.getElementById("vzStart").textContent="▶ Iniciar"; } paint(); },200); }
-  function start(){ if(running){ running=false; clearInterval(iv); iv=null; document.getElementById("vzStart").textContent="▶ Continuar"; return; }
-    if(left<=0){ left=dur; beeped=false; } running=true; document.getElementById("vzStart").textContent="⏸ Pausar"; tick(); }
-  function reset(){ running=false; if(iv)clearInterval(iv); iv=null; beeped=false; left=dur; document.getElementById("vzStart").textContent="▶ Iniciar"; paint(); }
+    iv=setInterval(function(){ left=dur-(Date.now()-t0)/1000; if(left<=0){ left=0; if(!beeped){beeped=true;beep();stopMusic();} clearInterval(iv); iv=null; running=false; document.getElementById("vzStart").textContent="▶ Iniciar"; } paint(); },200); }
+  function start(){ if(running){ running=false; clearInterval(iv); iv=null; pauseMusic(); document.getElementById("vzStart").textContent="▶ Continuar"; return; }
+    if(left<=0){ left=dur; beeped=false; } running=true; document.getElementById("vzStart").textContent="⏸ Pausar"; playMusic(); tick(); }
+  function reset(){ running=false; if(iv)clearInterval(iv); iv=null; beeped=false; left=dur; stopMusic(); document.getElementById("vzStart").textContent="▶ Iniciar"; paint(); }
   function setMin(){ var m=Math.max(1,Math.min(120,parseInt(document.getElementById("vzMin").value)||25)); dur=m*60; if(!running){ left=dur; beeped=false; } paint(); }
   function openQR(file,label,min){ var url=base()+file; var qurl=url+(url.indexOf("?")>=0?"&":"?")+"qr=1";
     document.getElementById("vzQRt").textContent=label; document.getElementById("vzQRurl").textContent=qurl; document.getElementById("vzQRopen").href=url;
     img.innerHTML=""; try{ new QRCode(img,{text:qurl,width:210,height:210,correctLevel:QRCode.CorrectLevel.M}); }catch(e){ img.textContent="(QR requer internet)"; }
     var mm=parseInt(min)||25; document.getElementById("vzMin").value=mm; running=false; if(iv)clearInterval(iv); iv=null; beeped=false; dur=mm*60; left=dur; document.getElementById("vzStart").textContent="▶ Iniciar"; paint();
+    stopMusic(); audioSrc=arguments[3]||""; if(audioSrc){ audio.src=audioSrc; audio.load(); }
+    var sn=document.getElementById("vzSndt"); if(sn)sn.textContent=audioSrc?audioSrc.replace("audio/","").replace(".mp3",""):"sem trilha";
     modal.style.display="grid"; }
-  function closeQR(){ modal.style.display="none"; if(iv)clearInterval(iv); iv=null; running=false; }
-  document.addEventListener("click",function(e){ var a=e.target.closest&&e.target.closest(".vztool"); if(a){ e.preventDefault(); openQR(a.getAttribute("data-file"),a.getAttribute("data-label"),a.getAttribute("data-min")); } });
+  function closeQR(){ modal.style.display="none"; if(iv)clearInterval(iv); iv=null; running=false; stopMusic(); }
+  document.addEventListener("click",function(e){ var a=e.target.closest&&e.target.closest(".vztool"); if(a){ e.preventDefault(); openQR(a.getAttribute("data-file"),a.getAttribute("data-label"),a.getAttribute("data-min"),a.getAttribute("data-audio")); } });
   document.getElementById("vzStart").addEventListener("click",start);
   document.getElementById("vzReset").addEventListener("click",reset);
   document.getElementById("vzMin").addEventListener("input",setMin);

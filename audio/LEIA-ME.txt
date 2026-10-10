@@ -1,0 +1,27 @@
+TRILHAS SONORAS POR FERRAMENTA (Roteiro)
+========================================
+Ao clicar ▶ Iniciar no cronômetro de uma ferramenta, toca o .mp3 com o MESMO
+nome da ferramenta (nesta pasta). Substitua estes arquivos de teste pelas suas
+músicas, MANTENDO EXATAMENTE os nomes:
+
+  ishikawa.mp3       -> Ishikawa
+  pareto.mp3         -> Pareto
+  folha.mp3          -> Folha de Verificação
+  brainstorming.mp3  -> Brainstorming
+  5w1h.mp3           -> 5W1H
+  controle.mp3       -> Gráfico de Controle
+  5s.mp3             -> 5S
+  pmcanvas.mp3       -> Project Model Canvas
+  persona.mp3        -> Persona + Jornada
+  spin.mp3           -> Perguntas SPIN
+  persuasao.mp3      -> 6 Armas da Persuasão
+  storytelling.mp3   -> Estrutura da História
+  lua.mp3            -> Sobrevivência na Lua
+  rota.mp3           -> Rota da Qualidade
+  linha.mp3          -> Linha de Produção
+  defeito.mp3        -> Caça ao Defeito
+  alvo.mp3           -> Alvo do Processo
+
+- A música toca em loop, pausa junto com o cronômetro e para no fim do tempo.
+- Se um arquivo não existir, o cronômetro funciona normal (só sem música).
+- Use .mp3 e, de preferência, músicas sem direitos autorais.
