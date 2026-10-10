@@ -317,7 +317,7 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
     let clock=toMin(b.start);
     const steps=b.steps.map(st=>{
       const win=`${fromMin(clock)}–${fromMin(clock+st.m)}`; clock+=st.m;
-      const chips=(st.tools||[]).map(k=>{ const t=TOOLS[k]; return t?`<a class="chip ${st.din?'din':''} vztool" href="${t.h}" data-file="${t.h}" data-label="${t.l}">${st.din?'▶ ':'🔧 '}${t.l}</a>`:""; }).join("");
+      const chips=(st.tools||[]).map(k=>{ const t=TOOLS[k]; return t?`<a class="chip ${st.din?'din':''} vztool" href="${t.h}" data-file="${t.h}" data-label="${t.l}" data-min="${st.m}">${st.din?'▶ ':'🔧 '}${t.l}</a>`:""; }).join("");
       return `<div class="step"><div class="st-t">${win}<br>${st.n} · ${st.m}′</div><div class="st-b"><b>${st.n}</b><div class="d">${st.d}</div>${chips?`<div class="chips">${chips}</div>`:""}</div></div>`;
     }).join("");
     return `<div class="blk" id="${b.id}" style="--bc:${b.cor}">
@@ -343,15 +343,33 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<div id="vzQR" style="position:fixed;inset:0;display:none;place-items:center;background:rgba(11,21,38,.72);z-index:200;padding:20px">
-  <div style="background:#fff;color:#0E1729;border-radius:16px;padding:22px;max-width:360px;width:100%;text-align:center;box-shadow:0 30px 70px -20px rgba(0,0,0,.6)">
-    <h3 id="vzQRt" style="font-family:'Bricolage Grotesque',system-ui;margin:0 0 4px;font-size:19px"></h3>
-    <p style="margin:0 0 12px;color:#647089;font-size:12.5px;line-height:1.4">📷 Aponte a câmera do celular. Cada grupo entra com a <b>identidade da sua mesa</b> (definida no QR da recepção).</p>
-    <div id="vzQRimg" style="display:flex;justify-content:center;align-items:center;min-height:220px"></div>
-    <div id="vzQRurl" style="font:11px ui-monospace,monospace;color:#8a93a6;word-break:break-all;margin:10px 0"></div>
-    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-      <a id="vzQRopen" href="#" target="_blank" rel="noopener" style="text-decoration:none;background:#E8A33D;color:#20160A;font:800 14px system-ui;border-radius:10px;padding:10px 16px">Abrir ferramenta</a>
-      <button id="vzQRclose" type="button" style="background:#fff;border:1.5px solid #E4E9F1;color:#33415A;font:700 14px system-ui;border-radius:10px;padding:10px 16px;cursor:pointer">Fechar</button>
+<div id="vzQR" style="position:fixed;inset:0;display:none;place-items:center;background:rgba(11,21,38,.72);z-index:200;padding:16px">
+  <div style="background:#fff;color:#0E1729;border-radius:16px;padding:20px;max-width:620px;width:100%;box-shadow:0 30px 70px -20px rgba(0,0,0,.6)">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px">
+      <h3 id="vzQRt" style="font-family:'Bricolage Grotesque',system-ui;margin:0;font-size:19px"></h3>
+      <button id="vzQRclose" type="button" style="background:#fff;border:1.5px solid #E4E9F1;color:#33415A;font:700 13px system-ui;border-radius:9px;padding:7px 11px;cursor:pointer">✕ Fechar</button>
+    </div>
+    <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start">
+      <!-- QR -->
+      <div style="flex:1;min-width:230px;text-align:center">
+        <p style="margin:0 0 10px;color:#647089;font-size:12.5px;line-height:1.4">📷 Cada grupo aponta a câmera. Entram com a <b>identidade da mesa</b> (QR da recepção).</p>
+        <div id="vzQRimg" style="display:flex;justify-content:center;align-items:center;min-height:210px"></div>
+        <div id="vzQRurl" style="font:10px ui-monospace,monospace;color:#8a93a6;word-break:break-all;margin:8px 0"></div>
+        <a id="vzQRopen" href="#" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block;background:#132542;color:#EAF0F8;font:700 13px system-ui;border-radius:9px;padding:8px 14px">Abrir no telão</a>
+      </div>
+      <!-- CRONÔMETRO -->
+      <div style="flex:1;min-width:230px;background:#F4F6FA;border:1px solid #E4E9F1;border-radius:14px;padding:14px;text-align:center">
+        <div style="font:700 11px system-ui;letter-spacing:.06em;text-transform:uppercase;color:#647089">Tempo da atividade</div>
+        <div id="vzTime" style="font:800 54px/1.05 'IBM Plex Mono',ui-monospace,monospace;color:#2C8C89;margin:6px 0">00:00</div>
+        <div style="height:8px;border-radius:6px;background:#E4E9F1;overflow:hidden;margin:4px 0 12px"><i id="vzBar" style="display:block;height:100%;width:100%;background:#4E9A51;transition:width .3s,background .3s"></i></div>
+        <div style="display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:10px">
+          <button id="vzStart" type="button" style="background:#E8A33D;color:#20160A;border:none;font:800 15px system-ui;border-radius:10px;padding:10px 18px;cursor:pointer">▶ Iniciar</button>
+          <button id="vzReset" type="button" style="background:#fff;border:1.5px solid #E4E9F1;color:#33415A;font:700 14px system-ui;border-radius:10px;padding:10px 14px;cursor:pointer">↺ Reiniciar</button>
+        </div>
+        <div style="font:600 12px system-ui;color:#647089">Minutos:
+          <input id="vzMin" type="number" min="1" max="120" value="25" style="width:64px;font:700 14px 'IBM Plex Mono',monospace;text-align:center;border:1.5px solid #E4E9F1;border-radius:8px;padding:5px"></div>
+        <p style="font-size:11.5px;color:#8a93a6;margin:10px 0 0;line-height:1.4">Clique <b>▶ Iniciar</b> quando <b>todos os grupos</b> tiverem escaneado.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -359,20 +377,32 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
   var PUB="https://mariocezar1971.github.io/inscricao-verisure/";
   function base(){ var local=(["localhost","127.0.0.1",""].indexOf(location.hostname)>=0||location.protocol==="file:"); return local?PUB:(location.origin+location.pathname.replace(/[^/]*$/,"")); }
   var modal=document.getElementById("vzQR"), img=document.getElementById("vzQRimg");
-  function openQR(file,label){ var url=base()+file;
-    document.getElementById("vzQRt").textContent=label;
-    document.getElementById("vzQRurl").textContent=url;
-    document.getElementById("vzQRopen").href=url;
-    img.innerHTML="";
-    try{ new QRCode(img,{text:url,width:230,height:230,correctLevel:QRCode.CorrectLevel.M}); }
-    catch(e){ img.textContent="(QR requer internet — use o link)"; }
+  var dur=25*60, left=25*60, running=false, iv=null, beeped=false;
+  function fmt(s){ s=Math.max(0,Math.round(s)); var m=Math.floor(s/60); return (m<10?"0":"")+m+":"+((s%60)<10?"0":"")+(s%60); }
+  function paint(){ var T=document.getElementById("vzTime"), B=document.getElementById("vzBar");
+    T.textContent=fmt(left); var f=dur>0?left/dur:0;
+    B.style.width=Math.max(0,f*100)+"%";
+    var col=left<=0?"#C0392B":(f<=0.15?"#E8A33D":"#4E9A51"); B.style.background=col; T.style.color=col; }
+  function beep(){ try{var a=new (window.AudioContext||window.webkitAudioContext)();var o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.type="sine";o.frequency.value=880;g.gain.setValueAtTime(.001,a.currentTime);g.gain.exponentialRampToValueAtTime(.4,a.currentTime+.02);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.6);o.start();o.stop(a.currentTime+.6);}catch(e){} if(navigator.vibrate)navigator.vibrate(300); }
+  function tick(){ var t0=Date.now()-((dur-left)*1000);
+    iv=setInterval(function(){ left=dur-(Date.now()-t0)/1000; if(left<=0){ left=0; if(!beeped){beeped=true;beep();} clearInterval(iv); iv=null; running=false; document.getElementById("vzStart").textContent="▶ Iniciar"; } paint(); },200); }
+  function start(){ if(running){ running=false; clearInterval(iv); iv=null; document.getElementById("vzStart").textContent="▶ Continuar"; return; }
+    if(left<=0){ left=dur; beeped=false; } running=true; document.getElementById("vzStart").textContent="⏸ Pausar"; tick(); }
+  function reset(){ running=false; if(iv)clearInterval(iv); iv=null; beeped=false; left=dur; document.getElementById("vzStart").textContent="▶ Iniciar"; paint(); }
+  function setMin(){ var m=Math.max(1,Math.min(120,parseInt(document.getElementById("vzMin").value)||25)); dur=m*60; if(!running){ left=dur; beeped=false; } paint(); }
+  function openQR(file,label,min){ var url=base()+file;
+    document.getElementById("vzQRt").textContent=label; document.getElementById("vzQRurl").textContent=url; document.getElementById("vzQRopen").href=url;
+    img.innerHTML=""; try{ new QRCode(img,{text:url,width:210,height:210,correctLevel:QRCode.CorrectLevel.M}); }catch(e){ img.textContent="(QR requer internet)"; }
+    var mm=parseInt(min)||25; document.getElementById("vzMin").value=mm; running=false; if(iv)clearInterval(iv); iv=null; beeped=false; dur=mm*60; left=dur; document.getElementById("vzStart").textContent="▶ Iniciar"; paint();
     modal.style.display="grid"; }
-  function closeQR(){ modal.style.display="none"; }
-  document.addEventListener("click",function(e){ var a=e.target.closest&&e.target.closest(".vztool"); if(a){ e.preventDefault(); openQR(a.getAttribute("data-file"),a.getAttribute("data-label")); } });
+  function closeQR(){ modal.style.display="none"; if(iv)clearInterval(iv); iv=null; running=false; }
+  document.addEventListener("click",function(e){ var a=e.target.closest&&e.target.closest(".vztool"); if(a){ e.preventDefault(); openQR(a.getAttribute("data-file"),a.getAttribute("data-label"),a.getAttribute("data-min")); } });
+  document.getElementById("vzStart").addEventListener("click",start);
+  document.getElementById("vzReset").addEventListener("click",reset);
+  document.getElementById("vzMin").addEventListener("input",setMin);
   document.getElementById("vzQRclose").addEventListener("click",closeQR);
   modal.addEventListener("click",function(e){ if(e.target===modal)closeQR(); });
   document.addEventListener("keydown",function(e){ if(e.key==="Escape")closeQR(); });
 })();</script>
-
 </body>
 </html>
