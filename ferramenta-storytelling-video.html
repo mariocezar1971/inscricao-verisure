@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gravar Storytelling · Ferramentas Verisure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --green:#4E9A51; --blue:#3B6FB0;
+    --shadow:0 10px 30px -18px rgba(13,30,60,.5); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:720px;margin:0 auto;padding:16px 16px 60px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  a{color:var(--amber-deep)}
+  .brand{display:flex;align-items:center;gap:12px;margin:10px 0 6px}
+  .brand .mk{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-size:22px;background:rgba(232,163,61,.15);color:var(--amber-deep)}
+  .sub{color:var(--muted);font-size:13px;margin:2px 0 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin:14px 0}
+  label{font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);display:block;margin-bottom:5px}
+  input[type=text]{width:100%;font:inherit;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:10px 12px}
+  input[type=text]:focus{outline:none;border-color:var(--amber)}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .row>div{flex:1;min-width:200px}
+  video{width:100%;border-radius:14px;background:#000;display:block;aspect-ratio:9/16;max-height:62vh;object-fit:cover}
+  .btn{border:none;cursor:pointer;font:inherit;font-weight:800;font-size:15px;border-radius:12px;padding:12px 18px;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),var(--amber-deep));color:#20160A}
+  .btn.rec{background:var(--red);color:#fff}
+  .btn.stop{background:var(--navy);color:#EAF0F8}
+  .btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink-2)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .rectime{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:15px;color:var(--red);display:inline-flex;align-items:center;gap:7px}
+  .dot{width:11px;height:11px;border-radius:50%;background:var(--red);animation:bl 1s steps(2,end) infinite}
+  @keyframes bl{50%{opacity:.25}}
+  .bar{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin:12px 0 6px;display:none}
+  .bar i{display:block;height:100%;width:0;background:var(--teal);transition:width .2s}
+  .status{font-size:13.5px;font-weight:600;min-height:20px}
+  .ok{color:var(--green)} .err{color:var(--red)}
+  .hint{font-size:12.5px;color:var(--muted);line-height:1.45}
+  .step-t{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:15px;margin:0 0 8px}
+  .or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:16px 0}
+  .or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+  .pill{display:inline-block;background:rgba(44,140,137,.14);color:var(--teal);font-weight:700;font-size:12px;padding:3px 10px;border-radius:20px}
+  .filebtn{position:relative;overflow:hidden}
+  .filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:200px}
+  .note{background:rgba(59,111,176,.09);border:1px solid rgba(59,111,176,.25);border-radius:12px;padding:11px 13px;font-size:12.5px;color:var(--ink-2);line-height:1.45}
+</style>
+</head>
+<body>
+<div class="vz-nav noprint" style="position:sticky;top:0;z-index:55;display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:9px 12px;background:#0B1526;box-shadow:0 2px 10px rgba(0,0,0,.25)"><a href="ferramentas.html" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap">🏠 Hub</a><a href="roteiro.html" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap">📋 Roteiro</a><a href="central.html" id="vzCentral" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap" title="Abre no computador do facilitador">⚙ Central</a><a href="painel-facilitador.html" id="vzPainel" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap" title="Abre no computador do facilitador">📊 Painel</a><span style="flex:1"></span><a href="#" id="vzPrev" style="color:#20160A;background:#E8A33D;text-decoration:none;font:800 13.5px system-ui,sans-serif;border-radius:9px;padding:9px 14px;white-space:nowrap">◀ Anterior</a><a href="#" id="vzNext" style="color:#20160A;background:#E8A33D;text-decoration:none;font:800 13.5px system-ui,sans-serif;border-radius:9px;padding:9px 14px;white-space:nowrap">Próxima ▶</a><script>(function(){if(new URLSearchParams(location.search).get("qr")==="1"){document.querySelectorAll(".vz-nav").forEach(function(n){n.style.display="none"});return;}
+var SEQ=[["ferramenta-pareto.html","Pareto"],["ferramenta-ishikawa.html","Ishikawa"],["ferramenta-5w1h.html","5W1H"],["ferramenta-folha.html","Folha de Verificação"],["ferramenta-controle.html","Gráfico de Controle"],["ferramenta-brainstorming.html","Brainstorming"],["ferramenta-5s.html","5S"],["ferramenta-pmcanvas.html","PM Canvas"],["ferramenta-persona.html","Persona"],["ferramenta-spin.html","SPIN"],["ferramenta-persuasao.html","Persuasão"],["ferramenta-storytelling.html","Storytelling"],["ferramenta-lua.html","Lua"],["ferramenta-rota.html","Rota"],["ferramenta-linha.html","Linha"],["ferramenta-defeito.html","Defeito"],["ferramenta-alvo.html","Alvo"]];
+var cur=(location.pathname.split("/").pop()||"ferramentas.html");
+var files=SEQ.map(function(x){return x[0];});
+var i=files.indexOf(cur),p,n;
+if(i<0){ p=SEQ[SEQ.length-1]; n=SEQ[0]; } else { p=SEQ[(i-1+SEQ.length)%SEQ.length]; n=SEQ[(i+1)%SEQ.length]; }
+var pb=document.getElementById("vzPrev"), nb=document.getElementById("vzNext");
+pb.href=p[0]; pb.textContent="◀ "+p[1];
+nb.href=n[0]; nb.textContent=n[1]+" ▶";
+var local=(["localhost","127.0.0.1",""].indexOf(location.hostname)>=0 || location.protocol==="file:");var c=document.getElementById("vzCentral"); if(c) c.href = local?"central.html":"http://127.0.0.1:8000/central.html";var pn=document.getElementById("vzPainel"); if(pn) pn.href = local?"painel-facilitador.html":"http://127.0.0.1:8000/painel-facilitador.html";
+})();</script></div>
+
+<div class="wrap">
+  <div class="brand">
+    <div class="mk">🎬</div>
+    <div><h1>Gravar Storytelling</h1><p class="sub">Grave o vídeo do seu grupo e envie para apresentar no telão.</p></div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <div><label for="grupo">Grupo / Mesa</label><input type="text" id="grupo" placeholder="Ex.: Sala A · Grupo 1" autocomplete="off"></div>
+      <div><label for="titulo">Título / quem conta <span style="text-transform:none;font-weight:500">(opcional)</span></label><input type="text" id="titulo" placeholder="Ex.: A virada do João" autocomplete="off"></div>
+    </div>
+  </div>
+
+  <!-- GRAVADOR NO APP -->
+  <div class="card" id="recCard">
+    <p class="step-t">📹 Gravar aqui <span class="pill" id="maxpill">até 2 min</span></p>
+    <video id="preview" playsinline muted autoplay></video>
+    <div class="controls">
+      <button class="btn primary" id="btnCam">🎥 Ligar câmera</button>
+      <button class="btn rec" id="btnRec" disabled>● Gravar</button>
+      <button class="btn stop" id="btnStop" disabled>■ Parar</button>
+      <span class="rectime" id="rectime" style="display:none"><span class="dot"></span><span id="rectxt">00:00</span></span>
+    </div>
+    <p class="hint" id="recHint" style="margin-top:10px">Toque em <b>Ligar câmera</b> e autorize o acesso. A gravação para sozinha em 2 minutos.</p>
+  </div>
+
+  <!-- PREVIEW + ENVIO -->
+  <div class="card" id="playCard" style="display:none">
+    <p class="step-t">▶️ Revise e envie</p>
+    <video id="playback" controls playsinline></video>
+    <div class="bar" id="bar"><i id="barfill"></i></div>
+    <div class="controls">
+      <button class="btn primary" id="btnSend">⬆️ Enviar para apresentação</button>
+      <button class="btn ghost" id="btnRedo">↺ Regravar</button>
+    </div>
+    <p class="status" id="status" style="margin-top:10px"></p>
+  </div>
+
+  <div class="or">ou</div>
+
+  <!-- FALLBACK: CÂMERA NATIVA (ideal p/ iPhone) -->
+  <div class="card">
+    <p class="step-t">📱 Gravar pelo app da câmera</p>
+    <p class="hint">Se o botão acima não funcionar no seu celular (comum em iPhone), use esta opção: abre a câmera do aparelho, você grava e volta para enviar.</p>
+    <div class="controls">
+      <button class="btn stop filebtn">🎥 Abrir câmera do celular<input type="file" id="filecap" accept="video/*" capture="user"></button>
+    </div>
+  </div>
+
+  <div class="note">👩‍🏫 Depois de enviar, o vídeo aparece no <b>Painel do facilitador</b> para ser apresentado no telão. Você pode enviar mais de um vídeo.</div>
+</div>
+
+<script>(function(){
+  var SUPA="https://ssolrvckfnchrwpnvegb.supabase.co";
+  var ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzb2xydmNrZm5jaHJ3cG52ZWdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY2Mjg1MzMsImV4cCI6MjEwMjIwNDUzM30.gtBTBRi7_vXxiNjcGD8UhsBjB3ycKCTY26nTDrbOX4k";
+  var BUCKET="storytelling", GKEY="verisure_grupo", MAXSEC=120, MAXBYTES=120*1024*1024;
+  function $(id){return document.getElementById(id);}
+  // identidade
+  try{ $("grupo").value=localStorage.getItem(GKEY)||""; }catch(e){}
+  $("grupo").addEventListener("input",function(){ try{localStorage.setItem(GKEY,$("grupo").value.trim());}catch(e){} });
+
+  var stream=null, mr=null, chunks=[], recordedBlob=null, recExt="webm", recTimer=null, recStart=0;
+
+  function pickMime(){
+    var c=["video/webm;codecs=vp9,opus","video/webm;codecs=vp8,opus","video/webm","video/mp4"];
+    if(window.MediaRecorder && MediaRecorder.isTypeSupported){
+      for(var i=0;i<c.length;i++){ if(MediaRecorder.isTypeSupported(c[i])) return c[i]; }
+    }
+    return "";
+  }
+  function extFromType(t){ t=(t||"").toLowerCase();
+    if(t.indexOf("mp4")>=0) return "mp4"; if(t.indexOf("webm")>=0) return "webm";
+    if(t.indexOf("quicktime")>=0||t.indexOf("mov")>=0) return "mov"; if(t.indexOf("matroska")>=0) return "mkv";
+    return "webm"; }
+
+  async function ligarCamera(){
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ $("recHint").innerHTML="Seu navegador não permite gravar aqui. Use a opção <b>Abrir câmera do celular</b> abaixo."; return; }
+    $("btnCam").disabled=true; $("recHint").textContent="Pedindo acesso à câmera…";
+    try{
+      stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:720}},audio:true});
+      var pv=$("preview"); pv.srcObject=stream; pv.muted=true; await pv.play().catch(function(){});
+      $("btnRec").disabled=false; $("recHint").textContent="Pronto. Toque em ● Gravar quando o grupo estiver pronto.";
+    }catch(e){
+      $("btnCam").disabled=false;
+      $("recHint").innerHTML="Não consegui acessar a câmera ("+(e&&e.name||"erro")+"). Verifique a permissão ou use <b>Abrir câmera do celular</b> abaixo.";
+    }
+  }
+  function fmt(s){ s=Math.max(0,Math.floor(s)); var m=Math.floor(s/60); return (m<10?"0":"")+m+":"+((s%60)<10?"0":"")+(s%60); }
+  function tickRec(){ var el=(Date.now()-recStart)/1000; $("rectxt").textContent=fmt(el); if(el>=MAXSEC) pararRec(); }
+  function gravarRec(){
+    if(!stream) return;
+    var mime=pickMime(); chunks=[];
+    try{ mr = mime ? new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:2500000}) : new MediaRecorder(stream); }
+    catch(e){ try{ mr=new MediaRecorder(stream); }catch(e2){ $("recHint").innerHTML="Gravação não suportada aqui. Use <b>Abrir câmera do celular</b>."; return; } }
+    recExt=extFromType(mr.mimeType||mime);
+    mr.ondataavailable=function(ev){ if(ev.data&&ev.data.size) chunks.push(ev.data); };
+    mr.onstop=function(){
+      recordedBlob=new Blob(chunks,{type:(mr.mimeType||mime||"video/webm")});
+      var pb=$("playback"); pb.srcObject=null; pb.src=URL.createObjectURL(recordedBlob); pb.muted=false;
+      $("playCard").style.display="block"; $("status").textContent=""; $("status").className="status";
+      $("playCard").scrollIntoView({behavior:"smooth",block:"start"});
+    };
+    mr.start(); recStart=Date.now();
+    $("btnRec").disabled=true; $("btnStop").disabled=false; $("btnCam").disabled=true;
+    $("rectime").style.display="inline-flex"; $("rectxt").textContent="00:00";
+    recTimer=setInterval(tickRec,250);
+    $("recHint").textContent="Gravando… toque em ■ Parar para encerrar.";
+  }
+  function pararRec(){
+    if(recTimer){clearInterval(recTimer);recTimer=null;}
+    $("rectime").style.display="none"; $("btnStop").disabled=true; $("btnRec").disabled=false;
+    try{ if(mr && mr.state!=="inactive") mr.stop(); }catch(e){}
+  }
+
+  $("btnCam").addEventListener("click",ligarCamera);
+  $("btnRec").addEventListener("click",gravarRec);
+  $("btnStop").addEventListener("click",pararRec);
+  $("btnRedo").addEventListener("click",function(){ recordedBlob=null; $("playCard").style.display="none"; $("btnRec").disabled=!stream; $("btnCam").disabled=!!stream; window.scrollTo({top:0,behavior:"smooth"}); });
+
+  // fallback câmera nativa
+  $("filecap").addEventListener("change",function(ev){
+    var f=ev.target.files&&ev.target.files[0]; if(!f) return;
+    recordedBlob=f; recExt=(f.name.split(".").pop()||extFromType(f.type)).toLowerCase();
+    var pb=$("playback"); pb.srcObject=null; pb.src=URL.createObjectURL(f); pb.muted=false;
+    $("playCard").style.display="block"; $("status").textContent=""; $("status").className="status";
+    $("playCard").scrollIntoView({behavior:"smooth",block:"start"});
+  });
+
+  // base64url do rótulo (grupo + título)
+  function b64urlLabel(g,t){
+    var json=JSON.stringify({g:g,t:t});
+    var b64=btoa(unescape(encodeURIComponent(json)));
+    return b64.replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+  }
+  function setStatus(msg,ok){ var s=$("status"); s.textContent=msg; s.className="status"+(ok===true?" ok":ok===false?" err":""); }
+
+  function enviar(){
+    var g=$("grupo").value.trim();
+    if(!g){ setStatus("Informe o nome do grupo antes de enviar.",false); $("grupo").focus(); return; }
+    if(!recordedBlob){ setStatus("Grave ou escolha um vídeo primeiro.",false); return; }
+    if(recordedBlob.size>MAXBYTES){ setStatus("Vídeo muito grande ("+(recordedBlob.size/1048576).toFixed(0)+" MB). Grave um trecho mais curto (máx. ~120 MB).",false); return; }
+    var t=$("titulo").value.trim();
+    var name=b64urlLabel(g,t)+"__"+Date.now()+"."+(recExt||"webm");
+    var url=SUPA+"/storage/v1/object/"+BUCKET+"/"+encodeURIComponent(name);
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST",url,true);
+    xhr.setRequestHeader("apikey",ANON);
+    xhr.setRequestHeader("Authorization","Bearer "+ANON);
+    xhr.setRequestHeader("content-type",recordedBlob.type||"video/webm");
+    xhr.setRequestHeader("cache-control","3600");
+    $("bar").style.display="block"; $("barfill").style.width="0%";
+    $("btnSend").disabled=true; setStatus("Enviando… não feche a página.");
+    xhr.upload.onprogress=function(e){ if(e.lengthComputable){ var p=Math.round(e.loaded/e.total*100); $("barfill").style.width=p+"%"; setStatus("Enviando… "+p+"%"); } };
+    xhr.onload=function(){
+      $("btnSend").disabled=false;
+      if(xhr.status>=200 && xhr.status<300){
+        $("barfill").style.width="100%"; setStatus("✅ Enviado! O facilitador já vê seu vídeo no Painel.",true);
+        $("btnSend").textContent="✓ Enviado — enviar outro";
+      } else {
+        setStatus("Erro ao enviar ("+xhr.status+"). Tente de novo ou verifique a internet.",false);
+      }
+    };
+    xhr.onerror=function(){ $("btnSend").disabled=false; setStatus("Falha de rede ao enviar. Verifique a conexão e tente de novo.",false); };
+    xhr.send(recordedBlob);
+  }
+  $("btnSend").addEventListener("click",enviar);
+
+  window.addEventListener("pagehide",function(){ try{ if(stream) stream.getTracks().forEach(function(t){t.stop();}); }catch(e){} });
+})();</script>
+</body>
+</html>
