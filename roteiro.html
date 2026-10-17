@@ -242,16 +242,16 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
     linha:{l:"Linha de Produção",h:"ferramenta-linha.html"}, defeito:{l:"Caça ao Defeito",h:"ferramenta-defeito.html"}, alvo:{l:"Alvo do Processo",h:"ferramenta-alvo.html"}
   };
   const SCHEDULE=[
-    {t0:"07:15",t1:"08:00",nm:"Recepção e credenciamento",tp:"pre",tag:"pré-evento"},
+    {t0:"07:15",t1:"08:00",nm:"Recepção e credenciamento",tp:"pre",tag:"pré-evento",mus:"recepcao"},
     {t0:"08:00",t1:"08:30",nm:"Abertura, aquecimento e contrato de convivência",tp:"conteudo",tag:"conteúdo"},
     {t0:"08:30",t1:"10:15",nm:"Bloco 1 — Gestão da Qualidade Total (GQT)",tp:"bloco",tag:"bloco",go:"b1"},
-    {t0:"10:15",t1:"10:30",nm:"Coffee-break da manhã",tp:"pausa",tag:"pausa"},
+    {t0:"10:15",t1:"10:30",nm:"Coffee-break da manhã",tp:"pausa",tag:"pausa",mus:"coffee"},
     {t0:"10:30",t1:"12:15",nm:"Bloco 2 — Project Model Canvas",tp:"bloco",tag:"bloco",go:"b2"},
-    {t0:"12:15",t1:"13:15",nm:"Almoço (à parte)",tp:"pausa",tag:"pausa"},
+    {t0:"12:15",t1:"13:15",nm:"Almoço (à parte)",tp:"pausa",tag:"pausa",mus:"almoco"},
     {t0:"13:15",t1:"15:00",nm:"Bloco 3 — Buyer Focusing Selling",tp:"bloco",tag:"bloco",go:"b3"},
-    {t0:"15:00",t1:"15:20",nm:"Coffee-break da tarde",tp:"pausa",tag:"pausa"},
+    {t0:"15:00",t1:"15:20",nm:"Coffee-break da tarde",tp:"pausa",tag:"pausa",mus:"coffee"},
     {t0:"15:20",t1:"17:05",nm:"Bloco 4 — Storytelling",tp:"bloco",tag:"bloco",go:"b4"},
-    {t0:"17:05",t1:"17:35",nm:"Encerramento, avaliação e plano de ação",tp:"conteudo",tag:"conteúdo"}
+    {t0:"17:05",t1:"17:35",nm:"Encerramento, avaliação e plano de ação",tp:"conteudo",tag:"conteúdo",mus:"encerramento"}
   ];
   const BLOCKS=[
     {id:"b1",cor:"var(--teal)",titulo:"Bloco 1 — Gestão da Qualidade Total (GQT)",start:"08:30",
@@ -308,9 +308,24 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
   $("tl").innerHTML=SCHEDULE.map((s,i)=>{
     const dur=toMin(s.t1)-toMin(s.t0);
     const tagcls=s.tp;
-    const inner=`<span class="time">${s.t0} – ${s.t1}</span><span class="nm">${s.nm}</span><span class="dur">${dur} min</span><span class="tag">${s.tag}</span><span class="live" id="live-${i}" hidden>AGORA</span>`;
+    const mus=s.mus?`<button type="button" class="musbtn" data-mus="${s.mus}" style="margin-left:8px;border:none;cursor:pointer;font:700 12px system-ui,sans-serif;border-radius:8px;padding:5px 11px;background:var(--amber);color:#20160A;white-space:nowrap">🎵 Música</button>`:"";
+    const inner=`<span class="time">${s.t0} – ${s.t1}</span><span class="nm">${s.nm}</span><span class="dur">${dur} min</span><span class="tag">${s.tag}</span>${mus}<span class="live" id="live-${i}" hidden>AGORA</span>`;
     return s.go ? `<a class="row ${tagcls}" data-i="${i}" href="#${s.go}">${inner}</a>` : `<div class="row ${tagcls}" data-i="${i}">${inner}</div>`;
   }).join("");
+  // ---- música ambiente do cronograma (recepção, coffee, almoço, encerramento) ----
+  (function(){
+    var sa=new Audio(); sa.loop=true; var curBtn=null;
+    function stop(){ try{sa.pause();}catch(e){} if(curBtn){ curBtn.textContent="🎵 Música"; curBtn.style.background="var(--amber)"; curBtn.style.color="#20160A"; } curBtn=null; }
+    document.addEventListener("click",function(e){
+      var b=e.target.closest&&e.target.closest(".musbtn"); if(!b)return;
+      e.preventDefault(); e.stopPropagation();
+      if(curBtn===b){ stop(); return; }
+      stop();
+      sa.src="audio/"+b.getAttribute("data-mus")+".mp3"; sa.currentTime=0;
+      sa.play().then(function(){ curBtn=b; b.textContent="⏸ Pausar"; b.style.background="#4E9A51"; b.style.color="#fff"; })
+               .catch(function(){ b.textContent="🎵 (sem arquivo)"; });
+    });
+  })();
 
   // blocos
   $("blocos").innerHTML=BLOCKS.map(b=>{
