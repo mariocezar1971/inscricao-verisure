@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contrato de Convivência · Workshop Verisure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --green:#4E9A51;
+    --shadow:0 10px 30px -18px rgba(13,30,60,.5); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:640px;margin:0 auto;padding:16px 16px 60px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  .brand{display:flex;align-items:center;gap:12px;margin:10px 0 6px}
+  .brand .mk{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-size:22px;background:rgba(44,140,137,.15);color:var(--teal)}
+  .sub{color:var(--muted);font-size:13px;margin:2px 0 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin:14px 0}
+  .regra{display:flex;gap:11px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+  .regra:last-child{border-bottom:none}
+  .regra .n{flex:none;width:26px;height:26px;border-radius:8px;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;font-family:"Bricolage Grotesque",sans-serif}
+  .regra b{font-weight:700}
+  .regra .d{color:var(--ink-2);font-size:13.5px}
+  label{font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);display:block;margin-bottom:5px}
+  input[type=text]{width:100%;font:inherit;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:10px 12px}
+  input[type=text]:focus{outline:none;border-color:var(--teal)}
+  .row{display:flex;gap:12px;flex-wrap:wrap}.row>div{flex:1;min-width:180px}
+  .chkbox{display:flex;gap:11px;align-items:flex-start;margin:14px 0;cursor:pointer;font-size:15px;font-weight:600}
+  .chkbox input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--teal)}
+  .btn{width:100%;border:none;cursor:pointer;font:inherit;font-weight:800;font-size:16px;border-radius:12px;padding:14px;background:linear-gradient(180deg,var(--teal),#227571);color:#fff}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .status{font-size:14px;font-weight:600;min-height:20px;margin-top:10px;text-align:center}
+  .ok{color:var(--green)} .err{color:var(--red)}
+  .done{text-align:center;padding:10px 0}
+  .done .big{font-size:48px;line-height:1}
+  .done h2{font-family:"Bricolage Grotesque",sans-serif;margin:8px 0 4px}
+  .n-ord{color:var(--teal);font-weight:800}
+</style>
+</head>
+<body>
+<div class="vz-nav noprint" style="position:sticky;top:0;z-index:55;display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:9px 12px;background:#0B1526;box-shadow:0 2px 10px rgba(0,0,0,.25)"><a href="ferramentas.html" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap">🏠 Hub</a><a href="roteiro.html" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap">📋 Roteiro</a><a href="central.html" id="vzCentral" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap" title="Abre no computador do facilitador">⚙ Central</a><a href="painel-facilitador.html" id="vzPainel" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap" title="Abre no computador do facilitador">📊 Painel</a><span style="flex:1"></span><a href="#" id="vzPrev" style="color:#20160A;background:#E8A33D;text-decoration:none;font:800 13.5px system-ui,sans-serif;border-radius:9px;padding:9px 14px;white-space:nowrap">◀ Anterior</a><a href="#" id="vzNext" style="color:#20160A;background:#E8A33D;text-decoration:none;font:800 13.5px system-ui,sans-serif;border-radius:9px;padding:9px 14px;white-space:nowrap">Próxima ▶</a><script>(function(){if(new URLSearchParams(location.search).get("qr")==="1"){document.querySelectorAll(".vz-nav").forEach(function(n){n.style.display="none"});return;}
+var SEQ=[["ferramenta-pareto.html","Pareto"],["ferramenta-ishikawa.html","Ishikawa"],["ferramenta-5w1h.html","5W1H"],["ferramenta-folha.html","Folha de Verificação"],["ferramenta-controle.html","Gráfico de Controle"],["ferramenta-brainstorming.html","Brainstorming"],["ferramenta-5s.html","5S"],["ferramenta-pmcanvas.html","PM Canvas"],["ferramenta-persona.html","Persona"],["ferramenta-spin.html","SPIN"],["ferramenta-persuasao.html","Persuasão"],["ferramenta-storytelling.html","Storytelling"],["ferramenta-lua.html","Lua"],["ferramenta-rota.html","Rota"],["ferramenta-linha.html","Linha"],["ferramenta-defeito.html","Defeito"],["ferramenta-alvo.html","Alvo"]];
+var cur=(location.pathname.split("/").pop()||"ferramentas.html");
+var files=SEQ.map(function(x){return x[0];});
+var i=files.indexOf(cur),p,n;
+if(i<0){ p=SEQ[SEQ.length-1]; n=SEQ[0]; } else { p=SEQ[(i-1+SEQ.length)%SEQ.length]; n=SEQ[(i+1)%SEQ.length]; }
+var pb=document.getElementById("vzPrev"), nb=document.getElementById("vzNext");
+pb.href=p[0]; pb.textContent="◀ "+p[1];
+nb.href=n[0]; nb.textContent=n[1]+" ▶";
+var local=(["localhost","127.0.0.1",""].indexOf(location.hostname)>=0 || location.protocol==="file:");var c=document.getElementById("vzCentral"); if(c) c.href = local?"central.html":"http://127.0.0.1:8000/central.html";var pn=document.getElementById("vzPainel"); if(pn) pn.href = local?"painel-facilitador.html":"http://127.0.0.1:8000/painel-facilitador.html";
+})();</script></div>
+
+<div class="wrap">
+  <div class="brand">
+    <div class="mk">🤝</div>
+    <div><h1>Contrato de Convivência</h1><p class="sub">Nossos combinados para um dia produtivo e respeitoso.</p></div>
+  </div>
+
+  <div class="card" id="regras">
+    <!-- Edite os combinados aqui (um bloco .regra por item) -->
+    <div class="regra"><span class="n">1</span><div><b>Pontualidade</b><div class="d">Voltar no horário dos intervalos — o tempo é de todos.</div></div></div>
+    <div class="regra"><span class="n">2</span><div><b>Celular no silencioso</b><div class="d">Use-o a favor das dinâmicas (QR, jogos) e evite distrações.</div></div></div>
+    <div class="regra"><span class="n">3</span><div><b>Respeito à fala</b><div class="d">Um de cada vez; escutar antes de responder.</div></div></div>
+    <div class="regra"><span class="n">4</span><div><b>Participação ativa</b><div class="d">Mente aberta, mão na massa e disposição para experimentar.</div></div></div>
+    <div class="regra"><span class="n">5</span><div><b>Sigilo</b><div class="d">O que é pessoal fica na sala; cuidamos da confiança do grupo.</div></div></div>
+    <div class="regra"><span class="n">6</span><div><b>Colaboração</b><div class="d">Foco no aprendizado coletivo — ajudar e pedir ajuda.</div></div></div>
+  </div>
+
+  <div class="card" id="form">
+    <div class="row">
+      <div><label for="nome">Seu nome</label><input type="text" id="nome" placeholder="Nome e sobrenome" autocomplete="name"></div>
+      <div><label for="grupo">Grupo / Mesa <span style="text-transform:none;font-weight:500">(opcional)</span></label><input type="text" id="grupo" placeholder="Ex.: Sala A · Grupo 1" autocomplete="off"></div>
+    </div>
+    <label class="chkbox"><input type="checkbox" id="aceito"><span>Li e <b>concordo</b> com os combinados acima.</span></label>
+    <button class="btn" id="btn" disabled>✓ Concordar</button>
+    <p class="status" id="status"></p>
+  </div>
+
+  <div class="card" id="pronto" style="display:none">
+    <div class="done">
+      <div class="big">🤝</div>
+      <h2>Combinado!</h2>
+      <p id="prontoMsg" style="color:var(--ink-2);margin:4px 0 0"></p>
+    </div>
+  </div>
+</div>
+
+<script>(function(){
+  var API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/mural-verisure";
+  var GKEY="verisure_grupo", NKEY="verisure_nome", DONE="verisure_contrato_ok";
+  function $(id){return document.getElementById(id);}
+  function ls(k){ try{return localStorage.getItem(k)||"";}catch(e){return"";} }
+  function lss(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
+
+  $("nome").value=ls(NKEY); $("grupo").value=ls(GKEY);
+  $("nome").addEventListener("input",function(){ lss(NKEY,$("nome").value.trim()); check(); });
+  $("grupo").addEventListener("input",function(){ lss(GKEY,$("grupo").value.trim()); });
+  $("aceito").addEventListener("change",check);
+  function check(){ $("btn").disabled=!($("aceito").checked && $("nome").value.trim()); }
+
+  function ordinal(n){ return n+"ª"; }
+  function showDone(total){
+    $("form").style.display="none"; $("regras").style.display="none"; $("pronto").style.display="block";
+    var msg = total ? ("Você é a <span class='n-ord'>"+ordinal(total)+"</span> pessoa a confirmar. Obrigado, "+($("nome").value.trim().split(" ")[0]||"")+"! 🎉") : "Concordância registrada. Obrigado!";
+    $("prontoMsg").innerHTML=msg;
+  }
+
+  // já concordou neste aparelho?
+  if(ls(DONE)==="1"){ showDone(0); $("prontoMsg").textContent="Você já confirmou o contrato neste aparelho. 👍"; }
+
+  $("btn").addEventListener("click",async function(){
+    var nome=$("nome").value.trim(); if(!nome){ $("status").textContent="Informe seu nome."; $("status").className="status err"; return; }
+    $("btn").disabled=true; $("status").textContent="Registrando…"; $("status").className="status";
+    try{
+      var r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"add",tipo:"contrato",nome:nome,grupo:$("grupo").value.trim(),conteudo:"concordou"})});
+      var o=await r.json().catch(function(){return{ok:false};});
+      if(o && o.ok){ lss(DONE,"1"); showDone(o.total||0); }
+      else { $("status").textContent="Não deu para registrar ("+((o&&o.message)||r.status)+"). Tente de novo."; $("status").className="status err"; $("btn").disabled=false; }
+    }catch(e){ $("status").textContent="Falha de rede. Verifique a conexão e tente de novo."; $("status").className="status err"; $("btn").disabled=false; }
+  });
+})();</script>
+</body>
+</html>

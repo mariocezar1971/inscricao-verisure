@@ -243,7 +243,7 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
   };
   const SCHEDULE=[
     {t0:"07:15",t1:"08:00",nm:"Recepção e credenciamento",tp:"pre",tag:"pré-evento",mus:"recepcao"},
-    {t0:"08:00",t1:"08:30",nm:"Abertura, aquecimento e contrato de convivência",tp:"conteudo",tag:"conteúdo"},
+    {t0:"08:00",t1:"08:30",nm:"Abertura, aquecimento e contrato de convivência",tp:"conteudo",tag:"conteúdo",qr:[["ferramenta-contrato.html","Contrato"],["ferramenta-expectativas.html","Expectativas"]]},
     {t0:"08:30",t1:"10:15",nm:"Bloco 1 — Gestão da Qualidade Total (GQT)",tp:"bloco",tag:"bloco",go:"b1"},
     {t0:"10:15",t1:"10:30",nm:"Coffee-break da manhã",tp:"pausa",tag:"pausa",mus:"coffee"},
     {t0:"10:30",t1:"12:15",nm:"Bloco 2 — Project Model Canvas",tp:"bloco",tag:"bloco",go:"b2"},
@@ -309,7 +309,8 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
     const dur=toMin(s.t1)-toMin(s.t0);
     const tagcls=s.tp;
     const mus=s.mus?`<button type="button" class="musbtn" data-mus="${s.mus}" style="margin-left:8px;border:none;cursor:pointer;font:700 12px system-ui,sans-serif;border-radius:8px;padding:5px 11px;background:var(--amber);color:#20160A;white-space:nowrap">🎵 Música</button>`:"";
-    const inner=`<span class="time">${s.t0} – ${s.t1}</span><span class="nm">${s.nm}</span><span class="dur">${dur} min</span><span class="tag">${s.tag}</span>${mus}<span class="live" id="live-${i}" hidden>AGORA</span>`;
+    const qr=(s.qr||[]).map(x=>`<button type="button" class="vztool" data-file="${x[0]}" data-label="${x[1]}" data-min="30" style="margin-left:6px;border:none;cursor:pointer;font:700 12px system-ui,sans-serif;border-radius:8px;padding:5px 11px;background:var(--teal);color:#fff;white-space:nowrap">📱 ${x[1]}</button>`).join("");
+    const inner=`<span class="time">${s.t0} – ${s.t1}</span><span class="nm">${s.nm}</span><span class="dur">${dur} min</span><span class="tag">${s.tag}</span>${mus}${qr}<span class="live" id="live-${i}" hidden>AGORA</span>`;
     return s.go ? `<a class="row ${tagcls}" data-i="${i}" href="#${s.go}">${inner}</a>` : `<div class="row ${tagcls}" data-i="${i}">${inner}</div>`;
   }).join("");
   // ---- música ambiente do cronograma (recepção, coffee, almoço, encerramento) ----

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Expectativas · Workshop Verisure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0E1729; --ink-2:#33415A; --muted:#647089; --paper:#F4F6FA; --card:#FFFFFF; --line:#E4E9F1;
+    --navy:#132542; --amber:#E8A33D; --amber-deep:#C7841F; --teal:#2C8C89; --red:#C0392B; --green:#4E9A51; --blue:#3B6FB0;
+    --shadow:0 10px 30px -18px rgba(13,30,60,.5); }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#E9EEF6; --ink-2:#B9C5D8; --muted:#8598B2; --paper:#0A111E; --card:#131E33; --line:#233248; --navy:#0E1B30; } }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:600px;margin:0 auto;padding:16px 16px 60px}
+  h1{font-family:"Bricolage Grotesque",sans-serif;margin:0;font-size:20px}
+  .brand{display:flex;align-items:center;gap:12px;margin:10px 0 6px}
+  .brand .mk{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-size:22px;background:rgba(59,111,176,.15);color:var(--blue)}
+  .sub{color:var(--muted);font-size:13px;margin:2px 0 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin:14px 0}
+  .q{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:17px;margin:0 0 4px}
+  .hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+  label{font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);display:block;margin-bottom:5px}
+  input[type=text]{width:100%;font:inherit;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:12px}
+  input[type=text]:focus{outline:none;border-color:var(--blue)}
+  .big{font-size:17px;font-weight:700;text-align:center}
+  .btn{width:100%;border:none;cursor:pointer;font:inherit;font-weight:800;font-size:16px;border-radius:12px;padding:14px;margin-top:12px;background:linear-gradient(180deg,var(--blue),#2E5A94);color:#fff}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .status{font-size:14px;font-weight:600;min-height:20px;margin-top:10px;text-align:center}
+  .ok{color:var(--green)} .err{color:var(--red)}
+  .done{text-align:center;padding:8px 0}.done .emo{font-size:46px;line-height:1}
+  .done h2{font-family:"Bricolage Grotesque",sans-serif;margin:8px 0 4px}
+  .count{color:var(--blue);font-weight:800}
+  .again{margin-top:10px;background:transparent;border:1.5px solid var(--line);color:var(--ink-2);border-radius:10px;padding:9px 14px;font:700 13px system-ui;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="vz-nav noprint" style="position:sticky;top:0;z-index:55;display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:9px 12px;background:#0B1526;box-shadow:0 2px 10px rgba(0,0,0,.25)"><a href="ferramentas.html" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap">🏠 Hub</a><a href="roteiro.html" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap">📋 Roteiro</a><a href="central.html" id="vzCentral" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap" title="Abre no computador do facilitador">⚙ Central</a><a href="painel-facilitador.html" id="vzPainel" style="color:#EAF0F8;text-decoration:none;font:700 13.5px system-ui,sans-serif;border:1px solid rgba(255,255,255,.28);border-radius:9px;padding:9px 13px;white-space:nowrap" title="Abre no computador do facilitador">📊 Painel</a><span style="flex:1"></span><a href="#" id="vzPrev" style="color:#20160A;background:#E8A33D;text-decoration:none;font:800 13.5px system-ui,sans-serif;border-radius:9px;padding:9px 14px;white-space:nowrap">◀ Anterior</a><a href="#" id="vzNext" style="color:#20160A;background:#E8A33D;text-decoration:none;font:800 13.5px system-ui,sans-serif;border-radius:9px;padding:9px 14px;white-space:nowrap">Próxima ▶</a><script>(function(){if(new URLSearchParams(location.search).get("qr")==="1"){document.querySelectorAll(".vz-nav").forEach(function(n){n.style.display="none"});return;}
+var SEQ=[["ferramenta-pareto.html","Pareto"],["ferramenta-ishikawa.html","Ishikawa"],["ferramenta-5w1h.html","5W1H"],["ferramenta-folha.html","Folha de Verificação"],["ferramenta-controle.html","Gráfico de Controle"],["ferramenta-brainstorming.html","Brainstorming"],["ferramenta-5s.html","5S"],["ferramenta-pmcanvas.html","PM Canvas"],["ferramenta-persona.html","Persona"],["ferramenta-spin.html","SPIN"],["ferramenta-persuasao.html","Persuasão"],["ferramenta-storytelling.html","Storytelling"],["ferramenta-lua.html","Lua"],["ferramenta-rota.html","Rota"],["ferramenta-linha.html","Linha"],["ferramenta-defeito.html","Defeito"],["ferramenta-alvo.html","Alvo"]];
+var cur=(location.pathname.split("/").pop()||"ferramentas.html");
+var files=SEQ.map(function(x){return x[0];});
+var i=files.indexOf(cur),p,n;
+if(i<0){ p=SEQ[SEQ.length-1]; n=SEQ[0]; } else { p=SEQ[(i-1+SEQ.length)%SEQ.length]; n=SEQ[(i+1)%SEQ.length]; }
+var pb=document.getElementById("vzPrev"), nb=document.getElementById("vzNext");
+pb.href=p[0]; pb.textContent="◀ "+p[1];
+nb.href=n[0]; nb.textContent=n[1]+" ▶";
+var local=(["localhost","127.0.0.1",""].indexOf(location.hostname)>=0 || location.protocol==="file:");var c=document.getElementById("vzCentral"); if(c) c.href = local?"central.html":"http://127.0.0.1:8000/central.html";var pn=document.getElementById("vzPainel"); if(pn) pn.href = local?"painel-facilitador.html":"http://127.0.0.1:8000/painel-facilitador.html";
+})();</script></div>
+
+<div class="wrap">
+  <div class="brand">
+    <div class="mk">💬</div>
+    <div><h1>Expectativas do dia</h1><p class="sub">Suas palavras entram na nuvem projetada no telão.</p></div>
+  </div>
+
+  <div class="card" id="form">
+    <p class="q">O que você espera de hoje?</p>
+    <p class="hint">Escreva de 1 a 3 palavras (ex.: “aprender”, “prática”, “rede de contatos”).</p>
+    <label for="exp">Suas palavras</label>
+    <input type="text" id="exp" maxlength="60" placeholder="aprender, prática, networking" autocomplete="off">
+    <button class="btn" id="btn">Enviar para a nuvem ✨</button>
+    <p class="status" id="status"></p>
+  </div>
+
+  <div class="card" id="pronto" style="display:none">
+    <div class="done">
+      <div class="emo">✨</div>
+      <h2>Recebido!</h2>
+      <p id="prontoMsg" style="color:var(--ink-2);margin:4px 0 0"></p>
+      <button class="again" id="btnAgain">Enviar outra palavra</button>
+    </div>
+  </div>
+</div>
+
+<script>(function(){
+  var API="https://ssolrvckfnchrwpnvegb.supabase.co/functions/v1/mural-verisure";
+  var NKEY="verisure_nome", GKEY="verisure_grupo";
+  function $(id){return document.getElementById(id);}
+  function ls(k){ try{return localStorage.getItem(k)||"";}catch(e){return"";} }
+
+  function enviar(){
+    var txt=$("exp").value.trim();
+    if(!txt){ $("status").textContent="Escreva pelo menos uma palavra."; $("status").className="status err"; return; }
+    $("btn").disabled=true; $("status").textContent="Enviando…"; $("status").className="status";
+    fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"add",tipo:"expectativa",conteudo:txt,nome:ls(NKEY),grupo:ls(GKEY)})})
+      .then(function(r){return r.json().catch(function(){return{ok:false};});})
+      .then(function(o){
+        if(o && o.ok){ $("form").style.display="none"; $("pronto").style.display="block";
+          $("prontoMsg").innerHTML = o.total ? ("Já são <span class='count'>"+o.total+"</span> expectativas na nuvem. 🙌") : "Sua expectativa entrou na nuvem. 🙌"; }
+        else { $("status").textContent="Não deu para enviar. Tente de novo."; $("status").className="status err"; $("btn").disabled=false; }
+      })
+      .catch(function(){ $("status").textContent="Falha de rede. Tente de novo."; $("status").className="status err"; $("btn").disabled=false; });
+  }
+  $("btn").addEventListener("click",enviar);
+  $("exp").addEventListener("keydown",function(e){ if(e.key==="Enter")enviar(); });
+  $("btnAgain").addEventListener("click",function(){ $("exp").value=""; $("btn").disabled=false; $("status").textContent=""; $("pronto").style.display="none"; $("form").style.display="block"; $("exp").focus(); });
+})();</script>
+</body>
+</html>
