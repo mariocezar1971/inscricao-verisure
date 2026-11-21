@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fundamentação · Workshop Verisure</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1526; --bg2:#132542; --ink:#EAF0F8; --ink-2:#AFC0DA; --muted:#7E90AE; --line:rgba(255,255,255,.14);
+    --ac:#2C8C89; --ac-soft:rgba(44,140,137,.16);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:radial-gradient(900px 500px at 82% -12%,color-mix(in srgb,var(--ac) 32%,transparent),transparent 60%),linear-gradient(165deg,var(--bg2),var(--bg));
+    color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden;line-height:1.45}
+  h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0;line-height:1.05}
+  b,strong{color:#fff}
+
+  /* top bar */
+  .bar{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;gap:10px;padding:10px 16px;
+    background:linear-gradient(180deg,rgba(11,21,38,.85),transparent);transition:opacity .3s}
+  .bar.hide{opacity:0;pointer-events:none}
+  .bar .kick{font:600 12px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--ac)}
+  .bar .ttl{font-weight:700;font-size:14px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .sp{flex:1}
+  .bar a,.bar button{appearance:none;cursor:pointer;font:700 13px system-ui,sans-serif;color:var(--ink);
+    background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:9px;padding:7px 11px;text-decoration:none;white-space:nowrap}
+  .bar a:hover,.bar button:hover{background:rgba(255,255,255,.16)}
+
+  /* stage */
+  .stage{position:fixed;inset:0}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+    padding:min(8vh,80px) clamp(22px,7vw,110px);opacity:0;transition:opacity .35s ease}
+  .slide.on{display:flex;opacity:1}
+  .slide .kick{font:600 clamp(12px,1.5vw,15px) "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);margin-bottom:14px}
+  .slide h2{font-size:clamp(30px,5.6vw,68px);font-weight:800;letter-spacing:-.01em;max-width:18ch}
+  .slide h2 em{font-style:normal;color:var(--ac)}
+  .slide .sub{font-size:clamp(16px,2.3vw,26px);color:var(--ink-2);margin-top:18px;max-width:30ch;font-weight:500}
+
+  /* capa */
+  .slide.capa h2{font-size:clamp(40px,8.5vw,104px);max-width:16ch}
+  .slide.capa .tag{display:inline-block;align-self:flex-start;margin-bottom:22px;background:var(--ac-soft);color:var(--ac);
+    border:1px solid color-mix(in srgb,var(--ac) 45%,transparent);border-radius:40px;padding:7px 18px;font:700 clamp(13px,1.6vw,17px) "IBM Plex Mono",monospace}
+
+  /* destaque / quote */
+  .slide.destaque{justify-content:center}
+  .slide.destaque .big{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(30px,6vw,78px);
+    line-height:1.08;max-width:20ch;letter-spacing:-.01em}
+  .slide.destaque .big .hl{color:var(--ac)}
+  .slide.destaque .by{margin-top:22px;color:var(--muted);font:600 clamp(13px,1.6vw,18px) "IBM Plex Mono",monospace}
+
+  /* topicos */
+  .slide ul.tp{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-direction:column;gap:clamp(12px,2.2vh,22px);max-width:26ch}
+  .slide ul.tp li{display:flex;align-items:flex-start;gap:16px;font-size:clamp(18px,2.9vw,34px);font-weight:600}
+  .slide ul.tp li .mk{flex:none;width:clamp(26px,3vw,40px);height:clamp(26px,3vw,40px);border-radius:11px;background:var(--ac-soft);
+    color:var(--ac);display:grid;place-items:center;font-size:clamp(14px,1.6vw,20px);font-weight:800;margin-top:3px}
+  .slide ul.tp li span.tx{color:var(--ink)}
+  .slide ul.tp li span.tx small{display:block;font-size:.6em;font-weight:500;color:var(--muted);margin-top:2px}
+
+  /* grid de cartões */
+  .grid{display:grid;gap:clamp(10px,1.6vw,18px);margin-top:30px;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
+  .grid .cd{background:rgba(255,255,255,.05);border:1px solid var(--line);border-top:3px solid var(--ac);border-radius:14px;
+    padding:clamp(12px,1.6vw,20px)}
+  .grid .cd .ic{font-size:clamp(20px,2.4vw,30px);margin-bottom:6px}
+  .grid .cd b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(15px,1.9vw,23px);font-weight:700}
+  .grid .cd p{margin:4px 0 0;font-size:clamp(12.5px,1.4vw,16px);color:var(--ink-2)}
+  .grid.g5{grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr))}
+
+  /* passos / fluxo */
+  .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:clamp(8px,1vw,14px);margin-top:34px}
+  .flow .ps{flex:1;min-width:150px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;
+    padding:clamp(14px,1.8vw,22px);position:relative}
+  .flow .ps .n{font:800 clamp(13px,1.5vw,18px) "IBM Plex Mono",monospace;color:var(--ac)}
+  .flow .ps b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(17px,2.3vw,30px);font-weight:700;margin-top:4px}
+  .flow .ps p{margin:5px 0 0;font-size:clamp(12.5px,1.4vw,16px);color:var(--ink-2)}
+  .flow .ar{align-self:center;color:var(--ac);font-size:clamp(18px,2vw,28px);font-weight:800}
+
+  /* fecho */
+  .slide.fecho{justify-content:center}
+  .slide.fecho .mk{font-size:clamp(34px,7vw,80px);line-height:1;margin-bottom:10px}
+  .slide.fecho h2{color:#fff}
+  .slide.fecho .goal{margin-top:22px;display:flex;flex-direction:column;gap:12px;max-width:30ch}
+  .slide.fecho .goal .g{display:flex;gap:13px;align-items:flex-start;font-size:clamp(16px,2.3vw,26px);font-weight:600}
+  .slide.fecho .goal .g .b{flex:none;color:var(--ac);font-weight:800}
+  .slide.fecho .rule{margin-top:22px;display:inline-flex;align-self:flex-start;gap:9px;background:rgba(232,163,61,.14);
+    border:1px solid rgba(232,163,61,.4);color:#F0C274;border-radius:12px;padding:10px 15px;font-size:clamp(13px,1.6vw,18px);font-weight:600;max-width:34ch}
+
+  /* progress + controls */
+  .prog{position:fixed;left:0;bottom:0;height:5px;background:var(--ac);width:0;z-index:45;transition:width .35s ease}
+  .ctl{position:fixed;right:16px;bottom:16px;z-index:46;display:flex;align-items:center;gap:8px;transition:opacity .3s}
+  .ctl.hide{opacity:0;pointer-events:none}
+  .ctl button{appearance:none;cursor:pointer;width:46px;height:46px;border-radius:12px;border:1px solid var(--line);
+    background:rgba(255,255,255,.08);color:var(--ink);font-size:20px;display:grid;place-items:center}
+  .ctl button:hover{background:rgba(255,255,255,.18)}
+  .ctl .count{font:700 14px "IBM Plex Mono",monospace;color:var(--ink-2);padding:0 6px;min-width:58px;text-align:center}
+
+  /* overview */
+  .ov{position:fixed;inset:0;z-index:60;background:rgba(7,14,27,.96);display:none;overflow:auto;padding:60px 24px 24px}
+  .ov.on{display:block}
+  .ov .ovh{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;padding:14px 20px;background:rgba(7,14,27,.9)}
+  .ov .ovh b{font-family:"Bricolage Grotesque",sans-serif;font-size:16px}
+  .ov .ovh .sp{flex:1}
+  .ov .ovh button{appearance:none;cursor:pointer;font:700 13px system-ui;color:var(--ink);background:rgba(255,255,255,.1);border:1px solid var(--line);border-radius:9px;padding:7px 11px}
+  .ov .gg{max-width:1100px;margin:0 auto;display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+  .ov .th{aspect-ratio:16/10;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.05);cursor:pointer;
+    padding:14px;overflow:hidden;position:relative}
+  .ov .th:hover{border-color:var(--ac)}
+  .ov .th .tn{font:700 11px "IBM Plex Mono",monospace;color:var(--ac)}
+  .ov .th .tt{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:16px;margin-top:6px;line-height:1.1;
+    display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .ov .th .num{position:absolute;right:10px;bottom:8px;font:700 12px "IBM Plex Mono",monospace;color:var(--muted)}
+
+  .hint{position:fixed;left:16px;bottom:16px;z-index:46;font:500 12px system-ui;color:var(--muted);transition:opacity .3s}
+  .hint.hide{opacity:0}
+  @media (max-width:640px){ .bar .ttl{display:none} }
+</style>
+</head>
+<body>
+<div class="bar" id="bar">
+  <span class="kick" id="barKick">Fundamentação</span>
+  <span class="ttl" id="barTtl">—</span>
+  <span class="sp"></span>
+  <a href="roteiro.html" id="backBtn">↩ Roteiro</a>
+  <button id="ovBtn" title="Ver todos os slides (G)">▦ Slides</button>
+  <button id="fsBtn" title="Tela cheia (F)">⛶ Tela cheia</button>
+</div>
+
+<div class="stage" id="stage"></div>
+
+<div class="prog" id="prog"></div>
+<div class="hint" id="hint">← → navega · F tela cheia · G todos os slides</div>
+<div class="ctl" id="ctl">
+  <button id="prev" title="Anterior (←)">‹</button>
+  <span class="count" id="count">1 / 1</span>
+  <button id="next" title="Próximo (→)">›</button>
+</div>
+
+<div class="ov" id="ov">
+  <div class="ovh"><b id="ovTtl">Slides</b><span class="sp"></span><button id="ovClose">✕ Fechar</button></div>
+  <div class="gg" id="ovGrid"></div>
+</div>
+
+<script>
+/* ============ CONTEÚDO DAS FUNDAMENTAÇÕES ============ */
+var DECKS={
+ b1:{ titulo:"Gestão da Qualidade Total (GQT)", ac:"#2C8C89", tag:"Bloco 1 · Fundamentação",
+  slides:[
+   {kind:"capa", tag:"Bloco 1 · Fundamentação", h:"Gestão da Qualidade Total", sub:"Enxergar processos · decidir por fatos · melhorar sempre."},
+   {kind:"destaque", big:"Qualidade não se <span class='hl'>inspeciona no fim</span>. Constrói-se <span class='hl'>no processo</span>.", by:"a ideia central do dia"},
+   {kind:"topicos", kick:"O que é GQT", h:"Quatro pilares", items:[
+     {mk:"①", t:"Foco no cliente", s:"quem define 'qualidade' é quem recebe"},
+     {mk:"②", t:"Decisão por fatos", s:"dados, não achismo"},
+     {mk:"③", t:"Melhoria contínua", s:"Kaizen: um pouco melhor a cada ciclo"},
+     {mk:"④", t:"Todos participam", s:"qualidade é de todo mundo, não de um setor"} ]},
+   {kind:"flow", kick:"O motor da melhoria", h:"Ciclo PDCA", steps:[
+     {n:"P", b:"Plan", p:"planejar a melhoria"},
+     {n:"D", b:"Do", p:"executar em pequena escala"},
+     {n:"C", b:"Check", p:"verificar os resultados"},
+     {n:"A", b:"Act", p:"padronizar ou corrigir"} ], note:"Deu certo? SDCA mantém o ganho."},
+   {kind:"grid", kick:"A caixa de ferramentas", h:"As 7 ferramentas da qualidade", g5:false, cards:[
+     {ic:"☑", b:"Folha de Verificação", p:"coletar os dados"},
+     {ic:"▦", b:"Pareto", p:"priorizar as poucas vitais"},
+     {ic:"🐟", b:"Ishikawa", p:"achar as causas (6M)"},
+     {ic:"📊", b:"Histograma", p:"ver a variação"},
+     {ic:"⋰", b:"Dispersão", p:"relacionar causa e efeito"},
+     {ic:"📈", b:"Carta de Controle", p:"processo sob controle?"},
+     {ic:"❖", b:"Fluxograma", p:"enxergar o processo"} ]},
+   {kind:"destaque", big:"<span class='hl'>Pareto 80/20:</span> poucas causas respondem pela maioria dos problemas. Ataque <span class='hl'>as vitais</span>.", by:"priorizar é decidir o que NÃO fazer agora"},
+   {kind:"grid", kick:"Base de tudo", h:"Programa 5S", g5:true, cards:[
+     {ic:"1º", b:"Seiri", p:"Utilização"},
+     {ic:"2º", b:"Seiton", p:"Organização"},
+     {ic:"3º", b:"Seiso", p:"Limpeza"},
+     {ic:"4º", b:"Seiketsu", p:"Padronização"},
+     {ic:"5º", b:"Shitsuke", p:"Disciplina"} ]},
+   {kind:"destaque", big:"Na <span class='hl'>Máquina Registradora</span>, quantas 'verdades' eram só <span class='hl'>suposições</span>?", by:"por isso: decidir por fatos, não por interpretação"},
+   {kind:"fecho", h:"Agora é com vocês", goals:[
+     {b:"1.", t:"Escolham UM problema real do dia a dia"},
+     {b:"2.", t:"Ishikawa para achar as causas"},
+     {b:"3.", t:"Pareto para priorizar as vitais"} ],
+     rule:"🎯 Regra do dia: esse mesmo caso segue com vocês até o Bloco 4."}
+  ]},
+
+ b2:{ titulo:"Project Model Canvas", ac:"#3B6FB0", tag:"Bloco 2 · Fundamentação",
+  slides:[
+   {kind:"capa", tag:"Bloco 2 · Fundamentação", h:"Project Model Canvas", sub:"Um projeto inteiro em uma página."},
+   {kind:"destaque", big:"<span class='hl'>Pensar → Integrar → Comunicar:</span> o projeto numa folha, não num calhamaço.", by:"a lógica do Canvas de Finocchio"},
+   {kind:"topicos", kick:"Por que Canvas?", h:"O que ele resolve", items:[
+     {mk:"✓", t:"Visão compartilhada", s:"todo mundo vê o projeto inteiro de uma vez"},
+     {mk:"✓", t:"Rápido de montar e revisar", s:"post-it, não documento de 40 páginas"},
+     {mk:"✓", t:"Linguagem simples", s:"qualquer um entende"},
+     {mk:"✓", t:"Expõe o que falta", s:"o bloco vazio salta aos olhos"} ]},
+   {kind:"flow", kick:"As 5 perguntas", h:"Do porquê ao quanto", steps:[
+     {n:"?", b:"Por quê?", p:"justificativas, objetivo, benefícios"},
+     {n:"?", b:"O quê?", p:"produto e requisitos"},
+     {n:"?", b:"Quem?", p:"stakeholders e equipe"},
+     {n:"?", b:"Como?", p:"premissas, entregas, restrições"},
+     {n:"?", b:"Quanto?", p:"riscos, prazo e custos"} ], note:"13 componentes, organizados nessas 5 perguntas."},
+   {kind:"grid", kick:"Os 13 componentes", h:"Tudo em uma página", cards:[
+     {ic:"①", b:"Por quê?", p:"Justificativas · Objetivo SMART · Benefícios"},
+     {ic:"②", b:"O quê?", p:"Produto · Requisitos"},
+     {ic:"③", b:"Quem?", p:"Stakeholders · Equipe"},
+     {ic:"④", b:"Como?", p:"Premissas · Entregas · Restrições"},
+     {ic:"⑤", b:"Quando e Quanto?", p:"Riscos · Linha do tempo · Custos"} ]},
+   {kind:"destaque", big:"Objetivo <span class='hl'>SMART</span>: eSpecífico, Mensurável, Atingível, Relevante, Temporal.", by:"um objetivo vago mata o projeto na largada"},
+   {kind:"fecho", h:"Agora é com vocês", goals:[
+     {b:"1.", t:"Peguem o MESMO problema do Bloco 1"},
+     {b:"2.", t:"Montem o Canvas A0 com post-it"},
+     {b:"3.", t:"Pitch de 3 min para a banca de patrocinadores"} ],
+     rule:"🎯 Mesmo caso do Bloco 1 — agora estruturado como projeto."}
+  ]},
+
+ b3:{ titulo:"Buyer Focusing Selling", ac:"#C7841F", tag:"Bloco 3 · Fundamentação",
+  slides:[
+   {kind:"capa", tag:"Bloco 3 · Fundamentação", h:"Buyer Focusing Selling", sub:"Parar de vender. Ajudar a comprar."},
+   {kind:"destaque", big:"O cliente não quer um <span class='hl'>produto</span>. Quer resolver um <span class='hl'>problema</span>.", by:"o deslocamento de foco do bloco"},
+   {kind:"topicos", kick:"Vender × Ajudar a comprar", h:"A virada de chave", items:[
+     {mk:"→", t:"Foco no processo de compra", s:"do cliente, não no seu produto"},
+     {mk:"→", t:"Diagnosticar antes de oferecer", s:"entender a situação real"},
+     {mk:"→", t:"Medir o custo de não agir", s:"o que dói em ficar como está"},
+     {mk:"→", t:"Decisão informada e mútua", s:"o cliente decide com você, não contra"} ]},
+   {kind:"flow", kick:"Jornada de compra", h:"Onde o cliente está?", steps:[
+     {n:"1", b:"Consciência", p:"percebe que tem um problema"},
+     {n:"2", b:"Consideração", p:"avalia caminhos"},
+     {n:"3", b:"Decisão", p:"escolhe a solução"},
+     {n:"4", b:"Pós-venda", p:"usa e recomenda"} ], note:"A abordagem muda conforme a etapa."},
+   {kind:"grid", kick:"Perguntas de diagnóstico", h:"Método SPIN", g5:false, cards:[
+     {ic:"S", b:"Situação", p:"como é hoje?"},
+     {ic:"P", b:"Problema", p:"o que incomoda?"},
+     {ic:"I", b:"Implicação", p:"o que isso custa?"},
+     {ic:"N", b:"Necessidade", p:"quanto vale resolver?"} ]},
+   {kind:"destaque", big:"Quem <span class='hl'>pergunta e escuta</span>, conduz. Quem só <span class='hl'>fala</span>, empurra.", by:"escuta ativa é a ferramenta nº 1"},
+   {kind:"topicos", kick:"O que isso traz", h:"Resultado para o negócio", items:[
+     {mk:"✓", t:"Chega aos verdadeiros decisores"},
+     {mk:"✓", t:"Encurta o ciclo de venda"},
+     {mk:"✓", t:"Sustenta o preço sem perder a venda"},
+     {mk:"✓", t:"Previsão de vendas mais confiável"} ]},
+   {kind:"fecho", h:"Agora é com vocês", goals:[
+     {b:"1.", t:"Construam a persona e a jornada do MESMO caso"},
+     {b:"2.", t:"Formulem as perguntas SPIN"},
+     {b:"3.", t:"Role-play: vendedor × comprador"} ],
+     rule:"🎯 O cliente deste caso nasce do problema do Bloco 1."}
+  ]},
+
+ b4:{ titulo:"Storytelling", ac:"#E8A33D", tag:"Bloco 4 · Fundamentação",
+  slides:[
+   {kind:"capa", tag:"Bloco 4 · Fundamentação", h:"Storytelling", sub:"Dados informam. Histórias movem."},
+   {kind:"destaque", big:"Ninguém se emociona com um <span class='hl'>relatório</span>. As pessoas lembram de <span class='hl'>histórias</span>.", by:"por que vamos contar, e não só mostrar"},
+   {kind:"topicos", kick:"Por que funciona", h:"O que a história faz", items:[
+     {mk:"♥", t:"Ativa razão e emoção", s:"os dois lados do cérebro"},
+     {mk:"★", t:"É mais memorável", s:"que fatos soltos"},
+     {mk:"⚑", t:"Gera confiança", s:"aproxima quem conta de quem ouve"},
+     {mk:"✓", t:"Facilita o 'sim'", s:"decisão com sentido, não só com planilha"} ]},
+   {kind:"flow", kick:"Estrutura clássica", h:"O arco da história", steps:[
+     {n:"1", b:"Contexto", p:"quem, onde, o normal"},
+     {n:"2", b:"Conflito", p:"o que quebra o normal"},
+     {n:"3", b:"Virada", p:"a decisão que muda tudo"},
+     {n:"4", b:"Desfecho", p:"o novo normal + a lição"} ]},
+   {kind:"destaque", big:"<span class='hl'>Personagem · Conflito · Resolução</span> — o mínimo de toda boa história.", by:"se faltar um, não é história, é aviso"},
+   {kind:"topicos", kick:"Jornada do Herói (Campbell)", h:"Coloque o cliente como herói", items:[
+     {mk:"➊", t:"O chamado", s:"o problema aparece"},
+     {mk:"➋", t:"O guia", s:"sua ideia/marca ajuda — não é a estrela"},
+     {mk:"➌", t:"Os obstáculos", s:"o que precisa ser superado"},
+     {mk:"➍", t:"A conquista", s:"a transformação no final"} ]},
+   {kind:"grid", kick:"Os 6 momentos (ferramenta)", h:"Monte a sua", cards:[
+     {ic:"◉", b:"Personagem", p:"quem vive isso"},
+     {ic:"◎", b:"Objetivo", p:"o que ele quer"},
+     {ic:"⚡", b:"Conflito", p:"o que atrapalha"},
+     {ic:"↯", b:"Virada", p:"o momento-chave"},
+     {ic:"✔", b:"Resultado", p:"como terminou"},
+     {ic:"✎", b:"Mensagem", p:"o que fica"} ]},
+   {kind:"fecho", h:"Agora é com vocês", goals:[
+     {b:"1.", t:"Transformem o MESMO caso (o canvas) numa história de 1 min"},
+     {b:"2.", t:"Ao palco, no microfone"},
+     {b:"3.", t:"Feedback da plateia · 🎬 gravar vídeo é opcional"} ],
+     rule:"🎯 O caso do dia inteiro termina como história."}
+  ]}
+};
+
+/* ============ RENDER ============ */
+function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
+function qp(k){ try{ return new URLSearchParams(location.search).get(k)||""; }catch(e){ return ""; } }
+
+var BID=(qp("bloco")||"b1").toLowerCase();
+if(!DECKS[BID]) BID="b1";
+var DECK=DECKS[BID];
+document.documentElement.style.setProperty("--ac", DECK.ac);
+document.documentElement.style.setProperty("--ac-soft","color-mix(in srgb,"+DECK.ac+" 16%,transparent)");
+document.title="Fundamentação — "+DECK.titulo+" · Verisure";
+document.getElementById("barTtl").textContent=DECK.titulo;
+document.getElementById("barKick").textContent=DECK.tag;
+document.getElementById("ovTtl").textContent="Fundamentação — "+DECK.titulo;
+
+function slideHTML(s){
+  if(s.kind==="capa"){
+    return '<span class="tag">'+esc(s.tag)+'</span><h2>'+esc(s.h)+'</h2><div class="sub">'+esc(s.sub)+'</div>';
+  }
+  if(s.kind==="destaque"){
+    return '<div class="big">'+s.big+'</div>'+(s.by?'<div class="by">'+esc(s.by)+'</div>':'');
+  }
+  if(s.kind==="topicos"){
+    var li=s.items.map(function(it){ return '<li><span class="mk">'+esc(it.mk)+'</span><span class="tx">'+esc(it.t)+(it.s?'<small>'+esc(it.s)+'</small>':'')+'</span></li>'; }).join("");
+    return (s.kick?'<div class="kick">'+esc(s.kick)+'</div>':'')+'<h2>'+esc(s.h)+'</h2><ul class="tp">'+li+'</ul>';
+  }
+  if(s.kind==="grid"){
+    var cd=s.cards.map(function(c){ return '<div class="cd"><div class="ic">'+esc(c.ic)+'</div><b>'+esc(c.b)+'</b>'+(c.p?'<p>'+esc(c.p)+'</p>':'')+'</div>'; }).join("");
+    return (s.kick?'<div class="kick">'+esc(s.kick)+'</div>':'')+'<h2>'+esc(s.h)+'</h2><div class="grid'+(s.g5?' g5':'')+'">'+cd+'</div>';
+  }
+  if(s.kind==="flow"){
+    var ps=s.steps.map(function(st,i){ return (i>0?'<div class="ar">→</div>':'')+'<div class="ps"><span class="n">'+esc(st.n)+'</span><b>'+esc(st.b)+'</b>'+(st.p?'<p>'+esc(st.p)+'</p>':'')+'</div>'; }).join("");
+    return (s.kick?'<div class="kick">'+esc(s.kick)+'</div>':'')+'<h2>'+esc(s.h)+'</h2><div class="flow">'+ps+'</div>'+(s.note?'<div class="by" style="margin-top:20px;color:var(--muted);font:600 clamp(13px,1.6vw,18px) \'IBM Plex Mono\',monospace">'+esc(s.note)+'</div>':'');
+  }
+  if(s.kind==="fecho"){
+    var g=s.goals.map(function(x){ return '<div class="g"><span class="b">'+esc(x.b)+'</span><span>'+esc(x.t)+'</span></div>'; }).join("");
+    return '<div class="mk">🚀</div><h2>'+esc(s.h)+'</h2><div class="goal">'+g+'</div>'+(s.rule?'<div class="rule">'+esc(s.rule)+'</div>':'');
+  }
+  return '';
+}
+
+var stage=document.getElementById("stage");
+stage.innerHTML=DECK.slides.map(function(s,i){ return '<section class="slide '+s.kind+(i===0?' on':'')+'" data-i="'+i+'">'+slideHTML(s)+'</section>'; }).join("");
+var SL=Array.prototype.slice.call(stage.querySelectorAll(".slide"));
+var N=SL.length, cur=0;
+
+function show(i){
+  i=Math.max(0,Math.min(N-1,i));
+  SL[cur].classList.remove("on"); SL[i].classList.add("on"); cur=i;
+  document.getElementById("count").textContent=(i+1)+" / "+N;
+  document.getElementById("prog").style.width=((i+1)/N*100)+"%";
+  location.hash="s"+(i+1);
+}
+function next(){ if(cur<N-1) show(cur+1); }
+function prev(){ if(cur>0) show(cur-1); }
+
+/* controles */
+document.getElementById("next").addEventListener("click",next);
+document.getElementById("prev").addEventListener("click",prev);
+document.addEventListener("keydown",function(e){
+  if(document.getElementById("ov").classList.contains("on")){ if(e.key==="Escape"||e.key==="g"||e.key==="G"){ toggleOv(false); } return; }
+  switch(e.key){
+    case "ArrowRight": case " ": case "PageDown": case "ArrowDown": e.preventDefault(); next(); break;
+    case "ArrowLeft": case "PageUp": case "ArrowUp": e.preventDefault(); prev(); break;
+    case "Home": show(0); break;
+    case "End": show(N-1); break;
+    case "f": case "F": toggleFS(); break;
+    case "g": case "G": toggleOv(true); break;
+  }
+});
+/* clique nas metades (ignora a barra e os controles) */
+stage.addEventListener("click",function(e){ if(e.clientY<64) return; (e.clientX > window.innerWidth*0.4) ? next() : prev(); });
+/* swipe */
+var tx=0,ty=0;
+stage.addEventListener("touchstart",function(e){ tx=e.changedTouches[0].clientX; ty=e.changedTouches[0].clientY; },{passive:true});
+stage.addEventListener("touchend",function(e){ var dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)){ dx<0?next():prev(); } },{passive:true});
+
+/* tela cheia */
+function toggleFS(){ var d=document.documentElement;
+  if(!document.fullscreenElement){ (d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d); }
+  else{ (document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document); } }
+document.getElementById("fsBtn").addEventListener("click",toggleFS);
+document.addEventListener("fullscreenchange",function(){ document.getElementById("fsBtn").textContent=document.fullscreenElement?"⤢ Sair":"⛶ Tela cheia"; });
+
+/* overview */
+function buildOv(){ document.getElementById("ovGrid").innerHTML=DECK.slides.map(function(s,i){
+   var t=s.h||s.big||s.sub||s.kind; t=String(t).replace(/<[^>]+>/g,"");
+   return '<div class="th" data-i="'+i+'"><div class="tn">'+((s.kick||s.tag||s.kind).replace(/<[^>]+>/g,""))+'</div><div class="tt">'+esc(t)+'</div><div class="num">'+(i+1)+'</div></div>'; }).join("");
+  Array.prototype.forEach.call(document.querySelectorAll("#ovGrid .th"),function(el){ el.addEventListener("click",function(){ show(+el.getAttribute("data-i")); toggleOv(false); }); });
+}
+function toggleOv(on){ var ov=document.getElementById("ov"); if(on && !ov.dataset.built){ buildOv(); ov.dataset.built="1"; } ov.classList.toggle("on",on); }
+document.getElementById("ovBtn").addEventListener("click",function(){ toggleOv(true); });
+document.getElementById("ovClose").addEventListener("click",function(){ toggleOv(false); });
+
+/* auto-ocultar barra/controles com inatividade do mouse */
+var idle=null;
+function activity(){ document.getElementById("bar").classList.remove("hide"); document.getElementById("ctl").classList.remove("hide");
+  document.getElementById("hint").classList.remove("hide");
+  clearTimeout(idle); idle=setTimeout(function(){ document.getElementById("bar").classList.add("hide"); document.getElementById("ctl").classList.add("hide"); document.getElementById("hint").classList.add("hide"); },3500); }
+document.addEventListener("mousemove",activity); document.addEventListener("keydown",activity); document.addEventListener("touchstart",activity);
+activity();
+
+/* iniciar no slide do hash, se houver */
+(function(){ var m=(location.hash||"").match(/s(\d+)/); if(m){ var i=parseInt(m[1],10)-1; if(i>0&&i<N) show(i); else show(0); } else show(0); })();
+</script>
+</body>
+</html>
