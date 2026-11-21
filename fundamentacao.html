@@ -387,14 +387,18 @@ activity();
 /* ===== fundo musical por fundamentação ===== */
 /* cada bloco toca audio/fund-<bloco>.mp3 em volume baixo, em loop. */
 var bgm=new Audio("audio/fund-"+BID+".mp3"); bgm.loop=true; bgm.volume=0.18; bgm.preload="auto";
-var musOff=false, musReady=false;
-function setSpk(){ var el=document.getElementById("spkBtn"); if(el) el.textContent=(musOff||bgm.paused)?"🔇":"🔊"; }
-function startMus(){ if(musOff||musReady) return; var p=bgm.play(); if(p&&p.then){ p.then(function(){ musReady=true; setSpk(); }).catch(function(){ /* autoplay bloqueado: começa no 1º gesto */ }); } }
-function toggleMus(){ if(bgm.paused){ musOff=false; var p=bgm.play(); if(p&&p.then){ p.then(function(){ musReady=true; setSpk(); }).catch(function(){}); } } else { musOff=true; bgm.pause(); setSpk(); } }
-document.getElementById("spkBtn").addEventListener("click",toggleMus);
-bgm.addEventListener("playing",setSpk); bgm.addEventListener("pause",setSpk);
-["pointerdown","keydown","touchstart"].forEach(function(ev){ document.addEventListener(ev,startMus,{passive:true}); });
-startMus(); setSpk();
+var wantMusic=true;                         /* intenção: ligado por padrão (fonte única de verdade) */
+function iconMus(){ var el=document.getElementById("spkBtn"); if(el) el.textContent=wantMusic?"🔊":"🔇"; }
+function applyMus(){ if(wantMusic){ var p=bgm.play(); if(p&&p.catch) p.catch(function(){}); } else { try{bgm.pause();}catch(e){} } iconMus(); }
+function toggleMus(){ wantMusic=!wantMusic; applyMus(); }
+var _spk=document.getElementById("spkBtn");
+_spk.addEventListener("click",toggleMus);
+_spk.addEventListener("pointerdown",function(e){ e.stopPropagation(); });   /* o botão não dispara o auto-início */
+bgm.addEventListener("ended",iconMus);
+/* navegadores bloqueiam áudio automático: liga no 1º gesto, se a intenção for tocar */
+function _kick(){ if(wantMusic) applyMus(); }
+["pointerdown","keydown","touchstart"].forEach(function(ev){ document.addEventListener(ev,_kick,{once:true,passive:true}); });
+iconMus();
 
 /* iniciar no slide do hash, se houver */
 (function(){ var m=(location.hash||"").match(/s(\d+)/); if(m){ var i=parseInt(m[1],10)-1; if(i>0&&i<N) show(i); else show(0); } else show(0); })();
