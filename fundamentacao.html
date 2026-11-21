@@ -125,6 +125,7 @@
   <span class="ttl" id="barTtl">—</span>
   <span class="sp"></span>
   <a href="roteiro.html" id="backBtn">↩ Roteiro</a>
+  <button id="spkBtn" title="Som de fundo (M)">🔊</button>
   <button id="ovBtn" title="Ver todos os slides (G)">▦ Slides</button>
   <button id="fsBtn" title="Tela cheia (F)">⛶ Tela cheia</button>
 </div>
@@ -132,7 +133,7 @@
 <div class="stage" id="stage"></div>
 
 <div class="prog" id="prog"></div>
-<div class="hint" id="hint">← → navega · F tela cheia · G todos os slides</div>
+<div class="hint" id="hint">← → navega · F tela cheia · G todos os slides · M som</div>
 <div class="ctl" id="ctl">
   <button id="prev" title="Anterior (←)">‹</button>
   <span class="count" id="count">1 / 1</span>
@@ -347,6 +348,7 @@ document.addEventListener("keydown",function(e){
     case "End": show(N-1); break;
     case "f": case "F": toggleFS(); break;
     case "g": case "G": toggleOv(true); break;
+    case "m": case "M": toggleMus(); break;
   }
 });
 /* clique nas metades (ignora a barra e os controles) */
@@ -381,6 +383,18 @@ function activity(){ document.getElementById("bar").classList.remove("hide"); do
   clearTimeout(idle); idle=setTimeout(function(){ document.getElementById("bar").classList.add("hide"); document.getElementById("ctl").classList.add("hide"); document.getElementById("hint").classList.add("hide"); },3500); }
 document.addEventListener("mousemove",activity); document.addEventListener("keydown",activity); document.addEventListener("touchstart",activity);
 activity();
+
+/* ===== fundo musical por fundamentação ===== */
+/* cada bloco toca audio/fund-<bloco>.mp3 em volume baixo, em loop. */
+var bgm=new Audio("audio/fund-"+BID+".mp3"); bgm.loop=true; bgm.volume=0.18; bgm.preload="auto";
+var musOff=false, musReady=false;
+function setSpk(){ var el=document.getElementById("spkBtn"); if(el) el.textContent=(musOff||bgm.paused)?"🔇":"🔊"; }
+function startMus(){ if(musOff||musReady) return; var p=bgm.play(); if(p&&p.then){ p.then(function(){ musReady=true; setSpk(); }).catch(function(){ /* autoplay bloqueado: começa no 1º gesto */ }); } }
+function toggleMus(){ if(bgm.paused){ musOff=false; var p=bgm.play(); if(p&&p.then){ p.then(function(){ musReady=true; setSpk(); }).catch(function(){}); } } else { musOff=true; bgm.pause(); setSpk(); } }
+document.getElementById("spkBtn").addEventListener("click",toggleMus);
+bgm.addEventListener("playing",setSpk); bgm.addEventListener("pause",setSpk);
+["pointerdown","keydown","touchstart"].forEach(function(ev){ document.addEventListener(ev,startMus,{passive:true}); });
+startMus(); setSpk();
 
 /* iniciar no slide do hash, se houver */
 (function(){ var m=(location.hash||"").match(/s(\d+)/); if(m){ var i=parseInt(m[1],10)-1; if(i>0&&i<N) show(i); else show(0); } else show(0); })();
