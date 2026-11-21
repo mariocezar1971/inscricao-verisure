@@ -94,8 +94,9 @@ var local=(["localhost","127.0.0.1",""].indexOf(location.hostname)>=0 || locatio
     <p class="step-t">▶️ Revise e envie</p>
     <video id="playback" controls playsinline></video>
     <div class="bar" id="bar"><i id="barfill"></i></div>
+    <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.4;margin:4px 0 12px;cursor:pointer"><input type="checkbox" id="consent" style="width:20px;height:20px;flex:none;margin-top:1px;accent-color:var(--teal)"><span>Autorizo a <b>gravação da minha imagem e voz</b> e o uso deste vídeo <b>apenas durante este workshop</b>. Os vídeos são <b>apagados pelo facilitador ao final do evento</b>. Participação <b>opcional</b>.</span></label>
     <div class="controls">
-      <button class="btn primary" id="btnSend">⬆️ Enviar para apresentação</button>
+      <button class="btn primary" id="btnSend" disabled>⬆️ Enviar para apresentação</button>
       <button class="btn ghost" id="btnRedo">↺ Regravar</button>
     </div>
     <p class="status" id="status" style="margin-top:10px"></p>
@@ -112,7 +113,8 @@ var local=(["localhost","127.0.0.1",""].indexOf(location.hostname)>=0 || locatio
     </div>
   </div>
 
-  <div class="note">👩‍🏫 Depois de enviar, o vídeo aparece no <b>Painel do facilitador</b> para ser apresentado no telão. Você pode enviar mais de um vídeo.</div>
+  <div class="note">🙅 <b>Não quer gravar?</b> Sem problema — a participação é opcional. Você pode contar a sua história ao vivo, sem registro em vídeo. Fale com o facilitador.</div>
+  <div class="note">👩‍🏫 Depois de enviar, o vídeo aparece no <b>Painel do facilitador</b> para ser apresentado no telão. Os vídeos ficam só durante o evento e são apagados ao final.</div>
 </div>
 
 <script>(function(){
@@ -199,7 +201,11 @@ var local=(["localhost","127.0.0.1",""].indexOf(location.hostname)>=0 || locatio
   }
   function setStatus(msg,ok){ var s=$("status"); s.textContent=msg; s.className="status"+(ok===true?" ok":ok===false?" err":""); }
 
+  // consentimento (Rec 3): libera o envio só com autorização
+  $("consent").addEventListener("change",function(){ $("btnSend").disabled=!$("consent").checked; });
+
   function enviar(){
+    if(!$("consent").checked){ setStatus("Marque a autorização de gravação antes de enviar.",false); return; }
     var g=$("grupo").value.trim();
     if(!g){ setStatus("Informe o nome do grupo antes de enviar.",false); $("grupo").focus(); return; }
     if(!recordedBlob){ setStatus("Grave ou escolha um vídeo primeiro.",false); return; }

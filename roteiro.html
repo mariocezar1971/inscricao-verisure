@@ -121,6 +121,7 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
     <h1>Roteiro do Dia</h1>
     <p>GQT · Project Model Canvas · Buyer Focusing Selling · Storytelling — quatro competências, uma jornada.</p>
     <div class="fio"><b>Fio condutor:</b> identificar um problema (GQT) → estruturá-lo como projeto (Canvas) → vendê-lo com foco no cliente (Buyer Focusing) → comunicá-lo com emoção (Storytelling).</div>
+    <div class="fio" style="border-color:rgba(232,163,61,.5);background:rgba(232,163,61,.12)"><b>🎯 Regra do dia — um caso só:</b> cada grupo escolhe <b>um problema real no Bloco 1</b> e ele atravessa o dia inteiro — vira <b>canvas</b> (Bloco 2), vira <b>venda</b> (Bloco 3) e vira <b>história</b> (Bloco 4). Não começar um caso novo a cada bloco: isso reduz a carga e amarra todo o aprendizado.</div>
     <div class="clock">
       <span class="big" id="relogio">--:--</span>
       <span class="agora" id="agora">carregando o momento atual…</span>
@@ -213,6 +214,8 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
       <summary>🧯 Recursos complementares e contingência</summary>
       <div class="dbd"><ul class="clean">
         <li><b>Redundância:</b> clicker com laser; adaptadores HDMI/VGA/USB-C + HDMI reserva; réguas/extensões; pilhas do microfone; internet reserva (4G/hotspot); pen drive e, se possível, notebook reserva.</li>
+        <li><b>Conectividade (Plano B) — crítico:</b> testar o wi-fi na véspera <b>com carga real</b> (20+ celulares); hotspot 4G reserva dedicado; <b>escalonar o upload dos vídeos</b> (um grupo por vez, não todos juntos); manter o <b>equivalente analógico</b> de cada dinâmica pronto (acervo). Regra: se o wi-fi cair às 10h, o workshop continua sem perder o fio.</li>
+        <li><b>Gestão de energia:</b> logo <b>após o almoço</b> (vale de energia), começar pelo que é mais ativo/físico e trilha energética — <b>evitar “Fundamentação” (exposição) logo após o almoço</b>; usar o sino e micro-pausas de pé nas transições.</li>
         <li><b>Facilitação:</b> cronômetro/timer no telão; sino para transições; flip chart; fita crepe, tesoura, grampeador; placas de mesa por cor.</li>
         <li><b>Conforto:</b> iluminação ajustável; água/balas; primeiros socorros; relógio de parede.</li>
         <li><b>LGPD:</b> termo de autorização de imagem; aviso de privacidade no formulário (consentimento já registrado online).</li>
@@ -251,12 +254,13 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
     {t0:"13:15",t1:"15:00",nm:"Bloco 3 — Buyer Focusing Selling",tp:"bloco",tag:"bloco",go:"b3"},
     {t0:"15:00",t1:"15:20",nm:"Coffee-break da tarde",tp:"pausa",tag:"pausa",mus:"coffee"},
     {t0:"15:20",t1:"17:05",nm:"Bloco 4 — Storytelling",tp:"bloco",tag:"bloco",go:"b4"},
-    {t0:"17:05",t1:"17:35",nm:"Encerramento, avaliação e plano de ação",tp:"conteudo",tag:"conteúdo",mus:"encerramento"}
+    {t0:"17:05",t1:"17:35",nm:"Encerramento, avaliação e plano de ação",tp:"conteudo",tag:"conteúdo",mus:"encerramento",qr:[["ferramenta-plano.html","Plano de ação"]]}
   ];
   const BLOCKS=[
     {id:"b1",cor:"var(--teal)",titulo:"Bloco 1 — Gestão da Qualidade Total (GQT)",start:"08:30",
      obj:"Enxergar processos, decidir por fatos e usar as ferramentas básicas da qualidade para atacar problemas reais.",
      equipe:"FP · CF · AV", musica:"Pink Floyd — Money (caixa registradora)", recursos:"Datashow, cartazes, post-it, templates de Folha/Ishikawa/Pareto.",
+     ancoras:"Ishikawa + Pareto (as demais são acervo opcional)",
      din:"‘A História da Máquina Registradora’ — evidencia como suposições contaminam decisões (decidir por fatos).",
      steps:[
       {n:"Fundamentação",m:20,d:"Qualidade total e melhoria contínua; PDCA/SDCA e MASP; as 7 ferramentas da qualidade e a lógica dos 5S."},
@@ -268,10 +272,11 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
     {id:"b2",cor:"var(--navy)",titulo:"Bloco 2 — Project Model Canvas",start:"10:30",
      obj:"Estruturar um projeto em uma página, do ‘porquê’ ao ‘quando e quanto’.",
      equipe:"FP · CF · AV · LOG", musica:"Bill Withers — Lean on Me", recursos:"Cartazes A0 para canvas, muito post-it, canetões, vídeo curto do YouTube sobre PM Canvas.",
+     ancoras:"Project Model Canvas",
      din:"‘Estamos todos no mesmo saco’ — vivência de interdependência e ritmo de equipe.",
      steps:[
       {n:"Fundamentação",m:20,d:"O Project Model Canvas e seus 13 componentes na lógica pensar–integrar–comunicar."},
-      {n:"Atividade",m:25,d:"Cada grupo preenche um Canvas gigante (A0) com post-it — de preferência a melhoria do Bloco 1.",tools:["pmcanvas"]},
+      {n:"Atividade",m:25,d:"Cada grupo preenche um Canvas gigante (A0) com post-it — obrigatoriamente o MESMO problema do Bloco 1 (regra do dia).",tools:["pmcanvas"]},
       {n:"Simulação",m:25,d:"‘Pitch do projeto’: 3 min para apresentar o canvas a uma ‘banca de patrocinadores’ que decide o investimento."},
       {n:"Storytelling",m:20,d:"Participantes contam um projeto que deu certo (ou errado) e qual bloco do canvas faltou planejar.",tools:["storyvideo"]},
       {n:"Dinâmica",m:15,d:"‘Mesmo saco’ (acervo). Alternativas digitais:",tools:["rota","linha","lua"],din:true}
@@ -279,10 +284,11 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
     {id:"b3",cor:"var(--blue)",titulo:"Bloco 3 — Buyer Focusing Selling",start:"13:15",
      obj:"Deslocar o foco do produto para o processo de compra e as necessidades reais do cliente.",
      equipe:"FP · CF · AV", musica:"Caetano Veloso — Gente", recursos:"Notebooks + internet para a persona, microfone, vídeo de atendimento consultivo.",
+     ancoras:"Persona + SPIN",
      din:"‘Rótulos’ — mostra como estereótipos atrapalham; conecta com escutar o cliente sem pré-julgar.",
      steps:[
       {n:"Fundamentação",m:20,d:"‘Vender’ × ‘ajudar a comprar’; jornada de compra; perguntas de diagnóstico (situação, problema, implicação, necessidade); escuta ativa e proposta de valor centrada no comprador."},
-      {n:"Atividade",m:25,d:"Cada grupo constrói uma persona, mapeia dores e jornada, e formula um roteiro de perguntas de diagnóstico.",tools:["persona","spin","persuasao"]},
+      {n:"Atividade",m:25,d:"Cada grupo constrói uma persona e a jornada do cliente do MESMO caso (desde o Bloco 1), mapeia dores e formula um roteiro de perguntas de diagnóstico.",tools:["persona","spin","persuasao"]},
       {n:"Simulação",m:25,d:"Role-play vendedor × comprador em rodízio; observadores registram o quanto o ‘vendedor’ ouviu antes de oferecer."},
       {n:"Storytelling",m:20,d:"Participantes contam uma compra memorável como clientes — o que no atendimento fez a diferença.",tools:["storyvideo"]},
       {n:"Dinâmica",m:15,d:"‘Rótulos’ (acervo). Alternativa digital — quem convence mais:",tools:["persuasao","lua"],din:true}
@@ -290,12 +296,13 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
     {id:"b4",cor:"var(--amber-deep)",titulo:"Bloco 4 — Storytelling",start:"15:20",
      obj:"Estruturar e contar histórias que engajam e comunicam ideias, projetos e propostas.",
      equipe:"FP · CF · AV", musica:"Ana Vilela — Trem-Bala", recursos:"Microfone, caixa de som, palco, vídeos do YouTube (TED e exemplos).",
+     ancoras:"Estrutura da História (+ 🎬 Gravar vídeo)",
      din:"‘Sociodrama’ / ‘Jornal Falado’ — dramatização coletiva que consolida a linguagem narrativa.",
      steps:[
       {n:"Fundamentação",m:20,d:"Por que histórias funcionam melhor que dados soltos; estrutura clássica (contexto → conflito → virada → desfecho) e a jornada do herói."},
-      {n:"Atividade",m:25,d:"Cada grupo transforma um dado/projeto (reaproveitando o canvas do Bloco 2) numa história de 1 minuto.",tools:["storytelling"]},
+      {n:"Atividade",m:25,d:"Cada grupo transforma o MESMO caso (o canvas do Bloco 2) numa história de 1 minuto.",tools:["storytelling"]},
       {n:"Simulação",m:25,d:"Cada grupo sobe ao palco e conta a história ao microfone; a plateia dá feedback estruturado.",tools:["storytelling"]},
-      {n:"Storytelling",m:20,d:"‘A minha virada’: 60–90 s de uma história pessoal de superação — o fechamento emocional do dia.",tools:["storyvideo"]},
+      {n:"Storytelling",m:20,d:"‘A minha virada’: 60–90 s de uma história pessoal de superação — o fechamento emocional do dia. Participação e gravação 100% opcionais (quem preferir só conta, sem gravar).",tools:["storyvideo"]},
       {n:"Dinâmica",m:15,d:"‘Sociodrama’ (acervo). Encerramento reflexivo com o plano de ação."}
      ]}
   ];
@@ -340,7 +347,7 @@ document.getElementById("vzPrev").href=prev; document.getElementById("vzNext").h
       <div class="bh"><h3>${b.titulo}</h3><span class="win">${b.start} · 105 min</span></div>
       <div class="obj">${b.obj}</div>
       ${steps}
-      <div class="meta"><span><span class="k">Equipe</span> ${b.equipe}</span><span><span class="k">Música</span> ${b.musica}</span><span><span class="k">Recursos</span> ${b.recursos}</span></div>
+      <div class="meta"><span><span class="k">⭐ Âncoras</span> ${b.ancoras||"—"}</span><span><span class="k">Equipe</span> ${b.equipe}</span><span><span class="k">Música</span> ${b.musica}</span><span><span class="k">Recursos</span> ${b.recursos}</span></div>
     </div>`;
   }).join("");
 
